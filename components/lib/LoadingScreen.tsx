@@ -4,7 +4,7 @@ export default function LoadingScreen() {
         <button
             className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
         >
-            Loading Dependencies (Replace with Loading Screen Later!)
+            Loading Dependencies
             <span className="animate-spin ml-3">
                 <svg
                     viewBox="0 0 1024 1024"
