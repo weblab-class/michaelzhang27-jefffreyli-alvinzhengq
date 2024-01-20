@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
     "axios": "^1.6.5",
+    "firebase": "^10.7.2",
     "formidable": "^3.5.1",
     "framer-motion": "^10.18.0",
     "mime": "^4.0.1",

@@ -9,8 +9,11 @@ import {
   listAll,
 } from "firebase/storage";
 import { app, auth, storage } from "@/firebase/config";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+
+import MediaLibrary from "./MediaLibrary";
+import VideoDisplay from "./VideoDisplay";
+import AudioDisplay from "./AudioDisplay";
 
 const dashboard = () => {
   const [videoFile, setVideoFile] = useState(null);
@@ -41,19 +44,13 @@ const dashboard = () => {
       await auth.authStateReady();
       let currentUserEmail = auth.currentUser.email;
       const storage = getStorage();
-      const videosRef = ref(
-        storage,
-        `${currentUserEmail}/${selectedMediaType}`
-      );
-      const audiosRef = ref(
-        storage,
-        `${currentUserEmail}/${selectedMediaType}`
-      );
+      const videosRef = ref(storage, `${currentUserEmail}/video`);
+      const audiosRef = ref(storage, `${currentUserEmail}/audio`);
 
       try {
-        const result = await listAll(videosRef);
+        const vResult = await listAll(videosRef);
         const videoObjects = await Promise.all(
-          result.items.map(async (itemRef) => {
+          vResult.items.map(async (itemRef) => {
             const url = await getDownloadURL(itemRef);
             return {
               name: itemRef.name,
@@ -62,8 +59,9 @@ const dashboard = () => {
           })
         );
 
+        const aResult = await listAll(audiosRef);
         const audioObjects = await Promise.all(
-          result.items.map(async (itemRef) => {
+          aResult.items.map(async (itemRef) => {
             const url = await getDownloadURL(itemRef);
             return {
               name: itemRef.name,
@@ -72,10 +70,10 @@ const dashboard = () => {
           })
         );
 
+        setUploadedAudioFiles(audioObjects);
         setUploadedVideoFiles(videoObjects);
-        console.log(videoObjects);
       } catch (error) {
-        console.error("Error fetching videos: ", error);
+        console.error("Error fetching media: ", error);
       }
     };
 
@@ -143,118 +141,21 @@ const dashboard = () => {
 
   return (
     <div className="py-16 rounded-lg text-center flex">
-      <MediaLibrary />
+      <MediaLibrary
+        selectedMediaType={selectedMediaType}
+        setSelectedMediaType={setSelectedMediaType}
+        uploadedVideoFiles={uploadedVideoFiles}
+        uploadedAudioFiles={uploadedAudioFiles}
+        handleFileChange={handleFileChange}
+      />
       <div className="border-[0.9px] border-gray-300"></div>
-      {selectedMediaType == "video" ? <VideoDisplay /> : <AudioDisplay />}
+      {selectedMediaType == "video" ? (
+        <VideoDisplay videoSrc={videoSrc} />
+      ) : (
+        <AudioDisplay audioSrc={audioSrc} />
+      )}
     </div>
   );
-
-  function MediaLibrary() {
-    return (
-      <div className="w-1/2">
-        <div className="flex justify-start ml-16 mb-4 space-x-4">
-          <button
-            className="bg-blue-600 text-white p-3"
-            onClick={() => setSelectedMediaType("video")}
-          >
-            Videos
-          </button>
-          <button
-            className="bg-blue-600 text-white p-3"
-            onClick={() => setSelectedMediaType("audio")}
-          >
-            Audio
-          </button>
-        </div>
-
-        <div className="h-96 mx-16 border-2 border-dashed border-gray-400">
-          {selectedMediaType == "video"
-            ? uploadedVideoFiles.map((file) => (
-                <div
-                  key={file.name}
-                  className="m-3 p-3 border-gray-300 border-[1px] h-20 flex items-center space-x-4"
-                >
-                  <video
-                    className="rounded-md h-16 w-auto"
-                    src={file.url}
-                    type="video/mp4"
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                  <p className="text-gray-700 text-xs">{file.name}</p>
-                </div>
-              ))
-            : uploadedAudioFiles.map((file) => (
-                <AudioCard key={file.name} name={file.name} />
-              ))}
-        </div>
-
-        <button className="my-6 w-full flex justify-end pr-20">
-          <input
-            type="file"
-            accept={selectedMediaType === "video" ? "video/*" : "audio/mpeg"}
-            className="hidden"
-            id="media-upload"
-            onChange={handleFileChange}
-          />
-          <label
-            htmlFor="media-upload"
-            className="text-white p-4 bg-blue-600 underline underline-offset-4 cursor-pointer"
-          >
-            Add files
-          </label>
-        </button>
-      </div>
-    );
-  }
-
-  function VideoDisplay() {
-    return (
-      <div className="w-1/2 mt-16">
-        {videoSrc ? (
-          <video
-            className="rounded-md h-96 mx-16"
-            controls
-            src={videoSrc}
-            type="video/mp4"
-          >
-            Your browser does not support the video tag.
-          </video>
-        ) : (
-          <div className="rounded-md bg-black h-96 w-auto mx-16"></div>
-        )}
-      </div>
-    );
-  }
-
-  function AudioDisplay() {
-    return (
-      <div className="w-1/2">
-        <audio className="rounded-md h-4/5 w-3/4 mx-16" controls>
-          <source src={audioSrc} type="audio/mp3" />
-          Your browser does not support the audio tag.
-        </audio>
-      </div>
-    );
-  }
-
-  function AudioCard({ name }) {
-    return (
-      <div
-        key={name}
-        className="m-3 p-3 border-gray-300 border-[1px] h-20 flex items-center space-x-4"
-      >
-        <Image
-          className="rounded-md h-16 w-auto"
-          src={"/audio-image.png"}
-          width={50}
-          height={50}
-          alt={"audio image"}
-        ></Image>
-        <p className="text-gray-700 text-xs">{name}</p>
-      </div>
-    );
-  }
 };
 
 export default dashboard;
