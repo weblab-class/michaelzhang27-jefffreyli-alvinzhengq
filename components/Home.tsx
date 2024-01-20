@@ -3,13 +3,35 @@
 
 import { useEffect, useRef, useState } from 'react'
 import axios, { AxiosRequestConfig } from 'axios';
+import trim_handler from './formula/trim_start_2sec';
+import VideoListWrapper from './lib/VideoListWrapper'
 
 type VideoList = Array<{
     name: string,
     id: string,
-    startTime: number,
-    endTime: number
+    duration: string,
+    startDelta: number,
+    endDelta: number
 }>
+
+const loadVideo = (file: File): Promise<HTMLVideoElement> => new Promise((resolve, reject) => {
+    try {
+        let video = document.createElement('video')
+        video.preload = 'metadata'
+
+        video.onloadedmetadata = function () {
+            resolve(video)
+        }
+
+        video.onerror = function () {
+            reject("Invalid video. Please select a video file.")
+        }
+
+        video.src = window.URL.createObjectURL(file)
+    } catch (e) {
+        reject(e)
+    }
+})
 
 export default function Home() {
     const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -28,12 +50,14 @@ export default function Home() {
         for (let i = 0; i < e.dataTransfer?.files.length; i++) {
             const uniqueID = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
             const tmpFile = e.dataTransfer?.files[i]
+            const video = await loadVideo(tmpFile)
 
             let obj = {
                 name: tmpFile.name,
+                duration: video.duration.toFixed(2),
                 id: uniqueID,
-                startTime: 0,
-                endTime: 0
+                startDelta: 0,
+                endDelta: 0
             }
 
             videoList.current.push(obj)
@@ -59,9 +83,10 @@ export default function Home() {
         if (videoRef.current) {
             const mergeList: VideoList = videoRef.current.src.indexOf(".mp4") !== -1 ? [{
                 name: "",
+                duration: videoRef.current.duration.toString(),
                 id: "output-" + videoRef.current.src.split("/output-")[1].slice(0, -4),
-                startTime: 0,
-                endTime: -1
+                startDelta: 0,
+                endDelta: 0
             }, ...newFiles] : videoList.current
 
             let timeStamp = Date.now();
@@ -70,6 +95,23 @@ export default function Home() {
                 videoRef.current.pause();
                 videoRef.current.src = `/api/video/output-${timeStamp}.mp4`
             }
+        }
+
+        setForceRender(videoList.current.length)
+    }
+
+    const trimHandler = async (): Promise<void> => {
+        const videoListObj = new VideoListWrapper(videoList.current);
+
+        trim_handler(videoListObj)
+
+        videoList.current = videoListObj.get();
+
+        let timeStamp = Date.now();
+        await axios.post("/api/merge", { list: videoList.current, time: timeStamp })
+        if (videoRef.current) {
+            videoRef.current.pause();
+            videoRef.current.src = `/api/video/output-${timeStamp}.mp4`
         }
 
         setForceRender(videoList.current.length)
@@ -92,14 +134,7 @@ export default function Home() {
                 <video src="" className='w-[100%] h-[100%] object-cover' controls autoPlay={true} ref={videoRef} />
             </div>
 
-            <button className='py-2 px-10 border-2 border-blue-400 rounded-lg' onClick={() => {
-                if (videoRef.current) {
-                    videoRef.current.play();
-                    videoRef.current.pause();
-                    videoRef.current.currentTime = 5;
-                    videoRef.current.play();
-                }
-            }}>Skip to 5 Seconds</button>
+            <button className='px-4 py-2 border-red-400 border-2 rounded' onClick={trimHandler}>Trim</button>
 
             <div className='text-sm'>
                 {
