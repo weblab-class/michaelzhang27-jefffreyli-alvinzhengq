@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from 'react'
 import axios, { AxiosRequestConfig } from 'axios';
 import trim_handler from './formula/trim_start_2sec';
+import untrim_handler from './formula/untrim_start_2sec';
 import VideoListWrapper from './lib/VideoListWrapper'
 
 type VideoList = Array<{
@@ -117,6 +118,23 @@ export default function Home() {
         setForceRender(videoList.current.length)
     }
 
+    const UntrimHandler = async (): Promise<void> => {
+        const videoListObj = new VideoListWrapper(videoList.current);
+
+        untrim_handler(videoListObj)
+
+        videoList.current = videoListObj.get();
+
+        let timeStamp = Date.now();
+        await axios.post("/api/merge", { list: videoList.current, time: timeStamp })
+        if (videoRef.current) {
+            videoRef.current.pause();
+            videoRef.current.src = `/api/video/output-${timeStamp}.mp4`
+        }
+
+        setForceRender(videoList.current.length)
+    }
+
     useEffect(() => {
         document.addEventListener('dragover', (e) => {
             e.preventDefault()
@@ -135,6 +153,7 @@ export default function Home() {
             </div>
 
             <button className='px-4 py-2 border-red-400 border-2 rounded' onClick={trimHandler}>Trim</button>
+            <button className='px-4 py-2 border-red-400 border-2 rounded' onClick={UntrimHandler}>UnTrim</button>
 
             <div className='text-sm'>
                 {
