@@ -3,15 +3,17 @@
 @tailwind utilities;
 
 :root {
-  
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    
   }
 }
 
 body {
-  
+  background-color: "#FDA78F";
+}
+
+.orange-glow {
+  box-shadow: 0 0 10px #fda78f, 0 0 20px #fda78f;
 }
