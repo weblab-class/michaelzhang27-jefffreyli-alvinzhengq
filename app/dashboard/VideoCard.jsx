@@ -18,7 +18,7 @@ export default function VideoCard({
     }
 
     const updatedVideoFiles = uploadedVideoFiles.filter(
-      (file) => file !== videoPath
+      (file) => file.url !== videoPath
     );
 
     setUploadedVideoFiles(updatedVideoFiles);

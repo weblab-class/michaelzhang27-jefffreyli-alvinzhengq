@@ -147,6 +147,7 @@ const dashboard = () => {
         uploadedVideoFiles={uploadedVideoFiles}
         uploadedAudioFiles={uploadedAudioFiles}
         handleFileChange={handleFileChange}
+        setUploadedVideoFiles={setUploadedVideoFiles}
       />
       <div className="border-[0.9px] border-gray-300"></div>
       {selectedMediaType == "video" ? (
