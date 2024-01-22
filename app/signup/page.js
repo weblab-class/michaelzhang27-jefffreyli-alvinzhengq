@@ -40,7 +40,7 @@ export default function signUpPage() {
           </div>
 
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            <div className="bg-white py-8 px-4">
+            <div className=" py-8 px-4">
               <form
                 onSubmit={handleSignUp}
                 className="space-y-6"
@@ -98,7 +98,7 @@ export default function signUpPage() {
                   </label>
                   <div className="mt-1">
                     <input
-                    placeholder="Create password"
+                      placeholder="Create password"
                       id="password"
                       name="password"
                       type="password"

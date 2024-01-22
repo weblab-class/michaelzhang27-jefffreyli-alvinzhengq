@@ -1,4 +1,4 @@
-export default function VideoDisplay({ videoSrc, videoQueue }) {
+export default function VideoDisplay({ videoSrc }) {
 
   const playVideoIcon = (
     <button onClick={() => {

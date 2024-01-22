@@ -40,7 +40,7 @@ export default function signInPage() {
           </div>
 
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            <div className="bg-white py-8 px-4">
+            <div className=" py-8 px-4">
               <form
                 onSubmit={handleSignIn}
                 className="space-y-6"

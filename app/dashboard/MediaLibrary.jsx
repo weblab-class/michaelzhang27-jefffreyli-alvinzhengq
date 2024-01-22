@@ -9,6 +9,7 @@ export default function MediaLibrary({
   uploadedAudioFiles,
   setUploadedAudioFiles,
   handleFileChange,
+  setVideoSrc
 }) {
   return (
     <div className="w-1/2">
@@ -35,6 +36,7 @@ export default function MediaLibrary({
                 file={file}
                 uploadedVideoFiles={uploadedVideoFiles}
                 setUploadedVideoFiles={setUploadedVideoFiles}
+                setVideoSrc={setVideoSrc}
               />
             ))
           : uploadedAudioFiles.map((file) => (

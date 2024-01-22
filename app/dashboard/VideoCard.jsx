@@ -6,6 +6,7 @@ export default function VideoCard({
   file,
   uploadedVideoFiles,
   setUploadedVideoFiles,
+  setVideoSrc,
 }) {
   const deleteVideo = async (videoPath) => {
     const storage = getStorage();
@@ -22,6 +23,11 @@ export default function VideoCard({
     );
 
     setUploadedVideoFiles(updatedVideoFiles);
+  };
+
+  const handleDisplayVideo = () => {
+    setVideoSrc(file.url);
+    console.log(file.url);
   };
 
   const addIcon = (
@@ -60,6 +66,9 @@ export default function VideoCard({
 
   return (
     <div
+      onClick={() => {
+        handleDisplayVideo();
+      }}
       key={file.name}
       className="mx-2 p-3 border-b-[1px] border-gray-300 h-20 flex items-center justify-between"
     >
