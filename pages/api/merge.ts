@@ -61,23 +61,22 @@ export default async function NextApiHandler(
   });
 
   fileList.map((file, i) => {
-    filterComplex += `[Scaled_${i}][${i}:a]`;
+    filterComplex += `[Scaled_${i}]`;
   });
 
-  filterComplex += `concat=n=${fileList.length}:v=1:a=1[v][a]`;
+  filterComplex += `concat=n=${fileList.length}:v=1:a=0[v]`;
 
   argsList.push("-filter_complex", `${filterComplex}`);
   argsList.push(
     "-map",
     `[v]`,
-    "-map",
-    `[a]`,
     "-vsync",
     "2",
     "-y",
     "-preset",
     "ultrafast",
-    "-b:a", "16k", "-crf", "36",
+    "-crf",
+    "36",
     `${process.env.PWD}/public/${req.headers.userid}/output-tmp.mp4`
   );
 
@@ -122,14 +121,14 @@ export default async function NextApiHandler(
     "-vf",
     `${clipList_v.length > 0 ? clipList_v.join(",") + "," : ""
     }setpts=N/FRAME_RATE/TB`,
-    "-af",
-    `${clipList_a.length > 0 ? clipList_a.join(",") + "," : ""}asetpts=N/SR/TB`,
-    `${process.env.PWD}/public/${req.headers.userid}/output-tmp-2.mp4`,
     "-vsync",
     "2",
     "-y",
+    "-crf",
+    "36",
     "-preset",
-    "faster",
+    "ultrafast",
+    `${process.env.PWD}/public/${req.headers.userid}/output-tmp-2.mp4`
   ];
 
   await execute(argsList_trim);
@@ -139,10 +138,9 @@ export default async function NextApiHandler(
     `${process.env.PWD}/public/${req.headers.userid}/output-tmp-2.mp4`,
     "-i",
     `${process.env.PWD}/public/${req.headers.userid}/song.mpga`,
-    "-filter_complex",
-    `[0:a][1:a]amix=duration=longest[a]`,
-    "-map", "0:v", "-map", "[a]",
-    "-c:v", "copy",
+    "-c",
+    "copy",
+    "-map", "0:v:0", "-map", "1:a:0",
     `${process.env.PWD}/public/${req.headers.userid}/output-${timeStamp}.mp4`,
   ]
 
