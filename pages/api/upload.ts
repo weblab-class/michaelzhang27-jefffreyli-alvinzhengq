@@ -41,13 +41,12 @@ export default async function NextApiHandler(req: NextApiRequest, res: NextApiRe
                 return filename;
             }
 
-
             filename = `${_name}.${mime.getExtension(part.mimetype || "") || "unknown"}`;
             return filename;
         },
         filter: (part) => {
             return (
-                part.name === "media" && (part.mimetype?.includes("video") || false)
+                part.name === "media" && ((part.mimetype?.includes("audio") || part.mimetype?.includes("video")) || false)
             );
         },
     });
