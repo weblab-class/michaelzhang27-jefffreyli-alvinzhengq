@@ -62,9 +62,6 @@ export default function Timeline() {
         {/* Buttons */}
         <div className="flex justify-between items-center w-76 space-x-2">
           <button
-            onClick={() => {
-              console.log("pushed");
-            }}
             className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer"
           >
             <span>Algorithm</span>

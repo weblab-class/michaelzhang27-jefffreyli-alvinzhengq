@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,7 +23,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
   "include": [
@@ -29,8 +35,12 @@
     ".next/types/**/*.ts",
     "app/layout.jsx",
     "components/Navbar.jsx",
-    "app/dashboard/VideoCard.jsx",
-    "app/dashboard/Timeline/Timeline.jsx"
+    "app/dashboard/media/VideoCard.tsx",
+    "app/dashboard/Timeline/Timeline.jsx",
+    "app/dashboard/page.js"
   ],
-  "exclude": ["node_modules", "middleware.ts"]
+  "exclude": [
+    "node_modules",
+    "middleware.ts"
+  ]
 }

@@ -6,9 +6,9 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import Image from "next/image";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+// function classNames(...classes) {
+//   return classes.filter(Boolean).join(" ");
+// }
 
 export default function Navbar() {
   return (

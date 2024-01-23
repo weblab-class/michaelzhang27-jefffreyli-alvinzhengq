@@ -1,32 +1,40 @@
 import { deleteObject, getStorage } from "@firebase/storage";
 import { ref } from "firebase/storage";
 import Image from "next/image";
+import { MediaFile, MediaList } from "../types";
+import { Dispatch, SetStateAction } from "react";
 
-export default function VideoCard({
+export default function AudioCard({
   file,
-  uploadedVideoFiles,
-  setUploadedVideoFiles,
-  setVideoSrc,
+  uploadedAudioFiles,
+  setUploadedAudioFiles,
+  setAudioSrc,
+}: {
+  file: MediaFile,
+  uploadedAudioFiles: MediaList,
+  setUploadedAudioFiles: Dispatch<SetStateAction<MediaList>>,
+  setAudioSrc: Dispatch<SetStateAction<string>>,
+
 }) {
-  const deleteVideo = async (videoPath) => {
+  const handleDisplayAudio = () => {
+    setAudioSrc(file.url);
+  };
+
+  const deleteAudio = async (audioPath: string) => {
     const storage = getStorage();
-    const videoRef = ref(storage, videoPath);
+    const audioRef = ref(storage, audioPath);
 
     try {
-      await deleteObject(videoRef);
+      await deleteObject(audioRef);
     } catch (error) {
       console.log(error);
     }
 
-    const updatedVideoFiles = uploadedVideoFiles.filter(
-      (file) => file.url !== videoPath
+    const updatedAudioFiles = uploadedAudioFiles.filter(
+      (file) => file.url !== audioPath
     );
 
-    setUploadedVideoFiles(updatedVideoFiles);
-  };
-
-  const handleDisplayVideo = () => {
-    setVideoSrc(file.url);
+    setUploadedAudioFiles(updatedAudioFiles);
   };
 
   const addIcon = (
@@ -47,7 +55,7 @@ export default function VideoCard({
   );
 
   const trashIcon = (
-    <button onClick={() => deleteVideo(file.url)}>
+    <button onClick={() => deleteAudio(file.url)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
@@ -65,20 +73,21 @@ export default function VideoCard({
 
   return (
     <div
-      onClick={() => {
-        handleDisplayVideo();
-      }}
-      key={file.name}
+      key={file.id}
       className="mx-2 p-3 border-b-[1px] border-gray-300 h-20 flex items-center justify-between"
+      onClick={() => {
+        handleDisplayAudio();
+      }}
     >
       <div className="flex items-center space-x-4">
         <Image
           className="rounded-md h-16 w-auto"
-          src={"/placeholder-image.jpeg"}
+          src={"/audio-image.png"}
           width={50}
           height={50}
+          alt={"audio image"}
         ></Image>
-        <p className="text-gray-700 text-xs">{file.name}</p>
+        <p className="text-gray-700 text-xs">{file.display_name}</p>
       </div>
 
       <div className="flex space-x-4">

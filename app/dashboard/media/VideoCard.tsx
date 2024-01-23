@@ -1,32 +1,40 @@
 import { deleteObject, getStorage } from "@firebase/storage";
 import { ref } from "firebase/storage";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
+import { MediaFile, MediaList } from "../types";
 
 export default function AudioCard({
   file,
-  uploadedAudioFiles,
-  setUploadedAudioFiles,
-  setAudioSrc,
+  uploadedVideoFiles,
+  setUploadedVideoFiles,
+  setVideoSrc,
+}: {
+  file: MediaFile,
+  uploadedVideoFiles: MediaList,
+  setUploadedVideoFiles: Dispatch<SetStateAction<MediaList>>,
+  setVideoSrc: Dispatch<SetStateAction<string>>,
+
 }) {
-  const handleDisplayAudio = () => {
-    setAudioSrc(file.url);
+  const handleDisplayVideo = () => {
+    setVideoSrc(file.url);
   };
 
-  const deleteAudio = async (audioPath) => {
+  const deleteVideo = async (videoPath: string) => {
     const storage = getStorage();
-    const audioRef = ref(storage, audioPath);
+    const videoRef = ref(storage, videoPath);
 
     try {
-      await deleteObject(audioRef);
+      await deleteObject(videoRef);
     } catch (error) {
       console.log(error);
     }
 
-    const updatedAudioFiles = uploadedAudioFiles.filter(
-      (file) => file.url !== audioPath
+    const updatedVideoFiles = uploadedVideoFiles.filter(
+      (file) => file.url !== videoPath
     );
 
-    setUploadedAudioFiles(updatedAudioFiles);
+    setUploadedVideoFiles(updatedVideoFiles);
   };
 
   const addIcon = (
@@ -47,7 +55,7 @@ export default function AudioCard({
   );
 
   const trashIcon = (
-    <button onClick={() => deleteAudio(file.url)}>
+    <button onClick={() => deleteVideo(file.url)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
@@ -65,21 +73,21 @@ export default function AudioCard({
 
   return (
     <div
-      key={file.name}
-      className="mx-2 p-3 border-b-[1px] border-gray-300 h-20 flex items-center justify-between"
       onClick={() => {
-        handleDisplayAudio();
+        handleDisplayVideo();
       }}
+      key={file.id}
+      className="mx-2 p-3 border-b-[1px] border-gray-300 h-20 flex items-center justify-between"
     >
       <div className="flex items-center space-x-4">
         <Image
           className="rounded-md h-16 w-auto"
-          src={"/audio-image.png"}
+          src={"/placeholder-image.jpeg"}
+          alt="placeholder"
           width={50}
           height={50}
-          alt={"audio image"}
         ></Image>
-        <p className="text-gray-700 text-xs">{file.name}</p>
+        <p className="text-gray-700 text-xs">{file.display_name}</p>
       </div>
 
       <div className="flex space-x-4">

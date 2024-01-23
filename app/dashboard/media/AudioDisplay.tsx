@@ -1,11 +1,14 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
-export default function AudioDisplay({ audioSrc }) {
-  const audioRef = useRef(null);
+export default function AudioDisplay({ audioSrc }: { audioSrc: string }) {
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    audioRef.current.src = audioSrc;
+    if (audioRef.current !== null) {
+      audioRef.current.src = audioSrc;
+    }
+
   }, [audioSrc]);
 
   return (
@@ -13,6 +16,7 @@ export default function AudioDisplay({ audioSrc }) {
       <div className="flex justify-center items-center py-4">
         <Image
           src="/audio-image.png"
+          alt="audio-image"
           width={390}
           height={390}
           className="rounded-md shadow-md aspect-square"
