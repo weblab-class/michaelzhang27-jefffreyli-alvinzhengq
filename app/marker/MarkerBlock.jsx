@@ -4,6 +4,7 @@ export default function MarkerBlock({ onAddMarker, markers }) {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     onAddMarker({ x, y });
+    console.log((x / rect.width) * 100);
   };
 
   return (
@@ -11,9 +12,9 @@ export default function MarkerBlock({ onAddMarker, markers }) {
       {markers.map((marker, index) => (
         <div
           key={index}
-          className="absolute bg-darkGrey rounded-md w-[3px] h-8"
+          className="absolute bg-darkGrey rounded-md h-full w-[2px]"
           style={{
-            top: marker.y,
+            top: 0,
             left: marker.x,
           }}
         />

@@ -1,9 +1,16 @@
+import { useEffect, useRef } from "react";
+
 export default function VideoDisplay({ videoSrc }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (videoRef.current != null) {
+      videoRef.current.src = videoSrc;
+    }
+  }, [videoSrc]);
 
   const playVideoIcon = (
-    <button onClick={() => {
-
-    }}>
+    <button onClick={() => {}}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
@@ -16,10 +23,11 @@ export default function VideoDisplay({ videoSrc }) {
   );
 
   return (
-    <div className="w-1/2 mt-16">
+    <div className="w-1/2 mt-16 flex justify-center">
       {videoSrc ? (
         <video
-          className="rounded-md h-96 mx-12"
+          ref={videoRef}
+          className="rounded-md h-[24rem] mx-12"
           controls
           src={videoSrc}
           type="video/mp4"
@@ -27,7 +35,7 @@ export default function VideoDisplay({ videoSrc }) {
           Your browser does not support the video tag.
         </video>
       ) : (
-        <div className="rounded-md bg-black h-96 w-auto mx-12"></div>
+        <div className="rounded-md bg-black h-[24rem] w-full mx-12"></div>
       )}
     </div>
   );

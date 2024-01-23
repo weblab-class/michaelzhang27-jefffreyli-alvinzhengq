@@ -27,7 +27,6 @@ export default function VideoCard({
 
   const handleDisplayVideo = () => {
     setVideoSrc(file.url);
-    console.log(file.url);
   };
 
   const addIcon = (

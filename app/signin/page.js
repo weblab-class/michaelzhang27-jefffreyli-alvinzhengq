@@ -112,7 +112,9 @@ export default function signInPage() {
 
                 <div>
                   <button
-                    onClick={handleSignIn}
+                    onClick={(e) => {
+                      handleSignIn(e);
+                    }}
                     type="submit"
                     className=" w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-700"
                   >

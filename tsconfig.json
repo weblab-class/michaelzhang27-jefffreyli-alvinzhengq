@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     "app/layout.jsx",
     "components/Navbar.jsx"
-  ],
+, "app/dashboard/VideoCard.jsx"  ],
   "exclude": ["node_modules", "middleware.ts"]
 }

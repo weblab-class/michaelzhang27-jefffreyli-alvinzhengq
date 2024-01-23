@@ -9,6 +9,7 @@ import {
   listAll,
 } from "firebase/storage";
 import { app, auth, storage } from "@/firebase/config";
+import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 import MediaLibrary from "./MediaLibrary";
@@ -140,22 +141,39 @@ const dashboard = () => {
   };
 
   return (
-    <div className="py-16 rounded-lg text-center flex">
-      <MediaLibrary
-        selectedMediaType={selectedMediaType}
-        setSelectedMediaType={setSelectedMediaType}
-        uploadedVideoFiles={uploadedVideoFiles}
-        uploadedAudioFiles={uploadedAudioFiles}
-        handleFileChange={handleFileChange}
-        setUploadedVideoFiles={setUploadedVideoFiles}
-        setVideoSrc={setVideoSrc}
-      />
-      <div className="border-[0.9px] border-gray-300"></div>
-      {selectedMediaType == "video" ? (
-        <VideoDisplay videoSrc={videoSrc} />
-      ) : (
-        <AudioDisplay audioSrc={audioSrc} />
-      )}
+    <div>
+      <div className="flex justify-end py-4 px-8">
+        <button
+          onClick={() => {
+            signOut(auth);
+            router.push("/signin");
+          }}
+        >
+          <p className="underline underline-offset-4 text-gray-700 hover:text-gray-800">
+            Sign out
+          </p>
+        </button>
+      </div>
+
+      <div className="py-10 rounded-lg text-center flex bg-background">
+        <MediaLibrary
+          selectedMediaType={selectedMediaType}
+          setSelectedMediaType={setSelectedMediaType}
+          uploadedVideoFiles={uploadedVideoFiles}
+          uploadedAudioFiles={uploadedAudioFiles}
+          handleFileChange={handleFileChange}
+          setUploadedVideoFiles={setUploadedVideoFiles}
+          setUploadedAudioFiles={setUploadedAudioFiles}
+          setVideoSrc={setVideoSrc}
+          setAudioSrc={setAudioSrc}
+        />
+        <div className="border-[0.9px] border-gray-300"></div>
+        {selectedMediaType == "video" ? (
+          <VideoDisplay videoSrc={videoSrc} />
+        ) : (
+          <AudioDisplay audioSrc={audioSrc} />
+        )}
+      </div>
     </div>
   );
 };

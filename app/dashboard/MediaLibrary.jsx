@@ -9,19 +9,20 @@ export default function MediaLibrary({
   uploadedAudioFiles,
   setUploadedAudioFiles,
   handleFileChange,
-  setVideoSrc
+  setVideoSrc,
+  setAudioSrc,
 }) {
   return (
     <div className="w-1/2">
       <div className="flex justify-start ml-12 mb-4 space-x-4">
         <button
-          className="bg-blue-600 text-white p-3"
+          className="bg-orange text-white p-3 rounded-md"
           onClick={() => setSelectedMediaType("video")}
         >
           Videos
         </button>
         <button
-          className="bg-blue-600 text-white p-3"
+          className="bg-orange text-white p-3 rounded-md"
           onClick={() => setSelectedMediaType("audio")}
         >
           Audio
@@ -40,7 +41,13 @@ export default function MediaLibrary({
               />
             ))
           : uploadedAudioFiles.map((file) => (
-              <AudioCard key={file.name} file={file} />
+              <AudioCard
+                key={file.name}
+                file={file}
+                uploadedAudioFiles={uploadedAudioFiles}
+                setUploadedAudioFiles={setUploadedAudioFiles}
+                setAudioSrc={setAudioSrc}
+              />
             ))}
       </div>
 
@@ -54,7 +61,7 @@ export default function MediaLibrary({
         />
         <label
           htmlFor="media-upload"
-          className="text-white p-4 bg-blue-600 underline underline-offset-4 cursor-pointer"
+          className="text-white p-3 bg-orange underline underline-offset-4 cursor-pointer rounded-md"
         >
           Add files
         </label>
