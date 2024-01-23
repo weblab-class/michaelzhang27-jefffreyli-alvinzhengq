@@ -11,6 +11,7 @@ import {
 import { app, auth, storage } from "@/firebase/config";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import Timeline from "./Timeline/Timeline";
 
 import MediaLibrary from "./MediaLibrary";
 import VideoDisplay from "./VideoDisplay";
@@ -173,6 +174,9 @@ const dashboard = () => {
         ) : (
           <AudioDisplay audioSrc={audioSrc} />
         )}
+      </div>
+      <div className="mx-4">
+        <Timeline />
       </div>
     </div>
   );
