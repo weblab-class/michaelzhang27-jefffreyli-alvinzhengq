@@ -5,7 +5,7 @@ import Image from "next/image";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { arrayMove, SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { data } from "./data";
+import { data } from "../app/dashboard/data";
 
 const VideoClip = ({ key, video, scalar }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
