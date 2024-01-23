@@ -51,24 +51,32 @@ export default function Home() {
     for (let i = 0; i < e.dataTransfer?.files.length; i++) {
       const uniqueID = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
       const tmpFile = e.dataTransfer?.files[i];
-      const video = await loadVideo(tmpFile);
-
-      let obj = {
-        name: tmpFile.name,
-        duration: video.duration.toFixed(2),
-        id: uniqueID,
-        startDelta: 0,
-        endDelta: 0,
-      };
-
-      videoList.current.push(obj);
-      newFiles.push(obj);
-
       let formData = new FormData();
-      formData.append(
-        "media",
-        new File([tmpFile], uniqueID, { type: tmpFile.type })
-      );
+
+      if (tmpFile.type.indexOf("video") !== -1) {
+        const video = await loadVideo(tmpFile);
+
+        let obj = {
+          name: tmpFile.name,
+          duration: video.duration.toFixed(2),
+          id: uniqueID,
+          startDelta: 0,
+          endDelta: 0,
+        };
+
+        videoList.current.push(obj);
+        newFiles.push(obj);
+
+        formData.append(
+          "media",
+          new File([tmpFile], uniqueID, { type: tmpFile.type })
+        );
+      } else if (tmpFile.type.indexOf("audio") !== -1) {
+        formData.append(
+          "media",
+          new File([tmpFile], "song", { type: tmpFile.type })
+        );
+      }
 
       const options: AxiosRequestConfig = {
         headers: {
@@ -84,21 +92,21 @@ export default function Home() {
       await axios.post("/api/upload", formData, options);
     }
 
-    if (videoRef.current) {
+    if (videoRef.current && videoList.current.length > 0) {
       const mergeList: VideoList =
         videoRef.current.src.indexOf(".mp4") !== -1
           ? [
-              {
-                name: "",
-                duration: videoRef.current.duration.toString(),
-                id:
-                  "output-" +
-                  videoRef.current.src.split("/output-")[1].slice(0, -4),
-                startDelta: 0,
-                endDelta: 0,
-              },
-              ...newFiles,
-            ]
+            {
+              name: "",
+              duration: videoRef.current.duration.toString(),
+              id:
+                "output-" +
+                videoRef.current.src.split("/output-")[1].slice(0, -4),
+              startDelta: 0,
+              endDelta: 0,
+            },
+            ...newFiles,
+          ]
           : videoList.current;
 
       let timeStamp = Date.now();
