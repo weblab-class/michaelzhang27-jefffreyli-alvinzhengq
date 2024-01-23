@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import Link from "next/link";
+import Image from "next/image";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -12,17 +13,19 @@ function classNames(...classes) {
 export default function Navbar() {
   return (
     <header>
-      <Popover className="relative bg-white">
-        <div className="flex justify-between items-center max-w-7xl mx-auto px-4 py-6 sm:px-6 md:justify-start md:space-x-10 lg:px-8">
+      <Popover className="relative">
+        <div className="flex justify-between items-center mx-8 lg:mx-12 px-4 py-6 sm:px-6 md:justify-start md:space-x-10 lg:px-8">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <a href="#">
-              <span className="sr-only">Workflow</span>
-              <img
-                className="h-8 w-auto sm:h-10"
-                src="https://tailwindui.com/img/logos/workflow-mark-purple-600-to-indigo-600.svg"
+            <Link href="/" className="flex justify-center items-center space-x-3">
+              <Image
+                className=""
+                width={70}
+                height={70}
+                src="/videomatic-logo-transparent.png"
                 alt=""
               />
-            </a>
+              <span className="font-semibold text-orange text-3xl font-serif">Videomatic</span>
+            </Link>
           </div>
           <div className="-mr-2 -my-2 md:hidden">
             <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -30,7 +33,7 @@ export default function Navbar() {
               <MenuIcon className="h-6 w-6" aria-hidden="true" />
             </Popover.Button>
           </div>
-          <Popover.Group as="nav" className="hidden md:flex space-x-10">
+          {/* <Popover.Group as="nav" className="hidden md:flex space-x-10">
             <Popover className="relative">
               {({ open }) => (
                 <>
@@ -64,7 +67,7 @@ export default function Navbar() {
             >
               Company
             </a>
-          </Popover.Group>
+          </Popover.Group> */}
           <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
             <Link
               href="/signin"

@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         background: "#FAFBF7",
         orange: "#FDA78F",
+        red: "#EB2328",
         darkGrey: "#292524",
       },
       backgroundImage: {},
