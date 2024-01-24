@@ -128,7 +128,7 @@ export default function Timeline({
             </SortableContext>
           </DndContext>
         </div>
-        <div className="flex pt-5">
+        {/* <div className="flex pt-5">
           {audioClips.map((audioClip) => {
             // <AudioBlock size={audioClip.length} id="1" scalar={sliderValue} />;
             // <VideoBlock
@@ -145,6 +145,24 @@ export default function Timeline({
               marker_mode={markerMode}
             />;
           })}
+        </div> */}
+
+        <div>
+          <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+            <SortableContext items={videoClips}>
+              <div className="flex">
+                {/* Why PROPS Passed as undefined ?? */}
+                {audioClips.map((audioClip) => (
+                  <AudioBlock
+                    key={audioClip.id}
+                    video={audioClip}
+                    scalar={sliderValue}
+                    marker_mode={markerMode}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
         </div>
       </div>
     </div>

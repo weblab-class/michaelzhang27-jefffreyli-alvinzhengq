@@ -57,6 +57,8 @@ export default function AudioCard({
       ...(Array.isArray(currentAudioClips) ? currentAudioClips : []),
       { id, name, length, flex },
     ]);
+
+    console.log(length);
   };
 
   const addIcon = (
