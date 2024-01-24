@@ -1,6 +1,7 @@
+import Dashboard from "./dashboard/Dashboard";
 
 export default function Page() {
   return (
-    <p>placeholder</p>
+    <Dashboard />
   )
 }
