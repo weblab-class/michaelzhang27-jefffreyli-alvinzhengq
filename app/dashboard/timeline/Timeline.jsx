@@ -8,8 +8,12 @@ import VideoBlock from "./VideoBlock";
 import AudioBlock from "./AudioBlock";
 import HoverLine from "./HoverLine";
 
-export default function Timeline() {
-  const [videoClips, setVideoClips] = useState(data);
+export default function Timeline({
+  videoClips,
+  setVideoClips,
+  audioClips,
+  setAudioClips,
+}) {
   const [inputValue, setInputValue] = useState("");
   const [sliderValue, setSliderValue] = useState(50);
   const [markerMode, setMarkerMode] = useState(false);
@@ -61,9 +65,7 @@ export default function Timeline() {
       <div className="flex justify-between h-14 ml-5 mr-5 border-b border-gray-300">
         {/* Buttons */}
         <div className="flex justify-between items-center w-76 space-x-2">
-          <button
-            className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer"
-          >
+          <button className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer">
             <span>Algorithm</span>
           </button>
 
@@ -126,8 +128,41 @@ export default function Timeline() {
             </SortableContext>
           </DndContext>
         </div>
-        <div className="flex pt-5">
-          <AudioBlock size={15} id="1" scalar={sliderValue} />
+        {/* <div className="flex pt-5">
+          {audioClips.map((audioClip) => {
+            // <AudioBlock size={audioClip.length} id="1" scalar={sliderValue} />;
+            // <VideoBlock
+            //   key={audioClip.id}
+            //   video={audioClip}
+            //   scalar={sliderValue}
+            //   marker_mode={markerMode}
+            // />;
+
+            <AudioBlock
+              key={audioClip.id}
+              video={audioClip}
+              scalar={sliderValue}
+              marker_mode={markerMode}
+            />;
+          })}
+        </div> */}
+
+        <div>
+          <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+            <SortableContext items={videoClips}>
+              <div className="flex">
+                {/* Why PROPS Passed as undefined ?? */}
+                {audioClips.map((audioClip) => (
+                  <AudioBlock
+                    key={audioClip.id}
+                    video={audioClip}
+                    scalar={sliderValue}
+                    marker_mode={markerMode}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
         </div>
       </div>
     </div>

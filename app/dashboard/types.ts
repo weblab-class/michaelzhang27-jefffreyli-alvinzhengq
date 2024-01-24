@@ -15,3 +15,17 @@ export type MediaFile = {
 }
 
 export type MediaList = Array<MediaFile>
+
+export interface AudioClip {
+    id: number;
+    name: string;
+    length: number;
+    flex: boolean;
+}
+
+export interface VideoClip {
+    id: number;
+    name: string;
+    length: number;
+    flex: boolean;
+}

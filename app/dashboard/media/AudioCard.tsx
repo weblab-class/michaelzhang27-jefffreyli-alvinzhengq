@@ -4,19 +4,27 @@ import Image from "next/image";
 import { MediaFile, MediaList } from "../types";
 import { Dispatch, SetStateAction } from "react";
 
+interface AudioClip {
+  id: number;
+  name: string;
+  length: number;
+  flex: boolean;
+}
+
 export default function AudioCard({
   file,
   uploadedAudioFiles,
   setUploadedAudioFiles,
   setAudioSrc,
-  addClip
+  addClip,
+  setAudioClips,
 }: {
-  file: MediaFile,
-  uploadedAudioFiles: MediaList,
-  setUploadedAudioFiles: Dispatch<SetStateAction<MediaList>>,
-  setAudioSrc: Dispatch<SetStateAction<string>>,
-  addClip: (clip: MediaFile) => Promise<void>
-
+  file: MediaFile;
+  uploadedAudioFiles: MediaList;
+  setUploadedAudioFiles: Dispatch<SetStateAction<MediaList>>;
+  setAudioSrc: Dispatch<SetStateAction<string>>;
+  addClip: (clip: MediaFile) => Promise<void>;
+  setAudioClips: Dispatch<SetStateAction<Array<AudioClip>>>;
 }) {
   const handleDisplayAudio = () => {
     setAudioSrc(file.url);
@@ -39,8 +47,32 @@ export default function AudioCard({
     setUploadedAudioFiles(updatedAudioFiles);
   };
 
+  const addBlock = (
+    id: number,
+    name: string,
+    length: number,
+    flex: boolean
+  ) => {
+    setAudioClips((currentAudioClips: AudioClip[]) => [
+      ...(Array.isArray(currentAudioClips) ? currentAudioClips : []),
+      { id, name, length, flex },
+    ]);
+
+    console.log(length);
+  };
+
   const addIcon = (
-    <button onClick={() => { addClip(file); }}>
+    <button
+      onClick={() => {
+        addBlock(
+          parseFloat(file.id),
+          file.display_name,
+          parseFloat(file.duration),
+          false
+        );
+        addClip(file);
+      }}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"

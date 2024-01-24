@@ -19,6 +19,8 @@ export default function VideoBlock({ video, scalar, marker_mode }) {
     console.log(relativeX);
     console.log(markers);
     addMarker(relativeX);
+
+    console.log(video.length);
   };
 
   const blockStyle = {
@@ -26,13 +28,13 @@ export default function VideoBlock({ video, scalar, marker_mode }) {
     transform: CSS.Transform.toString(transform),
     width: 100, // Adjust this based on your requirements
     height: 50, // Adjust this based on your requirements
-    minWidth: video.length * 50 * (scalar / 50),
-    backgroundColor: "#ff6f3c",
+    minWidth: video.length * 3 * (scalar / 50),
+    backgroundColor: "#FDA78F",
     boxShadow: "1px 1px 1px #F6C7B3",
     marginRight: 10,
     borderRadius: 5,
     display: "flex",
-    position: "relative", // Ensure relative positioning for markers
+    position: "relative",
   };
 
   return (
@@ -60,7 +62,7 @@ export default function VideoBlock({ video, scalar, marker_mode }) {
           <text>C</text>
         </div>
       )}
-      <text style={{ margin: 8 }}>{video.id}</text>
+      <p className="m-4 text-sm">{video.name}</p>
     </div>
   );
 }
