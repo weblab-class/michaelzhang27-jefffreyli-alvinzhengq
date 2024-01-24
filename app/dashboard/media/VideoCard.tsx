@@ -4,13 +4,6 @@ import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 import { MediaFile, MediaList } from "../types";
 
-interface VideoClip {
-  id: number;
-  name: string;
-  length: number;
-  flex: boolean;
-}
-
 export default function VideoCard({
   file,
   uploadedVideoFiles,

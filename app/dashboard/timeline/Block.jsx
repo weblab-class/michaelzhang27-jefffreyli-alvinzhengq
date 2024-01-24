@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-export default function VideoBlock({ video, scalar, marker_mode }) {
+export default function MediaBlock({ media, scalar, marker_mode }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: video.id });
+    useSortable({ id: media.id });
 
   const [markers, setMarkers] = useState([]);
 
@@ -19,6 +19,8 @@ export default function VideoBlock({ video, scalar, marker_mode }) {
     const x = e.clientX - rect.left; // Absolute x position within the block
     const relativeX = (x / rect.width) * 100; // Relative x position in percentage
     addMarker(relativeX);
+
+    console.log(rect.width);
   };
 
   const handleDeleteMarker = (e) => {
@@ -37,7 +39,7 @@ export default function VideoBlock({ video, scalar, marker_mode }) {
     transform: CSS.Transform.toString(transform),
     width: 100, // Adjust this based on your requirements
     height: 50, // Adjust this based on your requirements
-    minWidth: video.duration * 30 * (scalar / 50),
+    minWidth: media.duration * 30 * (scalar / 50),
     backgroundColor: "#FDA78F",
     boxShadow: "1px 1px 1px #F6C7B3",
     marginRight: 10,
@@ -67,12 +69,12 @@ export default function VideoBlock({ video, scalar, marker_mode }) {
         />
       ))}
       <div style={{ height: 3 }}></div>
-      {video.flex && (
+      {media.flex && (
         <div style={{ margin: 8 }}>
           <text>C</text>
         </div>
       )}
-      <p className="m-4 text-sm">{video.display_name}</p>
+      <p className="m-4 text-sm">{media.display_name}</p>
     </div>
   );
 }

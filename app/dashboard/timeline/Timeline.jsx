@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 
-import VideoBlock from "./VideoBlock";
-import AudioBlock from "./AudioBlock";
+import Block from "./Block";
 import HoverLine from "./HoverLine";
 
 export default function Timeline({
@@ -96,9 +95,9 @@ export default function Timeline({
               <div className="flex">
                 {/* Why PROPS Passed as undefined ?? */}
                 {clipList.map((clip) => (
-                  <VideoBlock
+                  <Block
                     key={clip.id}
-                    video={clip}
+                    media={clip}
                     scalar={sliderValue}
                     marker_mode={markerMode}
                   />
@@ -114,9 +113,9 @@ export default function Timeline({
           <DndContext collisionDetection={closestCenter} onDragEnd={() => { }}>
             <SortableContext items={clipList}>
               <div className="flex">
-                {audioClip && <AudioBlock
+                {audioClip && <Block
                   key={audioClip.id}
-                  audio={audioClip}
+                  media={audioClip}
                   scalar={sliderValue}
                   marker_mode={markerMode}
                 />}

@@ -19,6 +19,8 @@ export default function AudioBlock({ audio, scalar, marker_mode }) {
     const x = e.clientX - rect.left; // Absolute x position within the block
     const relativeX = (x / rect.width) * 100; // Relative x position in percentage
     addMarker(relativeX);
+
+    console.log(rect.width);
   };
 
   const handleDeleteMarker = (e) => {

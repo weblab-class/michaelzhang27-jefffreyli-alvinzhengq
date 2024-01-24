@@ -4,13 +4,6 @@ import Image from "next/image";
 import { MediaFile, MediaList } from "../types";
 import { Dispatch, SetStateAction } from "react";
 
-interface AudioClip {
-  id: number;
-  name: string;
-  length: number;
-  flex: boolean;
-}
-
 export default function AudioCard({
   file,
   uploadedAudioFiles,
