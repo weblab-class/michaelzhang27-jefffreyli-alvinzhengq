@@ -12,7 +12,7 @@ import AudioDisplay from "./media/AudioDisplay";
 import { MediaFile, MediaList, MediaType } from "./types";
 import { fetchMedia, uploadToFirebase } from "./lib";
 import { signOut } from "firebase/auth";
-import axios, { Axios } from "axios";
+import axios from "axios";
 
 export default function Dashboard() {
     const [videoSrc, setVideoSrc] = useState<string>("");
@@ -23,7 +23,6 @@ export default function Dashboard() {
     const [previewMediaType, setPreviewMediaType] = useState<string>("video");
 
     const [clipList, setClipList] = useState<MediaList>([]);
-    const userID = useRef<string>("");
 
     const router = useRouter();
 

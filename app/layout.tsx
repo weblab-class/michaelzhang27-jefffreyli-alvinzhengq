@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="bg-background h-screen">
+    <html lang="en" className="bg-background h-screen overflow-x-hidden">
       <body className={poppins.className}>
         {children}
       </body>

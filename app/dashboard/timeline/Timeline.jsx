@@ -108,7 +108,7 @@ export default function Timeline() {
       {/* Video and Audio Main Timeline */}
       <HoverLine linePosition={linePosition} />
 
-      <div className="overflow-x-auto h-32 mt-4">
+      <div className="overflow-x-auto overflow-y-hidden h-40 m-4">
         <div>
           <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
             <SortableContext items={videoClips}>
