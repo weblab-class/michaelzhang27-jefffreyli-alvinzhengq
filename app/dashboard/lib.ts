@@ -29,6 +29,26 @@ const loadVideo = (url: string): Promise<HTMLVideoElement> =>
         }
     });
 
+const loadAudio = (url: string): Promise<HTMLAudioElement> =>
+    new Promise((resolve, reject) => {
+        try {
+            let audio = document.createElement("audio");
+            audio.preload = "metadata";
+
+            audio.onloadedmetadata = function () {
+                resolve(audio);
+            };
+
+            audio.onerror = function () {
+                reject("Invalid video. Please select a video file.");
+            };
+
+            audio.src = url;
+        } catch (e) {
+            reject(e);
+        }
+    });
+
 export const fetchMedia = async (
     setUploadedVideoFiles: Dispatch<SetStateAction<MediaList>>,
     setUploadedAudioFiles: Dispatch<SetStateAction<MediaList>>
@@ -59,6 +79,8 @@ export const fetchMedia = async (
                     duration: video.duration.toFixed(2),
                     startDelta: 0,
                     endDelta: 0,
+                    flex: false,
+                    markers: []
                 };
             })
         );
@@ -68,15 +90,18 @@ export const fetchMedia = async (
             aResult.items.map(async (itemRef) => {
                 const url = await getDownloadURL(itemRef);
                 const uniqueID = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+                const audio = await loadAudio(url);
 
                 return {
                     display_name: itemRef.name,
                     id: uniqueID,
                     url: url,
                     type: MediaType.Audio,
-                    duration: (0).toFixed(2),
+                    duration: audio.duration.toFixed(2),
                     startDelta: 0,
                     endDelta: 0,
+                    flex: false,
+                    markers: []
                 };
             })
         );
@@ -119,6 +144,8 @@ export const uploadToFirebase = (
             const uniqueID = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
 
             if (mediaType === "video") {
+                const video = await loadVideo(url);
+
                 setUploadedVideoFiles((prevFiles) => [
                     ...prevFiles,
                     {
@@ -126,12 +153,16 @@ export const uploadToFirebase = (
                         id: uniqueID,
                         url: url,
                         type: MediaType.Video,
-                        duration: (0).toFixed(2),
+                        duration: video.duration.toFixed(2),
                         startDelta: 0,
                         endDelta: 0,
+                        flex: false,
+                        markers: []
                     }
                 ]);
             } else if (mediaType === "audio") {
+                const audio = await loadAudio(url);
+
                 setUploadedAudioFiles((prevFiles) => [
                     ...prevFiles,
                     {
@@ -139,9 +170,11 @@ export const uploadToFirebase = (
                         id: uniqueID,
                         url: url,
                         type: MediaType.Audio,
-                        duration: (0).toFixed(2),
+                        duration: audio.duration.toFixed(2),
                         startDelta: 0,
                         endDelta: 0,
+                        flex: false,
+                        markers: []
                     }
                 ]);
             }

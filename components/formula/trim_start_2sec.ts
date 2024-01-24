@@ -1,54 +1,47 @@
-import { useRef } from "react";
-import VideoListWrapper from "../lib/VideoListWrapper";
-
-type VideoList = Array<{
-  name: string;
-  id: string;
-  duration: string;
-  startDelta: number;
-  endDelta: number;
-}>;
+import MediaListWrapper from "../lib/MediaListWrapper";
+import { MediaList } from "../types";
 
 export default async function trim_handler(
-  video_list: VideoListWrapper
+  media_list: MediaListWrapper
 ): Promise<void> {
-  // am i doing this right ? flexClips is of type VideoListWrapper
-  let flexClips = useRef<VideoList>([]);
+  let flexClips: MediaList = []
   let total_length = 0;
   let total_flex_length = 0;
-
-  // need function to get the position of the audio marker on the audio clip
+  
+  // TODO: need function to get the position of the audio marker on the audio clip
   let audio_marker_position = 1.0;
-  let allVideos = video_list.get();
-  for (let i = 0; i < video_list.get().length; i++) {
-    // added in VideoListWrapper flex (flexible aka changeable) property
+  let allVideos = media_list.get();
 
-    // or we can do:
-    /**
-     * video_list.trimStart(i, 0.5);
-     * video_list.trimStart(i, 1.5);
-     */
+  for (let i = 0; i < media_list.get().length; i++) {
     if (allVideos[i].flex == true) {
-      flexClips.current.push(allVideos[i]);
+      flexClips.push(allVideos[i]);
     }
-    // added in VideoListWrapper an incomplete hasMarker function
-    if (video_list.hasMarker(i) && allVideos[i].flex == true) {
-      total_flex_length += video_list.getMarkerLocation(i);
-      total_length += video_list.getMarkerLocation(i);
-    } else if (video_list.hasMarker(i) && allVideos[i].flex == false) {
-      total_length += video_list.getMarkerLocation(i);
+
+    let clip_duration = parseFloat(allVideos[i].duration) - allVideos[i].startDelta - allVideos[i].endDelta;
+
+    // FIXME: added in MediaListWrapper an incomplete hasMarker function
+    if (media_list.hasMarker(i) && allVideos[i].flex == true) {
+      total_flex_length += media_list.getMarkerLocation(i);
+      total_length += media_list.getMarkerLocation(i);
+
+    } else if (media_list.hasMarker(i) && allVideos[i].flex == false) {
+      total_length += media_list.getMarkerLocation(i);
+
     } else if (allVideos[i].flex == true) {
-      total_flex_length += allVideos[i].startDelta;
-      total_length += allVideos[i].endDelta;
+      total_flex_length += clip_duration;
+      total_length += clip_duration;
+
     } else {
-      total_length += allVideos[i].endDelta;
+      total_length += clip_duration;
+
     }
   }
 
-  // how to make a new videolistwrapper with the flex clips so I can access the trim functionalities ?
-  let flexClipsWrapper = new VideoListWrapper(flexClips);
+  // how to make a new MediaListWrapper with the flex clips so I can access the trim functionalities ?
+  let flexClipsWrapper = new MediaListWrapper(flexClips);
   // time difference between video marker and audio marker pair
   let difference = total_length - audio_marker_position;
+
   // case one, video clip marker in front of audio clip marker, aka video needs to be trimmed
   if (difference > 0) {
     if (difference > total_flex_length) {

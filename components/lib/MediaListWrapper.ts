@@ -1,16 +1,9 @@
-type VideoList = Array<{
-  name: string;
-  id: string;
-  duration: string;
-  startDelta: number;
-  endDelta: number;
-  flex: boolean;
-}>;
+import { MediaList } from "../types";
 
-export default class VideoListWrapper {
-  list: VideoList;
+export default class MediaListWrapper {
+  list: MediaList;
 
-  constructor(list: VideoList) {
+  constructor(list: MediaList) {
     this.list = list;
   }
 

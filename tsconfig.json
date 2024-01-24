@@ -38,7 +38,7 @@
     "app/dashboard/media/VideoCard.tsx",
     "app/dashboard/Timeline/Timeline.jsx",
     "app/dashboard/page.js"
-  ],
+, "app/dashboard/timeline/Timeline.jsx"  ],
   "exclude": [
     "node_modules",
     "middleware.ts"

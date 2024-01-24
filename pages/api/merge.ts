@@ -99,8 +99,9 @@ export default async function NextApiHandler(
     argsList.push(
         "-map",
         `[v]`,
+        "-r", "60",
         "-vsync",
-        "2",
+        "1",
         "-y",
         "-preset",
         "ultrafast",
@@ -115,7 +116,6 @@ export default async function NextApiHandler(
 
     let timeSoFar: number = 0;
     let clipList_v: Array<string> = [];
-    let clipList_a: Array<string> = [];
 
     for (let i = 0; i < fileList.length; i++) {
         let file = fileList[i];
@@ -125,19 +125,11 @@ export default async function NextApiHandler(
             clipList_v.push(
                 `select='not(between(t,${timeSoFar},${timeSoFar + file.startDelta}))'`
             );
-            clipList_a.push(
-                `aselect='not(between(t,${timeSoFar},${timeSoFar + file.startDelta}))'`
-            );
         }
 
         if (file.endDelta > 0) {
             clipList_v.push(
-                `select='not(between(t,${timeSoFar + clip_duration - file.endDelta},${timeSoFar + clip_duration
-                }))'`
-            );
-            clipList_a.push(
-                `aselect='not(between(t,${timeSoFar + clip_duration - file.endDelta},${timeSoFar + clip_duration
-                }))'`
+                `select='not(between(t,${timeSoFar + clip_duration - file.endDelta},${timeSoFar + clip_duration}))'`
             );
         }
 

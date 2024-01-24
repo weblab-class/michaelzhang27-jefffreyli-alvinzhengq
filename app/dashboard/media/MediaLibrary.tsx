@@ -20,10 +20,7 @@ export default function MediaLibrary({
   handleFileUpload,
   setVideoSrc,
   setAudioSrc,
-  addClip,
-  videoClips,
-  setVideoClips,
-  setAudioClips,
+  addClip
 }: {
   previewMediaType: string;
   setPreviewMediaType: Dispatch<SetStateAction<string>>;
@@ -35,9 +32,6 @@ export default function MediaLibrary({
   setVideoSrc: Dispatch<SetStateAction<string>>;
   setAudioSrc: Dispatch<SetStateAction<string>>;
   addClip: (clip: MediaFile) => Promise<void>;
-  videoClips: Array<Clip>;
-  setAudioClips: Dispatch<SetStateAction<Array<Clip>>>;
-  setVideoClips: Dispatch<SetStateAction<Array<Clip>>>;
 }) {
   return (
     <div className="w-1/2">
@@ -66,8 +60,6 @@ export default function MediaLibrary({
                 setUploadedVideoFiles={setUploadedVideoFiles}
                 setVideoSrc={setVideoSrc}
                 addClip={addClip}
-                videoClips={videoClips}
-                setVideoClips={setVideoClips}
               />
             ))
           : uploadedAudioFiles.map((file) => (
@@ -78,7 +70,6 @@ export default function MediaLibrary({
                 setUploadedAudioFiles={setUploadedAudioFiles}
                 setAudioSrc={setAudioSrc}
                 addClip={addClip}
-                setAudioClips={setAudioClips}
               />
             ))}
       </div>

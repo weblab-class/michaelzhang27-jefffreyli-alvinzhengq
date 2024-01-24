@@ -13,22 +13,31 @@ export default function VideoBlock({ video, scalar, marker_mode }) {
   };
 
   const handleAddMarker = (e) => {
+    e.preventDefault();
+
     const rect = e.target.getBoundingClientRect();
     const x = e.clientX - rect.left; // Absolute x position within the block
     const relativeX = (x / rect.width) * 100; // Relative x position in percentage
-    console.log(relativeX);
-    console.log(markers);
     addMarker(relativeX);
-
-    console.log(video.length);
   };
+
+  const handleDeleteMarker = (e) => {
+    e.preventDefault();
+
+    const rect = e.target.getBoundingClientRect();
+    const x = e.clientX - rect.left; // Absolute x position within the block
+    const relativeX = (x / rect.width) * 100; // Relative x position in percentage
+
+    let filtered_markers = markers.filter((value => Math.abs(value - relativeX) > 2.5))
+    setMarkers(filtered_markers);
+  }
 
   const blockStyle = {
     transition,
     transform: CSS.Transform.toString(transform),
     width: 100, // Adjust this based on your requirements
     height: 50, // Adjust this based on your requirements
-    minWidth: video.length * 3 * (scalar / 50),
+    minWidth: video.duration * 30 * (scalar / 50),
     backgroundColor: "#FDA78F",
     boxShadow: "1px 1px 1px #F6C7B3",
     marginRight: 10,
@@ -44,6 +53,7 @@ export default function VideoBlock({ video, scalar, marker_mode }) {
       {...attributes}
       {...(marker_mode ? {} : listeners)}
       onClick={marker_mode ? handleAddMarker : undefined}
+      onContextMenu={marker_mode ? handleDeleteMarker : undefined}
     >
       {markers.map((relativeX, index) => (
         <div
@@ -62,7 +72,7 @@ export default function VideoBlock({ video, scalar, marker_mode }) {
           <text>C</text>
         </div>
       )}
-      <p className="m-4 text-sm">{video.name}</p>
+      <p className="m-4 text-sm">{video.display_name}</p>
     </div>
   );
 }

@@ -17,16 +17,12 @@ export default function VideoCard({
   setUploadedVideoFiles,
   setVideoSrc,
   addClip,
-  videoClips,
-  setVideoClips,
 }: {
   file: MediaFile;
   uploadedVideoFiles: MediaList;
   setUploadedVideoFiles: Dispatch<SetStateAction<MediaList>>;
   setVideoSrc: Dispatch<SetStateAction<string>>;
   addClip: (clip: MediaFile) => Promise<void>;
-  videoClips: Array<VideoClip>;
-  setVideoClips: Dispatch<SetStateAction<Array<VideoClip>>>;
 }) {
   const handleDisplayVideo = () => {
     setVideoSrc(file.url);
@@ -49,30 +45,9 @@ export default function VideoCard({
     setUploadedVideoFiles(updatedVideoFiles);
   };
 
-  const addVideoBlock = (
-    id: number,
-    name: string,
-    length: number,
-    flex: boolean
-  ) => {
-    setVideoClips((currentVideoClips: VideoClip[]) => [
-      ...(Array.isArray(currentVideoClips) ? currentVideoClips : []),
-      { id, name, length, flex },
-    ]);
-  };
-
   const addIcon = (
     <button
-      onClick={() => {
-        addClip(file);
-        addVideoBlock(
-          parseFloat(file.id),
-          file.display_name,
-          parseFloat(file.duration),
-          false
-        );
-
-      }}
+      onClick={() => { addClip(file) }}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

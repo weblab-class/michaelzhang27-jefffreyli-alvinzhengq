@@ -9,7 +9,7 @@ import MediaLibrary from "./media/MediaLibrary";
 import VideoDisplay from "./media/VideoDisplay";
 import AudioDisplay from "./media/AudioDisplay";
 
-import { AudioClip, MediaFile, MediaList, MediaType, VideoClip } from "./types";
+import { MediaFile, MediaList, MediaType } from "./types";
 import { fetchMedia, uploadToFirebase } from "./lib";
 import { signOut } from "firebase/auth";
 import axios from "axios";
@@ -22,10 +22,8 @@ export default function Dashboard() {
   const [uploadedAudioFiles, setUploadedAudioFiles] = useState<MediaList>([]);
   const [previewMediaType, setPreviewMediaType] = useState<string>("video");
 
-  const [videoClips, setVideoClips] = useState<Array<VideoClip>>([]);
-  const [audioClips, setAudioClips] = useState<Array<AudioClip>>([]);
-
   const [clipList, setClipList] = useState<MediaList>([]);
+  const [audioClip, setAudioClip] = useState<MediaFile>();
   
   const router = useRouter();
 
@@ -92,6 +90,8 @@ export default function Dashboard() {
       setClipList([...clipList, clip]);
     } else {
       setClipList([...clipList]);
+      setAudioClip(clip);
+      console.log(clip)
     }
   };
 
@@ -141,9 +141,6 @@ export default function Dashboard() {
           setVideoSrc={setVideoSrc}
           setAudioSrc={setAudioSrc}
           addClip={addClip}
-          videoClips={videoClips}
-          setVideoClips={setVideoClips}
-          setAudioClips={setAudioClips}
         />
         <div className="border-[0.9px] border-gray-300"> </div>
         {previewMediaType == "video" ? (
@@ -154,10 +151,9 @@ export default function Dashboard() {
       </div>
       <div className="mx-4">
         <Timeline
-          videoClips={videoClips}
-          setVideoClips={setVideoClips}
-          audioClips={audioClips}
-          setAudioClips={setAudioClips}
+          clipList={clipList}
+          audioClip={audioClip}
+          setClipList={setClipList}
         />
       </div>
     </div>

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
 import trim_handler from "./formula/trim_start_2sec";
 import untrim_handler from "./formula/untrim_start_2sec";
-import VideoListWrapper from "./lib/VideoListWrapper";
+import VideoListWrapper from "./lib/MediaListWrapper";
 
 type VideoList = Array<{
   name: string;
