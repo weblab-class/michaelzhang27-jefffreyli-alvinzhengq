@@ -12,7 +12,7 @@ import AudioDisplay from "./media/AudioDisplay";
 import { MediaFile, MediaList, MediaType } from "./types";
 import { fetchMedia, uploadToFirebase } from "./lib";
 import { signOut } from "firebase/auth";
-import axios, {Axios} from "axios";
+import axios, { Axios } from "axios";
 
 export default function Dashboard() {
     const [videoSrc, setVideoSrc] = useState<string>("");
@@ -67,9 +67,11 @@ export default function Dashboard() {
                 "Authorization": jwt
             }
         });
-        
+
         if (clip.type == MediaType.Video) {
             setClipList([...clipList, clip])
+        } else {
+            setClipList([...clipList])
         }
     }
 
