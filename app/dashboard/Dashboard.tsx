@@ -12,7 +12,7 @@ import AudioDisplay from "./media/AudioDisplay";
 import { MediaFile, MediaList, MediaType } from "./types";
 import { fetchMedia, uploadToFirebase } from "./lib";
 import { signOut } from "firebase/auth";
-import axios from "axios";
+import axios, {Axios} from "axios";
 
 export default function Dashboard() {
     const [videoSrc, setVideoSrc] = useState<string>("");
@@ -20,9 +20,10 @@ export default function Dashboard() {
 
     const [uploadedVideoFiles, setUploadedVideoFiles] = useState<MediaList>([]);
     const [uploadedAudioFiles, setUploadedAudioFiles] = useState<MediaList>([]);
-    const [previewMediaType, setPreviewMediaType] = useState("video");
+    const [previewMediaType, setPreviewMediaType] = useState<string>("video");
 
     const [clipList, setClipList] = useState<MediaList>([]);
+    const userID = useRef<string>("");
 
     const router = useRouter();
 
@@ -46,14 +47,26 @@ export default function Dashboard() {
 
     const processClips = async () => {
         let timeStamp = Date.now();
-        await axios.post("/api/merge", { list: clipList, time: timeStamp });
+        let jwt = await auth.currentUser?.getIdToken() || "";
+
+        await axios.post("/api/merge", { list: clipList, time: timeStamp }, {
+            headers: {
+                "Authorization": jwt
+            }
+        });
 
         setPreviewMediaType("video");
-        setVideoSrc(`/api/video/output-${timeStamp}.mp4`);
+        setVideoSrc(`/api/video/output-${timeStamp}.mp4?token=${jwt}`);
     }
 
     const addClip = async (clip: MediaFile) => {
-        await axios.post("/api/download", { file_obj: clip });
+        let jwt = await auth.currentUser?.getIdToken() || "";
+
+        await axios.post("/api/download", { file_obj: clip }, {
+            headers: {
+                "Authorization": jwt
+            }
+        });
         
         if (clip.type == MediaType.Video) {
             setClipList([...clipList, clip])

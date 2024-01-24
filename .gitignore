@@ -37,3 +37,5 @@ next-env.d.ts
 
 /public/*/*.mp4
 /public/*/*.mpga
+
+credentials.json

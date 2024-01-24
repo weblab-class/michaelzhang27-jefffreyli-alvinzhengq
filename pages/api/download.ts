@@ -5,6 +5,7 @@ import { mkdir, stat } from "fs/promises"
 import axios from "axios";
 import { createWriteStream } from "fs";
 import { pipeline } from "stream/promises";
+import admin from 'firebase-admin';
 
 export const config = {
     api: {
@@ -48,9 +49,24 @@ export default async function NextApiHandler(req: NextApiRequest, res: NextApiRe
         return;
     }
 
+    let uid = "default";
+
+    if (req.headers.authorization) {
+        if (!admin.app.length) {
+            await admin.initializeApp({
+                credential: admin.credential.cert(join(
+                    process.env.ROOT_DIR || process.cwd(),
+                    "credentials.json"
+                ))
+            })
+        }
+
+        uid = await (await admin.auth().verifyIdToken(req.headers.authorization)).uid
+    }
+
     const uploadDir = join(
         process.env.ROOT_DIR || process.cwd(),
-        `/public/${req.headers.userid}`
+        `/public/${uid}`
     );
     try {
         await stat(uploadDir);

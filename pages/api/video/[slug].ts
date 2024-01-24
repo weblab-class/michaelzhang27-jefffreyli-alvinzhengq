@@ -1,6 +1,8 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import { statSync, createReadStream } from "fs";
+import admin from 'firebase-admin';
+import { join } from 'path';
 
 export const config = {
     api: {
@@ -19,7 +21,23 @@ export default async function NextApiHandler(req: NextApiRequest, res: NextApiRe
     }
 
     const range = req.headers.range
-    const { slug } = req.query
+    const { slug, token } = req.query
+
+    if (!admin.app.length) {
+        await admin.initializeApp({
+            credential: admin.credential.cert(join(
+                process.env.ROOT_DIR || process.cwd(),
+                "credentials.json"
+            ))
+        })
+    }
+
+    let uid = "default";
+    if (token) {
+        uid = await (await admin.auth().verifyIdToken(token as string)).uid
+    } else {
+        res.status(500).end();
+    }
 
     if (!range) {
         return new Response('Range Header Required', {
@@ -27,7 +45,7 @@ export default async function NextApiHandler(req: NextApiRequest, res: NextApiRe
         })
     }
 
-    const videoPath = process.env.PWD + `/public/${req.headers.userid}/${slug}`;
+    const videoPath = process.env.PWD + `/public/${uid}/${slug}`;
     const videoSize = statSync(videoPath).size;
     const CHUNK_SIZE = 10 ** 6;
 
