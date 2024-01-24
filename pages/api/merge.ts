@@ -59,7 +59,7 @@ export default async function NextApiHandler(
     let uid = "default";
 
     if (req.headers.authorization) {
-        if (!admin.app.length) {
+        if (!admin.apps.length) {
             await admin.initializeApp({
                 credential: admin.credential.cert(join(
                     process.env.ROOT_DIR || process.cwd(),

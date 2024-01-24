@@ -23,7 +23,7 @@ export default async function NextApiHandler(req: NextApiRequest, res: NextApiRe
     const range = req.headers.range
     const { slug, token } = req.query
 
-    if (!admin.app.length) {
+    if (!admin.apps.length) {
         await admin.initializeApp({
             credential: admin.credential.cert(join(
                 process.env.ROOT_DIR || process.cwd(),
