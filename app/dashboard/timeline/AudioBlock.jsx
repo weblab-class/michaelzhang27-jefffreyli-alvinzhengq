@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function AudioBlock({ id, size, scalar }) {
+export default function AudioBlock({ audio, scalar, marker_mode }) {
   const [markers, setMarkers] = useState([]);
 
   const addMarker = (relativeX) => {
@@ -16,18 +16,22 @@ export default function AudioBlock({ id, size, scalar }) {
   };
 
   const audioBlockStyle = {
-    width: size * 50 * (scalar / 50),
+    width: audio.length * 3 * (scalar / 50),
     height: 50,
     backgroundColor: "#ff9a3c",
     boxShadow: "1px 1px 1px #F6C7B3",
     marginRight: 10,
     borderRadius: 5,
     display: "flex",
-    position: "relative", // Ensure relative positioning for markers
+    position: "relative",
   };
 
   return (
-    <div style={audioBlockStyle} onClick={handleAddMarker}>
+    <div
+      {...(marker_mode ? {} : listeners)}
+      onClick={marker_mode ? handleAddMarker : undefined}
+      style={audioBlockStyle}
+    >
       {markers.map((relativeX, index) => (
         <div
           key={index}
@@ -39,7 +43,7 @@ export default function AudioBlock({ id, size, scalar }) {
         />
       ))}
       <div style={{ margin: 5 }}>
-        <text>{id}</text>
+        <text>{audio.name}</text>
       </div>
     </div>
   );

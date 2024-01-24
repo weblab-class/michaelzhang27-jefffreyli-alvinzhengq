@@ -3,7 +3,7 @@ import AudioCard from "./AudioCard";
 import VideoCard from "./VideoCard";
 import { MediaFile, MediaList } from "../types";
 
-interface VideoClip {
+interface Clip {
   id: number;
   name: string;
   length: number;
@@ -23,6 +23,7 @@ export default function MediaLibrary({
   addClip,
   videoClips,
   setVideoClips,
+  setAudioClips,
 }: {
   previewMediaType: string;
   setPreviewMediaType: Dispatch<SetStateAction<string>>;
@@ -34,8 +35,10 @@ export default function MediaLibrary({
   setVideoSrc: Dispatch<SetStateAction<string>>;
   setAudioSrc: Dispatch<SetStateAction<string>>;
   addClip: (clip: MediaFile) => Promise<void>;
-  videoClips: Array<VideoClip>;
-  setVideoClips: Dispatch<SetStateAction<Array<VideoClip>>>;
+  audioClips: Array<Clip>;
+  setAudioClips: Dispatch<SetStateAction<Array<Clip>>>;
+  videoClips: Array<Clip>;
+  setVideoClips: Dispatch<SetStateAction<Array<Clip>>>;
 }) {
   return (
     <div className="w-1/2">
@@ -76,6 +79,7 @@ export default function MediaLibrary({
                 setUploadedAudioFiles={setUploadedAudioFiles}
                 setAudioSrc={setAudioSrc}
                 addClip={addClip}
+                setAudioClips={setAudioClips}
               />
             ))}
       </div>

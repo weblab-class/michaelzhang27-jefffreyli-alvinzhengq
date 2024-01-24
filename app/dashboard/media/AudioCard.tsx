@@ -47,9 +47,27 @@ export default function AudioCard({
     setUploadedAudioFiles(updatedAudioFiles);
   };
 
+  const addBlock = (
+    id: number,
+    name: string,
+    length: number,
+    flex: boolean
+  ) => {
+    setAudioClips((currentAudioClips: AudioClip[]) => [
+      ...(Array.isArray(currentAudioClips) ? currentAudioClips : []),
+      { id, name, length, flex },
+    ]);
+  };
+
   const addIcon = (
     <button
       onClick={() => {
+        addBlock(
+          parseFloat(file.id),
+          file.display_name,
+          parseFloat(file.duration),
+          false
+        );
         addClip(file);
       }}
     >

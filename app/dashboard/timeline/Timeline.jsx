@@ -8,8 +8,12 @@ import VideoBlock from "./VideoBlock";
 import AudioBlock from "./AudioBlock";
 import HoverLine from "./HoverLine";
 
-export default function Timeline({ videoClips, setVideoClips }) {
-  // const [videoClips, setVideoClips] = useState([]);
+export default function Timeline({
+  videoClips,
+  setVideoClips,
+  audioClips,
+  setAudioClips,
+}) {
   const [inputValue, setInputValue] = useState("");
   const [sliderValue, setSliderValue] = useState(50);
   const [markerMode, setMarkerMode] = useState(false);
@@ -125,7 +129,22 @@ export default function Timeline({ videoClips, setVideoClips }) {
           </DndContext>
         </div>
         <div className="flex pt-5">
-          <AudioBlock size={15} id="1" scalar={sliderValue} />
+          {audioClips.map((audioClip) => {
+            // <AudioBlock size={audioClip.length} id="1" scalar={sliderValue} />;
+            // <VideoBlock
+            //   key={audioClip.id}
+            //   video={audioClip}
+            //   scalar={sliderValue}
+            //   marker_mode={markerMode}
+            // />;
+
+            <AudioBlock
+              key={audioClip.id}
+              video={audioClip}
+              scalar={sliderValue}
+              marker_mode={markerMode}
+            />;
+          })}
         </div>
       </div>
     </div>

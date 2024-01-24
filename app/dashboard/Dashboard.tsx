@@ -14,6 +14,13 @@ import { fetchMedia, uploadToFirebase } from "./lib";
 import { signOut } from "firebase/auth";
 import axios, { Axios } from "axios";
 
+interface AudioClip {
+  id: number;
+  name: string;
+  length: number;
+  flex: boolean;
+}
+
 interface VideoClip {
   id: number;
   name: string;
@@ -33,6 +40,7 @@ export default function Dashboard() {
   const userID = useRef<string>("");
 
   const [videoClips, setVideoClips] = useState<Array<VideoClip>>([]);
+  const [audioClips, setAudioClips] = useState<Array<AudioClip>>([]);
 
   const router = useRouter();
 
@@ -148,8 +156,10 @@ export default function Dashboard() {
           setVideoSrc={setVideoSrc}
           setAudioSrc={setAudioSrc}
           addClip={addClip}
+          audioClips={audioClips}
           videoClips={videoClips}
           setVideoClips={setVideoClips}
+          setAudioClips={setAudioClips}
         />
         <div className="border-[0.9px] border-gray-300"> </div>
         {previewMediaType == "video" ? (
@@ -159,8 +169,12 @@ export default function Dashboard() {
         )}
       </div>
       <div className="mx-4">
-      <Timeline videoClips={videoClips} setVideoClips={setVideoClips} />
-
+        <Timeline
+          videoClips={videoClips}
+          setVideoClips={setVideoClips}
+          audioClips={audioClips}
+          setAudioClips={setAudioClips}
+        />
       </div>
     </div>
   );
