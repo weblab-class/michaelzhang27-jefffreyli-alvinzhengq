@@ -18,7 +18,7 @@ export default function Timeline({
   const [markerMode, setMarkerMode] = useState(false);
 
   //Hover line
-  const [linePosition, setLinePosition] = useState(100);
+  const [linePosition, setLinePosition] = useState(0);
 
   const handleMouseMove = (e) => {
     setLinePosition(e.clientX);
