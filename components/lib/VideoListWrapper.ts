@@ -1,36 +1,46 @@
-
 type VideoList = Array<{
-    name: string,
-    id: string,
-    duration: string,
-    startDelta: number,
-    endDelta: number
-}>
+  name: string;
+  id: string;
+  duration: string;
+  startDelta: number;
+  endDelta: number;
+  flex: boolean;
+}>;
 
 export default class VideoListWrapper {
-    list: VideoList
+  list: VideoList;
 
-    constructor(list: VideoList) {
-        this.list = list
-    }
+  constructor(list: VideoList) {
+    this.list = list;
+  }
 
-    get() {
-        return this.list
-    }
+  get() {
+    return this.list;
+  }
 
-    trimStart(index: number, delta: number) {
-        this.list[index].startDelta += delta
-    }
+  // add later
+  hasMarker(index: number) {
+    // should indicate whether or not the current clip has a marker on it
+    return true;
+  }
 
-    trimEnd(index: number, delta: number) {
-        this.list[index].endDelta += delta
-    }
+  getMarkerLocation(index: number) {
+    return 4.0;
+  }
 
-    setTrimStart(index: number, delta: number) {
-        this.list[index].startDelta = delta
-    }
+  trimStart(index: number, delta: number) {
+    this.list[index].startDelta += delta;
+  }
 
-    setTrimEnd(index: number, delta: number) {
-        this.list[index].endDelta = delta
-    }
+  trimEnd(index: number, delta: number) {
+    this.list[index].endDelta += delta;
+  }
+
+  setTrimStart(index: number, delta: number) {
+    this.list[index].startDelta = delta;
+  }
+
+  setTrimEnd(index: number, delta: number) {
+    this.list[index].endDelta = delta;
+  }
 }
