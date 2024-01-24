@@ -1,5 +1,5 @@
-import { spawn } from "child_process";
-import { stat } from "fs/promises";
+import { exec, spawn } from "child_process";
+import { rename, stat } from "fs/promises";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export const config = {
@@ -23,6 +23,24 @@ const execute = async (command: Array<string>) => {
   });
 };
 
+
+enum MediaType {
+  Audio = 0,
+  Video = 1,
+}
+
+type MediaFile = {
+  display_name: string,
+  id: string,
+  url: string,
+  type: MediaType,
+  duration: string,
+  startDelta: number,
+  endDelta: number
+}
+
+type MediaList = Array<MediaFile>
+
 export default async function NextApiHandler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -36,13 +54,7 @@ export default async function NextApiHandler(
     return;
   }
 
-  const fileList: Array<{
-    name: string;
-    id: string;
-    duration: string;
-    startDelta: number;
-    endDelta: number;
-  }> = req.body.list;
+  const fileList: MediaList = req.body.list;
   const timeStamp = req.body.time;
 
   if (fileList.length <= 0) return res.status(200).end();
@@ -147,7 +159,12 @@ export default async function NextApiHandler(
   try {
     await stat(`${process.env.PWD}/public/${req.headers.userid}/song.mpga`)
     await execute(argList_audio);
-  } catch (_) { }
+  } catch (_) {
+    await rename(
+      `${process.env.PWD}/public/${req.headers.userid}/output-tmp-2.mp4`,
+      `${process.env.PWD}/public/${req.headers.userid}/output-${timeStamp}.mp4`
+    )
+  }
 
 
   res.status(200).end();

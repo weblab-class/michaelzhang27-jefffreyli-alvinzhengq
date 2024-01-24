@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import AudioCard from "./AudioCard";
 import VideoCard from "./VideoCard";
-import { MediaList } from "../types";
+import { MediaFile, MediaList } from "../types";
 
 export default function MediaLibrary({
   previewMediaType,
@@ -13,6 +13,7 @@ export default function MediaLibrary({
   handleFileUpload,
   setVideoSrc,
   setAudioSrc,
+  addClip
 }: {
   previewMediaType: string,
   setPreviewMediaType: Dispatch<SetStateAction<string>>,
@@ -23,6 +24,7 @@ export default function MediaLibrary({
   handleFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void,
   setVideoSrc: Dispatch<SetStateAction<string>>,
   setAudioSrc: Dispatch<SetStateAction<string>>,
+  addClip: (clip: MediaFile) => Promise<void>
 }) {
   return (
     <div className="w-1/2">
@@ -50,6 +52,7 @@ export default function MediaLibrary({
               uploadedVideoFiles={uploadedVideoFiles}
               setUploadedVideoFiles={setUploadedVideoFiles}
               setVideoSrc={setVideoSrc}
+              addClip={addClip}
             />
           ))
           : uploadedAudioFiles.map((file) => (
@@ -59,6 +62,7 @@ export default function MediaLibrary({
               uploadedAudioFiles={uploadedAudioFiles}
               setUploadedAudioFiles={setUploadedAudioFiles}
               setAudioSrc={setAudioSrc}
+              addClip={addClip}
             />
           ))}
       </div>

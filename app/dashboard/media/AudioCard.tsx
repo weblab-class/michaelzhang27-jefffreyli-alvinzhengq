@@ -9,11 +9,13 @@ export default function AudioCard({
   uploadedAudioFiles,
   setUploadedAudioFiles,
   setAudioSrc,
+  addClip
 }: {
   file: MediaFile,
   uploadedAudioFiles: MediaList,
   setUploadedAudioFiles: Dispatch<SetStateAction<MediaList>>,
   setAudioSrc: Dispatch<SetStateAction<string>>,
+  addClip: (clip: MediaFile) => Promise<void>
 
 }) {
   const handleDisplayAudio = () => {
@@ -38,7 +40,7 @@ export default function AudioCard({
   };
 
   const addIcon = (
-    <button>
+    <button onClick={() => { addClip(file); }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"

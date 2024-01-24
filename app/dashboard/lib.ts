@@ -125,7 +125,7 @@ export const uploadToFirebase = (
                         display_name: file.name,
                         id: uniqueID,
                         url: url,
-                        type: MediaType.Audio,
+                        type: MediaType.Video,
                         duration: (0).toFixed(2),
                         startDelta: 0,
                         endDelta: 0,

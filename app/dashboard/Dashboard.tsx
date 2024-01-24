@@ -1,11 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-    ref,
-    uploadBytesResumable,
-} from "firebase/storage";
-import { app, auth, storage } from "@/firebase/config";
+import { useState, useEffect, useRef } from "react";
+import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
 import Timeline from "./timeline/Timeline";
 
@@ -13,9 +9,10 @@ import MediaLibrary from "./media/MediaLibrary";
 import VideoDisplay from "./media/VideoDisplay";
 import AudioDisplay from "./media/AudioDisplay";
 
-import { MediaList } from "./types";
+import { MediaFile, MediaList, MediaType } from "./types";
 import { fetchMedia, uploadToFirebase } from "./lib";
 import { signOut } from "firebase/auth";
+import axios from "axios";
 
 export default function Dashboard() {
     const [videoSrc, setVideoSrc] = useState<string>("");
@@ -28,23 +25,6 @@ export default function Dashboard() {
     const [clipList, setClipList] = useState<MediaList>([]);
 
     const router = useRouter();
-
-    useEffect(() => {
-        const authorizationLogic = async () => {
-            await auth.authStateReady();
-
-            if (auth.currentUser === null) {
-                router.push("/signin");
-            }
-        };
-
-        authorizationLogic();
-        fetchMedia(setUploadedVideoFiles, setUploadedAudioFiles);
-    }, []);
-
-    useEffect(() => {
-
-    }, [clipList])
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files === null) return;
@@ -63,6 +43,41 @@ export default function Dashboard() {
             uploadToFirebase(file, "video", setUploadedVideoFiles, setUploadedAudioFiles);
         }
     };
+
+    const processClips = async () => {
+        let timeStamp = Date.now();
+        await axios.post("/api/merge", { list: clipList, time: timeStamp });
+
+        setPreviewMediaType("video");
+        setVideoSrc(`/api/video/output-${timeStamp}.mp4`);
+    }
+
+    const addClip = async (clip: MediaFile) => {
+        await axios.post("/api/download", { file_obj: clip });
+        
+        if (clip.type == MediaType.Video) {
+            setClipList([...clipList, clip])
+        }
+    }
+
+    useEffect(() => {
+        const authorizationLogic = async () => {
+            await auth.authStateReady();
+
+            if (auth.currentUser === null) {
+                router.push("/signin");
+            }
+        };
+
+        authorizationLogic();
+        fetchMedia(setUploadedVideoFiles, setUploadedAudioFiles);
+    }, []);
+
+    useEffect(() => {
+        if (clipList.length <= 0) return;
+
+        processClips();
+    }, [clipList])
 
     return (
         <div>
@@ -92,6 +107,7 @@ export default function Dashboard() {
                     setUploadedAudioFiles={setUploadedAudioFiles}
                     setVideoSrc={setVideoSrc}
                     setAudioSrc={setAudioSrc}
+                    addClip={addClip}
                 />
                 <div className="border-[0.9px] border-gray-300" > </div>
                 {
