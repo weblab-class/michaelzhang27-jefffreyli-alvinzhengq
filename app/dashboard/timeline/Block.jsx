@@ -18,9 +18,8 @@ export default function MediaBlock({ media, scalar, marker_mode }) {
     const rect = e.target.getBoundingClientRect();
     const x = e.clientX - rect.left; // Absolute x position within the block
     const relativeX = (x / rect.width) * 100; // Relative x position in percentage
-    addMarker(relativeX);
 
-    console.log(rect.width);
+    addMarker(relativeX);
   };
 
   const handleDeleteMarker = (e) => {

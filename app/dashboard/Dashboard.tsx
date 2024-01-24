@@ -115,7 +115,7 @@ export default function Dashboard() {
   }, [clipList]);
 
   return (
-    <div>
+    <div className="h-80">
       <div className="flex justify-end py-4 px-8">
         <button
           onClick={() => {
@@ -129,7 +129,7 @@ export default function Dashboard() {
         </button>
       </div>
 
-      <div className="py-10 rounded-lg text-center flex bg-background">
+      <div className="py-4 rounded-lg text-center flex bg-background">
         <MediaLibrary
           previewMediaType={previewMediaType}
           setPreviewMediaType={setPreviewMediaType}

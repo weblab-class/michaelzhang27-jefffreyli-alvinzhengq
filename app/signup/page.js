@@ -18,7 +18,7 @@ export default function signUpPage() {
     if (error) {
       return console.log("error");
     }
-    return router.push("/dashboard");
+    return router.push("/");
   };
 
   return (
