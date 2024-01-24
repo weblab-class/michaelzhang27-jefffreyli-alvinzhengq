@@ -8,8 +8,8 @@ import VideoBlock from "./VideoBlock";
 import AudioBlock from "./AudioBlock";
 import HoverLine from "./HoverLine";
 
-export default function Timeline() {
-  const [videoClips, setVideoClips] = useState(data);
+export default function Timeline({ videoClips, setVideoClips }) {
+  // const [videoClips, setVideoClips] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [sliderValue, setSliderValue] = useState(50);
   const [markerMode, setMarkerMode] = useState(false);
@@ -61,9 +61,7 @@ export default function Timeline() {
       <div className="flex justify-between h-14 ml-5 mr-5 border-b border-gray-300">
         {/* Buttons */}
         <div className="flex justify-between items-center w-76 space-x-2">
-          <button
-            className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer"
-          >
+          <button className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer">
             <span>Algorithm</span>
           </button>
 

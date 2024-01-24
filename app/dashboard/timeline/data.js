@@ -29,34 +29,4 @@ export const data = [
     length: 5,
     flex: false,
   },
-  {
-    id: 6,
-    name: "Stacee",
-    length: 5,
-    flex: false,
-  },
-  {
-    id: 7,
-    name: "Federica",
-    length: 3,
-    flex: false,
-  },
-  {
-    id: 8,
-    name: "Jecho",
-    length: 5,
-    flex: true,
-  },
-  {
-    id: 9,
-    name: "Alasteir",
-    length: 9,
-    flex: true,
-  },
-  {
-    id: 10,
-    name: "Elston",
-    length: 5,
-    flex: false,
-  },
 ];

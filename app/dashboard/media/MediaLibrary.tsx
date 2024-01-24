@@ -3,6 +3,13 @@ import AudioCard from "./AudioCard";
 import VideoCard from "./VideoCard";
 import { MediaFile, MediaList } from "../types";
 
+interface VideoClip {
+  id: number;
+  name: string;
+  length: number;
+  flex: boolean;
+}
+
 export default function MediaLibrary({
   previewMediaType,
   setPreviewMediaType,
@@ -13,18 +20,22 @@ export default function MediaLibrary({
   handleFileUpload,
   setVideoSrc,
   setAudioSrc,
-  addClip
+  addClip,
+  videoClips,
+  setVideoClips,
 }: {
-  previewMediaType: string,
-  setPreviewMediaType: Dispatch<SetStateAction<string>>,
-  uploadedVideoFiles: MediaList,
-  setUploadedVideoFiles: Dispatch<SetStateAction<MediaList>>,
-  uploadedAudioFiles: MediaList,
-  setUploadedAudioFiles: Dispatch<SetStateAction<MediaList>>,
-  handleFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  setVideoSrc: Dispatch<SetStateAction<string>>,
-  setAudioSrc: Dispatch<SetStateAction<string>>,
-  addClip: (clip: MediaFile) => Promise<void>
+  previewMediaType: string;
+  setPreviewMediaType: Dispatch<SetStateAction<string>>;
+  uploadedVideoFiles: MediaList;
+  setUploadedVideoFiles: Dispatch<SetStateAction<MediaList>>;
+  uploadedAudioFiles: MediaList;
+  setUploadedAudioFiles: Dispatch<SetStateAction<MediaList>>;
+  handleFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setVideoSrc: Dispatch<SetStateAction<string>>;
+  setAudioSrc: Dispatch<SetStateAction<string>>;
+  addClip: (clip: MediaFile) => Promise<void>;
+  videoClips: Array<VideoClip>;
+  setVideoClips: Dispatch<SetStateAction<Array<VideoClip>>>;
 }) {
   return (
     <div className="w-1/2">
@@ -46,25 +57,27 @@ export default function MediaLibrary({
       <div className="h-96 overflow-y-auto mx-12 border-2 border-gray-400 pt-2">
         {previewMediaType == "video"
           ? uploadedVideoFiles.map((file) => (
-            <VideoCard
-              key={file.id}
-              file={file}
-              uploadedVideoFiles={uploadedVideoFiles}
-              setUploadedVideoFiles={setUploadedVideoFiles}
-              setVideoSrc={setVideoSrc}
-              addClip={addClip}
-            />
-          ))
+              <VideoCard
+                key={file.id}
+                file={file}
+                uploadedVideoFiles={uploadedVideoFiles}
+                setUploadedVideoFiles={setUploadedVideoFiles}
+                setVideoSrc={setVideoSrc}
+                addClip={addClip}
+                videoClips={videoClips}
+                setVideoClips={setVideoClips}
+              />
+            ))
           : uploadedAudioFiles.map((file) => (
-            <AudioCard
-              key={file.id}
-              file={file}
-              uploadedAudioFiles={uploadedAudioFiles}
-              setUploadedAudioFiles={setUploadedAudioFiles}
-              setAudioSrc={setAudioSrc}
-              addClip={addClip}
-            />
-          ))}
+              <AudioCard
+                key={file.id}
+                file={file}
+                uploadedAudioFiles={uploadedAudioFiles}
+                setUploadedAudioFiles={setUploadedAudioFiles}
+                setAudioSrc={setAudioSrc}
+                addClip={addClip}
+              />
+            ))}
       </div>
 
       <button className="my-6 w-full flex justify-end pr-16">
