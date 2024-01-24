@@ -4,8 +4,7 @@ import { closestCenter, DndContext } from "@dnd-kit/core";
 import { arrayMove, SortableContext, useSortable } from "@dnd-kit/sortable";
 import { data } from "./data";
 
-import VideoBlock from "./VideoBlock";
-import AudioBlock from "./AudioBlock";
+import Block from "./Block";
 import HoverLine from "./HoverLine";
 
 export default function Timeline({
@@ -117,9 +116,9 @@ export default function Timeline({
               <div className="flex">
                 {/* Why PROPS Passed as undefined ?? */}
                 {videoClips.map((videoClip) => (
-                  <VideoBlock
+                  <Block
                     key={videoClip.id}
-                    video={videoClip}
+                    media={videoClip}
                     scalar={sliderValue}
                     marker_mode={markerMode}
                   />
@@ -128,34 +127,16 @@ export default function Timeline({
             </SortableContext>
           </DndContext>
         </div>
-        {/* <div className="flex pt-5">
-          {audioClips.map((audioClip) => {
-            // <AudioBlock size={audioClip.length} id="1" scalar={sliderValue} />;
-            // <VideoBlock
-            //   key={audioClip.id}
-            //   video={audioClip}
-            //   scalar={sliderValue}
-            //   marker_mode={markerMode}
-            // />;
 
-            <AudioBlock
-              key={audioClip.id}
-              video={audioClip}
-              scalar={sliderValue}
-              marker_mode={markerMode}
-            />;
-          })}
-        </div> */}
-
-        <div>
+        <div className="mt-3">
           <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-            <SortableContext items={videoClips}>
+            <SortableContext items={audioClips}>
               <div className="flex">
                 {/* Why PROPS Passed as undefined ?? */}
                 {audioClips.map((audioClip) => (
-                  <AudioBlock
+                  <Block
                     key={audioClip.id}
-                    video={audioClip}
+                    media={audioClip}
                     scalar={sliderValue}
                     marker_mode={markerMode}
                   />

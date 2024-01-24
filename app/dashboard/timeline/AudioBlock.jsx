@@ -13,6 +13,8 @@ export default function AudioBlock({ audio, scalar, marker_mode }) {
     const relativeX = (x / rect.width) * 100; // Relative x position in percentage
     console.log(relativeX);
     addMarker(relativeX);
+
+    console.log(rect.width);
   };
 
   const audioBlockStyle = {
@@ -42,9 +44,8 @@ export default function AudioBlock({ audio, scalar, marker_mode }) {
           }}
         />
       ))}
-      <div style={{ margin: 5 }}>
-        <text>{audio.name}</text>
-      </div>
+
+      <p className="m-3 text-xs">{audio.name}</p>
     </div>
   );
 }

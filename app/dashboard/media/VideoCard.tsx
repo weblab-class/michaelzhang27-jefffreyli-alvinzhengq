@@ -55,10 +55,16 @@ export default function VideoCard({
     length: number,
     flex: boolean
   ) => {
-    setVideoClips((currentVideoClips: VideoClip[]) => [
-      ...(Array.isArray(currentVideoClips) ? currentVideoClips : []),
-      { id, name, length, flex },
-    ]);
+    // setVideoClips((currentVideoClips: VideoClip[]) => [
+    //   ...(Array.isArray(currentVideoClips) ? currentVideoClips : []),
+    //   { id, name, length, flex },
+    // ]);
+    if(videoClips == null){
+      setVideoClips([{ id, name, length, flex } ])
+    }
+    else{
+      setVideoClips([...videoClips, { id, name, length, flex } ])
+    }
   };
 
   const addIcon = (

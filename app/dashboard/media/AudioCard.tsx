@@ -1,15 +1,8 @@
 import { deleteObject, getStorage } from "@firebase/storage";
 import { ref } from "firebase/storage";
 import Image from "next/image";
-import { MediaFile, MediaList } from "../types";
+import { MediaFile, MediaList, AudioClip } from "../types";
 import { Dispatch, SetStateAction } from "react";
-
-interface AudioClip {
-  id: number;
-  name: string;
-  length: number;
-  flex: boolean;
-}
 
 export default function AudioCard({
   file,
@@ -17,6 +10,7 @@ export default function AudioCard({
   setUploadedAudioFiles,
   setAudioSrc,
   addClip,
+  audioClips,
   setAudioClips,
 }: {
   file: MediaFile;
@@ -24,6 +18,7 @@ export default function AudioCard({
   setUploadedAudioFiles: Dispatch<SetStateAction<MediaList>>;
   setAudioSrc: Dispatch<SetStateAction<string>>;
   addClip: (clip: MediaFile) => Promise<void>;
+  audioClips: Array<AudioClip>;
   setAudioClips: Dispatch<SetStateAction<Array<AudioClip>>>;
 }) {
   const handleDisplayAudio = () => {
@@ -59,6 +54,13 @@ export default function AudioCard({
     ]);
 
     console.log(length);
+
+    // if(audioClips == null){
+    //   setAudioClips([{ id, name, length, flex } ])
+    // }
+    // else{
+    //   setAudioClips([...audioClips, { id, name, length, flex } ])
+    // }
   };
 
   const addIcon = (
