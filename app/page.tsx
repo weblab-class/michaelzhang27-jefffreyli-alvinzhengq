@@ -1,7 +1,14 @@
-import Dashboard from "./dashboard/Dashboard";
+import Hero from "../components/Hero";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import React from "react";
 
-export default function Page() {
+export default function landingPage() {
   return (
-    <Dashboard />
-  )
+    <div>
+      <Navbar />
+      <Hero />
+      <Footer />
+    </div>
+  );
 }

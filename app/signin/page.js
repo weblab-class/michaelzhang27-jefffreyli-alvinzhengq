@@ -17,7 +17,7 @@ export default function signInPage() {
     if (error) {
       return console.log("error");
     }
-    router.push("/");
+    router.push("/dashboard");
   };
 
   return (
