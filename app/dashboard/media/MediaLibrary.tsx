@@ -20,7 +20,7 @@ export default function MediaLibrary({
   handleFileUpload,
   setVideoSrc,
   setAudioSrc,
-  addClip
+  addClip,
 }: {
   previewMediaType: string;
   setPreviewMediaType: Dispatch<SetStateAction<string>>;
@@ -36,6 +36,7 @@ export default function MediaLibrary({
   return (
     <div className="w-1/2">
       <div className="flex justify-start ml-12 mb-4 space-x-4">
+        
         <button
           className="bg-orange text-white p-3 rounded-md"
           onClick={() => setPreviewMediaType("video")}

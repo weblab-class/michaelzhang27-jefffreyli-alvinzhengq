@@ -1,13 +1,16 @@
-import Hero from "../components/Hero";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import React from "react";
+import Hero from "../components/Home/Hero";
+import Navbar from "../components/Home/Navbar";
+import Features from "../components/Home/Features";
+import Footer from "../components/Home/Footer";
+import CTA from "@/components/Home/CTA";
 
 export default function landingPage() {
   return (
     <div>
       <Navbar />
       <Hero />
+      <Features />
+      <CTA />
       <Footer />
     </div>
   );
