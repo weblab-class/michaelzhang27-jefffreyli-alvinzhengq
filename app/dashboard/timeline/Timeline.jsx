@@ -22,7 +22,7 @@ export default function Timeline({
   const [linePosition, setLinePosition] = useState(100);
 
   const handleMouseMove = (e) => {
-    setLinePosition(e.clientX - 16);
+    setLinePosition(e.clientX - 45);
   };
 
   const onDragEnd = (event) => {
@@ -31,12 +31,8 @@ export default function Timeline({
       return;
     }
     setClipList((clipList) => {
-      const oldIndex = clipList.findIndex(
-        (clip) => clip.id === active.id
-      );
-      const newIndex = clipList.findIndex(
-        (clip) => clip.id === over.id
-      );
+      const oldIndex = clipList.findIndex((clip) => clip.id === active.id);
+      const newIndex = clipList.findIndex((clip) => clip.id === over.id);
       return arrayMove(clipList, oldIndex, newIndex);
     });
   };
@@ -57,11 +53,14 @@ export default function Timeline({
   }
 
   return (
-    <div className="mx-auto relative" onMouseMove={handleMouseMove}>
+    <div
+      className="mx-auto relative bg-darkerBackground rounded-xl pt-6 pb-2 px-2 shadow-md"
+      onMouseMove={handleMouseMove}
+    >
       <div className="flex justify-between h-14 ml-5 mr-5">
         {/* Buttons */}
         <div className="flex justify-between items-center w-76 space-x-2">
-          <button className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer"
+          <button className="border-2 bg-orange rounded-md text-white px-4 py-1 cursor-pointer"
             onClick={() => {
               processClips();
             }}
@@ -70,7 +69,7 @@ export default function Timeline({
           </button>
 
           <button
-            className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer"
+            className="border-2 bg-orange rounded-md text-white px-4 py-1 cursor-pointer"
             onClick={() => {
               setMarkerMode(true);
             }}
@@ -78,7 +77,7 @@ export default function Timeline({
             <span>Activate Marker Mode</span>
           </button>
           <button
-            className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer"
+            className="border-2 bg-orange rounded-md text-white px-4 py-1 cursor-pointer"
             onClick={() => {
               setMarkerMode(false);
             }}
@@ -110,7 +109,7 @@ export default function Timeline({
       {/* Video and Audio Main Timeline */}
       <HoverLine linePosition={linePosition} />
 
-      <div className="overflow-x-auto overflow-y-hidden h-40 p-2 my-4 no-scrollbar">
+      <div className="overflow-x-auto overflow-y-hidden h-40 p-2 my-4">
         <hr></hr>
         <div className="min-h-16 p-2">
           <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>

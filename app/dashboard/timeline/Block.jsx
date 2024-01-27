@@ -7,6 +7,7 @@ export default function MediaBlock({ media, scalar, marker_mode, setMarkerMaster
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: media.id });
 
+  const blockWidth = media.duration * 30 * (scalar / 50);
   const [markers, setMarkers] = useState([]);
   const [token, setToken] = useState("");
 
@@ -100,8 +101,21 @@ export default function MediaBlock({ media, scalar, marker_mode, setMarkerMaster
       {media.type === 0 ?
         <img src={`/api/waveform?token=${token}`} className="absolute w-full h-[80%] object-fill top-0 left-0 bottom-0 right-0 m-auto z-5"></img>
         :
-        <p className="m-4 text-sm pointer-events-none">{media.display_name}</p>
+        <p className="m-4 text-xs text-white">
+          {truncateText(
+            `${media.duration}s - ${media.display_name}`,
+            blockWidth / 8
+          )}
+        </p>
       }
     </div>
   );
+}
+
+function truncateText(text, maxLength) {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength - 3) + "...";
+  } else {
+    return text;
+  }
 }

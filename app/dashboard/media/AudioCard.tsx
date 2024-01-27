@@ -90,7 +90,7 @@ export default function AudioCard({
           height={50}
           alt={"audio image"}
         ></Image>
-        <p className="text-gray-700 text-xs">{file.display_name}</p>
+        <p className="text-gray-700 text-xs text-start">{file.display_name}</p>
       </div>
 
       <div className="flex space-x-4">

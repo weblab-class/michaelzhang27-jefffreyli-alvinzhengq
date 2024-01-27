@@ -13,6 +13,8 @@ import { MediaFile, MediaList, MediaType } from "./types";
 import { fetchMedia, uploadToFirebase } from "./lib";
 import { signOut } from "firebase/auth";
 import axios from "axios";
+import Link from "next/link";
+import Image from "next/image";
 
 import trim_handler from "@/components/formula/trim_algorithm";
 
@@ -116,19 +118,6 @@ export default function Dashboard() {
 
   return (
     <div className="h-80">
-      <div className="flex justify-end py-4 px-8">
-        <button
-          onClick={() => {
-            signOut(auth);
-            router.push("/signin");
-          }}
-        >
-          <p className="underline underline-offset-4 text-gray-700 hover:text-gray-800">
-            Sign out
-          </p>
-        </button>
-      </div>
-
       <div className="py-4 rounded-lg text-center flex bg-background">
         <MediaLibrary
           previewMediaType={previewMediaType}
@@ -149,7 +138,7 @@ export default function Dashboard() {
           <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
         )}
       </div>
-      <div className="mx-4">
+      <div className="">
         <Timeline
           clipList={clipList}
           audioClip={audioClip}
