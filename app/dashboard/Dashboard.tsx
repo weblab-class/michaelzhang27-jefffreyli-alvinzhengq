@@ -14,17 +14,21 @@ import { fetchMedia, uploadToFirebase } from "./lib";
 import { signOut } from "firebase/auth";
 import axios from "axios";
 
+import trim_handler from "@/components/formula/trim_algorithm";
+
 export default function Dashboard() {
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [audioSrc, setAudioSrc] = useState<string>("");
 
   const [uploadedVideoFiles, setUploadedVideoFiles] = useState<MediaList>([]);
   const [uploadedAudioFiles, setUploadedAudioFiles] = useState<MediaList>([]);
-  const [previewMediaType, setPreviewMediaType] = useState<string>("video");
-
+  
   const [clipList, setClipList] = useState<MediaList>([]);
   const [audioClip, setAudioClip] = useState<MediaFile>();
   
+  const [previewMediaType, setPreviewMediaType] = useState<string>("video");
+  const [previewTimestamp, setPreviewTimestamp] = useState<number>(0);
+
   const router = useRouter();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,9 +63,12 @@ export default function Dashboard() {
     let timeStamp = Date.now();
     let jwt = (await auth.currentUser?.getIdToken()) || "";
 
+    if (!audioClip) return;
+    let newList = trim_handler(clipList, audioClip);
+
     await axios.post(
       "/api/merge",
-      { list: clipList, time: timeStamp },
+      { list: newList, time: timeStamp },
       {
         headers: {
           Authorization: jwt,
@@ -69,6 +76,7 @@ export default function Dashboard() {
       }
     );
 
+    setClipList(newList);
     setPreviewMediaType("video");
     setVideoSrc(`/api/video/output-${timeStamp}.mp4?token=${jwt}`);
   };
@@ -89,9 +97,7 @@ export default function Dashboard() {
     if (clip.type == MediaType.Video) {
       setClipList([...clipList, clip]);
     } else {
-      setClipList([...clipList]);
       setAudioClip(clip);
-      console.log(clip)
     }
   };
 
@@ -107,12 +113,6 @@ export default function Dashboard() {
     authorizationLogic();
     fetchMedia(setUploadedVideoFiles, setUploadedAudioFiles);
   }, []);
-
-  useEffect(() => {
-    if (clipList.length <= 0) return;
-
-    processClips();
-  }, [clipList]);
 
   return (
     <div className="h-80">
@@ -144,9 +144,9 @@ export default function Dashboard() {
         />
         <div className="border-[0.9px] border-gray-300"> </div>
         {previewMediaType == "video" ? (
-          <VideoDisplay videoSrc={videoSrc} />
+          <VideoDisplay videoSrc={videoSrc} timestamp={previewTimestamp} />
         ) : (
-          <AudioDisplay audioSrc={audioSrc} />
+          <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
         )}
       </div>
       <div className="mx-4">
@@ -154,6 +154,12 @@ export default function Dashboard() {
           clipList={clipList}
           audioClip={audioClip}
           setClipList={setClipList}
+          setAudioClip={setAudioClip}
+          processClips={processClips}
+          setPreviewTimestamp={setPreviewTimestamp}
+          setPreviewMediaType={setPreviewMediaType}
+          setVideoSrc={setVideoSrc}
+          setAudioSrc={setAudioSrc}
         />
       </div>
     </div>

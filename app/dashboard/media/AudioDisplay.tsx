@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
-export default function AudioDisplay({ audioSrc }: { audioSrc: string }) {
+export default function AudioDisplay({ audioSrc, timestamp }: { audioSrc: string, timestamp: number }) {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -10,6 +10,13 @@ export default function AudioDisplay({ audioSrc }: { audioSrc: string }) {
     }
 
   }, [audioSrc]);
+
+  useEffect(() => {
+    if (audioRef.current != null) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = timestamp;
+    }
+  }, [timestamp])
 
   return (
     <div className="w-1/2 ">

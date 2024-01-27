@@ -8,7 +8,13 @@ import HoverLine from "./HoverLine";
 export default function Timeline({
   clipList,
   audioClip,
-  setClipList
+  setClipList,
+  setAudioClip,
+  processClips,
+  setPreviewMediaType,
+  setPreviewTimestamp,
+  setVideoSrc,
+  setAudioSrc
 }) {
   const [sliderValue, setSliderValue] = useState(50);
   const [markerMode, setMarkerMode] = useState(false);
@@ -18,8 +24,6 @@ export default function Timeline({
   const handleMouseMove = (e) => {
     setLinePosition(e.clientX - 16);
   };
-
-  useEffect(() => console.log(audioClip), [audioClip])
 
   const onDragEnd = (event) => {
     const { active, over } = event;
@@ -37,12 +41,31 @@ export default function Timeline({
     });
   };
 
+  const setMarkerMaster = (id, marker, type) => {
+    if (type == 0) {
+      audioClip.markers = marker;
+      setAudioClip(audioClip);
+
+    } else {
+      for (let i = 0; i < clipList.length; i++) {
+        if (clipList[i].id == id) {
+          clipList[i].markers = marker;
+        }
+      }
+      setClipList(clipList);
+    }
+  }
+
   return (
     <div className="mx-auto relative" onMouseMove={handleMouseMove}>
       <div className="flex justify-between h-14 ml-5 mr-5">
         {/* Buttons */}
         <div className="flex justify-between items-center w-76 space-x-2">
-          <button className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer">
+          <button className="border-2 border-blue-500 rounded-md text-blue-500 text-base px-4 py-1 cursor-pointer"
+            onClick={() => {
+              processClips();
+            }}
+          >
             <span>Algorithm</span>
           </button>
 
@@ -100,6 +123,10 @@ export default function Timeline({
                     media={clip}
                     scalar={sliderValue}
                     marker_mode={markerMode}
+                    setMarkerMaster={setMarkerMaster}
+                    setPreviewMediaType={setPreviewMediaType}
+                    setPreviewTimestamp={setPreviewTimestamp}
+                    setSrc={setVideoSrc}
                   />
                 ))}
               </div>
@@ -118,6 +145,10 @@ export default function Timeline({
                   media={audioClip}
                   scalar={sliderValue}
                   marker_mode={markerMode}
+                  setMarkerMaster={setMarkerMaster}
+                  setPreviewMediaType={setPreviewMediaType}
+                  setPreviewTimestamp={setPreviewTimestamp}
+                  setSrc={setAudioSrc}
                 />}
               </div>
             </SortableContext>
