@@ -20,6 +20,8 @@ export default function Timeline({
   const [markerMode, setMarkerMode] = useState(false);
   const [linePosition, setLinePosition] = useState(100);
   const totalDuration = clipList.reduce((acc, clip) => acc + clip.duration, 0);
+  const [interval, setInterval] = useState(1);
+  const [timestamps, setTimestamps] = useState([]);
 
   const handleMouseMove = (e) => {
     setLinePosition(e.clientX - 47);
@@ -28,7 +30,8 @@ export default function Timeline({
   useEffect(() => {
     console.log(audioClip), [audioClip];
     console.log(totalDuration);
-  });
+    generateTimestamps();
+  }, [clipList]);
 
   const onDragEnd = (event) => {
     const { active, over } = event;
@@ -43,12 +46,18 @@ export default function Timeline({
   };
 
   const generateTimestamps = () => {
-    const timestamps = [];
-    const interval = 5 * (50 / sliderValue); // Adjust interval based on slider value
-    for (let time = 0; time < totalDuration; time += interval) {
-      timestamps.push(formatTime(time));
+    const _interval = Math.round(totalDuration / sliderValue);
+    for (let time = 0; time < totalDuration; time += _interval) {
+      setTimestamps([...timestamps, formatTime(time)]);
     }
-    return timestamps;
+
+    // const timestamps = [];
+    // const interval = Math.round(totalDuration / sliderValue);
+    // for (let time = 0; time < totalDuration; time += interval) {
+    //   timestamps.push(formatTime(time));
+    // }
+    // console.log(timestamps);
+    // return timestamps;
   };
 
   const formatTime = (time) => {
@@ -73,6 +82,22 @@ export default function Timeline({
       setClipList(clipList);
     }
   };
+
+  const handleDeleteBlock = (e) => {
+    e.preventDefault();
+    if (e.key === "Backspace" || e.key === "Delete") {
+      let filtered_clips = clips.filter((m) => {});
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleDeleteBlock);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("keydown", handleDeleteBlock);
+    };
+  }, [mousePosition]);
 
   return (
     <div
@@ -122,7 +147,10 @@ export default function Timeline({
           <input
             type="range"
             value={sliderValue}
-            onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+            onChange={(e) => {
+              setSliderValue(parseFloat(e.target.value));
+              setInterval(Math.round(totalDuration / sliderValue));
+            }}
             min="20"
             max="100"
           />
@@ -135,9 +163,11 @@ export default function Timeline({
       {/* <div className="h-[1px] bg-black" /> */}
 
       <div className="overflow-x-auto overflow-y-hidden h-40 p-2 my-4">
-        <div className="flex space-x-4 whitespace-nowrap px-2 ml-12">
-          {generateTimestamps().map((timestamp, index) => (
-            <div>
+        <div
+          className={`flex space-x-10 whitespace-nowrap ml-12 -translate-x-2`}
+        >
+          {timestamps.map((timestamp, index) => (
+            <div className="">
               <span key={index} className="text-sm">
                 {timestamp}
               </span>
@@ -174,9 +204,7 @@ export default function Timeline({
           </div>
         </div>
 
-        
-
-        <div className="h-[1px] bg-black" />
+        {/* <div className="h-[1px] bg-black" /> */}
 
         <div className="min-h-16 py-2">
           <div className="flex items-center space-x-4">

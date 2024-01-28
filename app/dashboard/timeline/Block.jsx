@@ -91,6 +91,8 @@ export default function MediaBlock({
     }
   };
 
+  
+
   const [blockStyle, setBlockStyle] = useState({
     transition,
     transform: CSS.Transform.toString(transform),
@@ -127,7 +129,7 @@ export default function MediaBlock({
       onContextMenu={marker_mode ? handleDeleteMarker : undefined}
       onMouseMove={(e) => {
         handleMouseMove(e);
-        setPreviewMediaType(media.type ? "video" : "audio");  
+        setPreviewMediaType(media.type ? "video" : "audio");
         setSrc(media.url);
 
         if (marker_mode) {
