@@ -14,7 +14,7 @@ export default function Timeline({
   setPreviewMediaType,
   setPreviewTimestamp,
   setVideoSrc,
-  setAudioSrc
+  setAudioSrc,
 }) {
   const [sliderValue, setSliderValue] = useState(50);
   const [markerMode, setMarkerMode] = useState(false);
@@ -60,6 +60,20 @@ export default function Timeline({
       .join(":");
   };
 
+  const setMarkerMaster = (id, marker, type) => {
+    if (type == 0) {
+      audioClip.markers = marker;
+      setAudioClip(audioClip);
+    } else {
+      for (let i = 0; i < clipList.length; i++) {
+        if (clipList[i].id == id) {
+          clipList[i].markers = marker;
+        }
+      }
+      setClipList(clipList);
+    }
+  };
+
   return (
     <div
       className="mx-auto relative bg-darkerBackground rounded-xl pt-6 pb-2 px-2 shadow-md"
@@ -68,7 +82,8 @@ export default function Timeline({
       <div className="flex justify-between h-14 ml-5 mr-5">
         {/* Buttons */}
         <div className="flex justify-between items-center w-76 space-x-2">
-          <button className="border-2 bg-orange rounded-md text-white px-4 py-1 cursor-pointer"
+          <button
+            className="border-2 bg-orange rounded-md text-white px-4 py-1 cursor-pointer"
             onClick={() => {
               processClips();
             }}
@@ -113,10 +128,6 @@ export default function Timeline({
           />
         </div>
       </div>
-      
-
-      
-      
 
       {/* Video and Audio Main Timeline */}
       <HoverLine linePosition={linePosition} />
@@ -124,16 +135,16 @@ export default function Timeline({
       {/* <div className="h-[1px] bg-black" /> */}
 
       <div className="overflow-x-auto overflow-y-hidden h-40 p-2 my-4">
-      <div className="flex space-x-4 whitespace-nowrap px-2 ml-12">
-        {generateTimestamps().map((timestamp, index) => (
-          <div>
-            <span key={index} className="text-sm">
-              {timestamp}
-            </span>
-            <div className="h-[5px] w-[1px] bg-black ml-8" />
-          </div>
-        ))}
-      </div>
+        <div className="flex space-x-4 whitespace-nowrap px-2 ml-12">
+          {generateTimestamps().map((timestamp, index) => (
+            <div>
+              <span key={index} className="text-sm">
+                {timestamp}
+              </span>
+              <div className="h-[5px] w-[1px] bg-black ml-8" />
+            </div>
+          ))}
+        </div>
 
         <div className="flex items-center space-x-4">
           <p>Video</p>
@@ -151,6 +162,10 @@ export default function Timeline({
                       media={clip}
                       scalar={sliderValue}
                       marker_mode={markerMode}
+                      setPreviewMediaType={setPreviewMediaType}
+                      setSrc={setVideoSrc}
+                      setPreviewTimestamp={setPreviewTimestamp}
+                      setMarkerMaster={setMarkerMaster}
                     />
                   ))}
                 </div>
@@ -173,6 +188,10 @@ export default function Timeline({
                       media={audioClip}
                       scalar={sliderValue}
                       marker_mode={markerMode}
+                      setPreviewMediaType={setPreviewMediaType}
+                      setSrc={setAudioSrc}
+                      setPreviewTimestamp={setPreviewTimestamp}
+                      setMarkerMaster={setMarkerMaster}
                     />
                   )}
                 </div>

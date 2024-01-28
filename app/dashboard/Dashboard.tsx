@@ -149,6 +149,7 @@ export default function Dashboard() {
           setPreviewMediaType={setPreviewMediaType}
           setVideoSrc={setVideoSrc}
           setAudioSrc={setAudioSrc}
+          
         />
       </div>
     </div>
