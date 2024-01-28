@@ -13,7 +13,7 @@ export default function signInPage() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
-    const { result, error } = signIn(email, password);
+    const { result, error } = await signIn(email, password);
     if (error) {
       return console.log("error");
     }

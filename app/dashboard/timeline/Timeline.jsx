@@ -174,6 +174,8 @@ export default function Timeline({
           </div>
         </div>
 
+        
+
         <div className="h-[1px] bg-black" />
 
         <div className="min-h-16 py-2">
