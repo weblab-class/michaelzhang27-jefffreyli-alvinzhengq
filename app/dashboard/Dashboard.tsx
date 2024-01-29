@@ -11,11 +11,7 @@ import AudioDisplay from "./media/AudioDisplay";
 
 import { MediaFile, MediaList, MediaType } from "./types";
 import { fetchMedia, uploadToFirebase } from "./lib";
-import { signOut } from "firebase/auth";
 import axios from "axios";
-import Link from "next/link";
-import Image from "next/image";
-import Details from "./media/Details";
 
 import trim_handler from "@/components/formula/trim_algorithm";
 
@@ -32,9 +28,7 @@ export default function Dashboard() {
   const [previewMediaType, setPreviewMediaType] = useState<string>("video");
   const [previewTimestamp, setPreviewTimestamp] = useState<number>(0);
 
-  const router = useRouter();
-
-  const dummyMediaObject = {
+  const [selectedClip, setSelectedClip] = useState<MediaFile>({
     display_name: "Sample Video",
     id: "video123",
     url: "https://example.com/sample-video.mp4",
@@ -44,9 +38,9 @@ export default function Dashboard() {
     endDelta: 10,
     flex: true,
     markers: [10, 20, 30, 40],
-  };
+  });
 
-  const [selectedClip, setSelectedClip] = useState<MediaFile>(dummyMediaObject);
+  const router = useRouter();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null) return;
@@ -150,7 +144,7 @@ export default function Dashboard() {
         />
         {/* <div className="border-[0.9px] border-gray-300"> </div> */}
         {previewMediaType == "video" ? (
-          <VideoDisplay videoSrc={videoSrc} timestamp={previewTimestamp} />
+          <VideoDisplay clipList={uploadedVideoFiles} videoSrc={videoSrc} timestamp={previewTimestamp} />
         ) : (
           <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
         )}

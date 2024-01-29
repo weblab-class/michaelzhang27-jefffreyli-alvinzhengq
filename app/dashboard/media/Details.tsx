@@ -1,10 +1,16 @@
 import React from "react";
 
-const Details = ({ name, duration, size, type, isFlexible }) => {
+const Details = ({ name, duration, id, type, isFlexible } : {
+  name: string,
+  duration: string,
+  id: string,
+  type: string,
+  isFlexible: boolean
+}) => {
   const details = [
     { label: "Name", value: name },
     { label: "Duration", value: duration },
-    { label: "Size", value: size },
+    { label: "ID", value: id },
     { label: "Type", value: type },
     { label: "Flexible", value: isFlexible ? "Yes" : "No" }, // Assuming isFlexible is a boolean
   ];

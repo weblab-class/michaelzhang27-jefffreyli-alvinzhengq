@@ -19,9 +19,7 @@ export default function Timeline({
   const [sliderValue, setSliderValue] = useState(50);
   const [markerMode, setMarkerMode] = useState(false);
   const [linePosition, setLinePosition] = useState(100);
-  const totalDuration = clipList.reduce((acc, clip) => acc + clip.duration, 0);
-  const [interval, setInterval] = useState(1);
-  const [timestamps, setTimestamps] = useState([]);
+  const [totalDuration, setTotalDuration] = useState(0);
   const [selectedClip, setSelectedClip] = useState();
 
   const handleMouseMove = (e) => {
@@ -29,9 +27,15 @@ export default function Timeline({
   };
 
   useEffect(() => {
-    generateTimestamps();
+    let tmp_dur = 0;
+    
+    for (let i = 0; i < clipList.length; i++) {
+      tmp_dur += parseFloat(clipList[i].duration) - clipList[i].startDelta - clipList[i].endDelta;
+    }
+    
+    setTotalDuration(Math.ceil(tmp_dur));
 
-  }, []);
+  }, [clipList]);
 
   const onDragEnd = (event) => {
     const { active, over } = event;
@@ -43,20 +47,6 @@ export default function Timeline({
       const newIndex = clipList.findIndex((clip) => clip.id === over.id);
       return arrayMove(clipList, oldIndex, newIndex);
     });
-  };
-
-  const generateTimestamps = () => {
-    const _interval = Math.round(totalDuration / sliderValue);
-    for (let time = 0; time < totalDuration; time += _interval) {
-      setTimestamps([...timestamps, formatTime(time)]);
-    }
-
-    // const timestamps = [];
-    // const interval = Math.round(totalDuration / sliderValue);
-    // for (let time = 0; time < totalDuration; time += interval) {
-    //   timestamps.push(formatTime(time));
-    // }
-    // return timestamps;
   };
 
   const formatTime = (time) => {
@@ -150,10 +140,9 @@ export default function Timeline({
             value={sliderValue}
             onChange={(e) => {
               setSliderValue(parseFloat(e.target.value));
-              setInterval(Math.round(totalDuration / sliderValue));
             }}
-            min="20"
-            max="100"
+            min="30"
+            max="200"
           />
         </div>
       </div>
@@ -165,14 +154,17 @@ export default function Timeline({
 
       <div className="overflow-x-auto overflow-y-hidden h-40 p-2 my-4">
         <div
-          className={`flex space-x-[4.7rem] whitespace-nowrap ml-16 -translate-x-3`}
+          className={`flex justify-between whitespace-nowrap ml-20 -translate-x-3`}
+          style={{
+            width: `${totalDuration * 30 * (sliderValue / 50) + 2}px`
+          }}
         >
-          {timestamps.map((timestamp, index) => (
+          {[...Array(totalDuration + 1)].map((timestamp, index) => (
             <div className="">
               <span key={index} className="text-sm">
-                {timestamp}
+                {index}
               </span>
-              <div className="h-[5px] w-[1px] bg-white ml-5" />
+              <div className="h-[5px] w-[1px] bg-white ml-1" />
             </div>
           ))}
         </div>
