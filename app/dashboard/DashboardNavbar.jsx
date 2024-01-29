@@ -9,19 +9,19 @@ import { useRouter } from "next/navigation";
 export default function DashboardNavbar() {
   const router = useRouter();
   return (
-    <div className="flex justify-between items-center py-4">
+    <div className="flex justify-between items-center py-4 mx-4">
       <Link
         href="/"
         className="flex justify-center items-center space-x-3 mt-2"
       >
         <Image
           className=""
-          width={30}
-          height={30}
+          width={40}
+          height={40}
           src="/videomatic-logo-transparent.png"
           alt=""
         />
-        <span className="font-semibold text-black text-xl font-serif">
+        <span className="font-semibold text-black text-xl font-serif bg-gradient-to-r from-orange via-red-400 to-blush inline-block text-transparent bg-clip-text">
           Videomatic
         </span>
       </Link>
@@ -31,7 +31,7 @@ export default function DashboardNavbar() {
           router.push("/signin");
         }}
       >
-        <p className="underline underline-offset-4 text-gray-700 hover:text-gray-800">
+        <p className="underline underline-offset-4 text-gray-200 hover:text-gray-300">
           Sign out
         </p>
       </button>

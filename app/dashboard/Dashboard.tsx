@@ -15,6 +15,7 @@ import { signOut } from "firebase/auth";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import Details from "./media/Details";
 
 import trim_handler from "@/components/formula/trim_algorithm";
 
@@ -24,14 +25,28 @@ export default function Dashboard() {
 
   const [uploadedVideoFiles, setUploadedVideoFiles] = useState<MediaList>([]);
   const [uploadedAudioFiles, setUploadedAudioFiles] = useState<MediaList>([]);
-  
+
   const [clipList, setClipList] = useState<MediaList>([]);
   const [audioClip, setAudioClip] = useState<MediaFile>();
-  
+
   const [previewMediaType, setPreviewMediaType] = useState<string>("video");
   const [previewTimestamp, setPreviewTimestamp] = useState<number>(0);
 
   const router = useRouter();
+
+  const dummyMediaObject = {
+    display_name: "Sample Video",
+    id: "video123",
+    url: "https://example.com/sample-video.mp4",
+    type: 0,
+    duration: "00:03:30",
+    startDelta: 5,
+    endDelta: 10,
+    flex: true,
+    markers: [10, 20, 30, 40],
+  };
+
+  const [selectedClip, setSelectedClip] = useState<MediaFile>(dummyMediaObject);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null) return;
@@ -118,7 +133,7 @@ export default function Dashboard() {
 
   return (
     <div className="h-80">
-      <div className="py-4 rounded-lg text-center flex bg-background">
+      <div className="py-4 rounded-lg text-center flex space-x-2 mx-4">
         <MediaLibrary
           previewMediaType={previewMediaType}
           setPreviewMediaType={setPreviewMediaType}
@@ -130,15 +145,17 @@ export default function Dashboard() {
           setVideoSrc={setVideoSrc}
           setAudioSrc={setAudioSrc}
           addClip={addClip}
+          selectedClip={selectedClip}
+          setSelectedClip={setSelectedClip}
         />
-        <div className="border-[0.9px] border-gray-300"> </div>
+        {/* <div className="border-[0.9px] border-gray-300"> </div> */}
         {previewMediaType == "video" ? (
           <VideoDisplay videoSrc={videoSrc} timestamp={previewTimestamp} />
         ) : (
           <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
         )}
       </div>
-      <div className="">
+      <div className="h-full bg-grey mt-8">
         <Timeline
           clipList={clipList}
           audioClip={audioClip}
@@ -149,10 +166,8 @@ export default function Dashboard() {
           setPreviewMediaType={setPreviewMediaType}
           setVideoSrc={setVideoSrc}
           setAudioSrc={setAudioSrc}
-          
         />
       </div>
-
     </div>
   );
 }

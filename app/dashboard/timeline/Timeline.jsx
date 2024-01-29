@@ -22,16 +22,16 @@ export default function Timeline({
   const totalDuration = clipList.reduce((acc, clip) => acc + clip.duration, 0);
   const [interval, setInterval] = useState(1);
   const [timestamps, setTimestamps] = useState([]);
+  const [selectedClip, setSelectedClip] = useState();
 
   const handleMouseMove = (e) => {
-    setLinePosition(e.clientX - 47);
+    setLinePosition(e.clientX);
   };
 
   useEffect(() => {
-    console.log(audioClip), [audioClip];
-    console.log(totalDuration);
     generateTimestamps();
-  }, [clipList]);
+
+  }, []);
 
   const onDragEnd = (event) => {
     const { active, over } = event;
@@ -56,15 +56,13 @@ export default function Timeline({
     // for (let time = 0; time < totalDuration; time += interval) {
     //   timestamps.push(formatTime(time));
     // }
-    // console.log(timestamps);
     // return timestamps;
   };
 
   const formatTime = (time) => {
-    const hours = Math.floor(time / 3600);
     const minutes = Math.floor((time % 3600) / 60);
     const seconds = Math.floor(time % 60);
-    return [hours, minutes, seconds]
+    return [minutes, seconds]
       .map((val) => (val < 10 ? `0${val}` : val))
       .join(":");
   };
@@ -84,31 +82,34 @@ export default function Timeline({
   };
 
   const handleDeleteBlock = (e) => {
-    e.preventDefault();
-    if (e.key === "Backspace" || e.key === "Delete") {
-      let filtered_clips = clips.filter((m) => {});
+    if ((e.key === "Backspace" || e.key === "Delete") && selectedClip) {
+      const filtered_clips = clipList.filter(
+        (clip) => clip.id !== selectedClip.id
+      );
+      setClipList(filtered_clips);
+      setSelectedClip(null);
     }
   };
 
   useEffect(() => {
     window.addEventListener("keydown", handleDeleteBlock);
 
-    // Remove the event listener when the component unmounts
+    // Cleanup function
     return () => {
       window.removeEventListener("keydown", handleDeleteBlock);
     };
-  }, [mousePosition]);
+  }, [selectedClip, clipList]);
 
   return (
     <div
-      className="mx-auto relative bg-darkerBackground rounded-xl pt-6 pb-2 px-2 shadow-md"
+      className="mx-auto relative bg-grey pt-6 px-2 shadow-md h-full"
       onMouseMove={handleMouseMove}
     >
       <div className="flex justify-between h-14 ml-5 mr-5">
         {/* Buttons */}
         <div className="flex justify-between items-center w-76 space-x-2">
           <button
-            className="border-2 bg-orange rounded-md text-white px-4 py-1 cursor-pointer"
+            className="bg-darkGrey rounded-sm text-white px-4 py-1 cursor-pointer text-xs lg:text-sm "
             onClick={() => {
               processClips();
             }}
@@ -117,20 +118,20 @@ export default function Timeline({
           </button>
 
           <button
-            className="border-2 bg-orange rounded-md text-white px-4 py-1 cursor-pointer"
+            className="bg-darkGrey rounded-sm text-white px-4 py-1 cursor-pointer text-xs lg:text-sm"
             onClick={() => {
               setMarkerMode(!markerMode);
             }}
           >
-            <span>Activate Marker Mode</span>
+            <span>Marker Mode</span>
           </button>
           <button
-            className="border-2 bg-orange rounded-md text-white px-4 py-1 cursor-pointer"
+            className="bg-darkGrey rounded-sm text-white px-4 py-1 cursor-pointer text-xs lg:text-sm"
             onClick={() => {
               setMarkerMode(false);
             }}
           >
-            <span>Activate Timeline Mode</span>
+            <span>Timeline Mode</span>
           </button>
         </div>
 
@@ -164,14 +165,14 @@ export default function Timeline({
 
       <div className="overflow-x-auto overflow-y-hidden h-40 p-2 my-4">
         <div
-          className={`flex space-x-10 whitespace-nowrap ml-12 -translate-x-2`}
+          className={`flex space-x-[4.7rem] whitespace-nowrap ml-16 -translate-x-3`}
         >
           {timestamps.map((timestamp, index) => (
             <div className="">
               <span key={index} className="text-sm">
                 {timestamp}
               </span>
-              <div className="h-[5px] w-[1px] bg-black ml-8" />
+              <div className="h-[5px] w-[1px] bg-white ml-5" />
             </div>
           ))}
         </div>
@@ -187,16 +188,22 @@ export default function Timeline({
                 <div className="flex">
                   {/* Why PROPS Passed as undefined ?? */}
                   {clipList.map((clip) => (
-                    <Block
-                      key={clip.id}
-                      media={clip}
-                      scalar={sliderValue}
-                      marker_mode={markerMode}
-                      setPreviewMediaType={setPreviewMediaType}
-                      setSrc={setVideoSrc}
-                      setPreviewTimestamp={setPreviewTimestamp}
-                      setMarkerMaster={setMarkerMaster}
-                    />
+                    <div
+                      onClick={() => {
+                        setSelectedClip(clip);
+                      }}
+                    >
+                      <Block
+                        key={clip.id}
+                        media={clip}
+                        scalar={sliderValue}
+                        marker_mode={markerMode}
+                        setPreviewMediaType={setPreviewMediaType}
+                        setSrc={setVideoSrc}
+                        setPreviewTimestamp={setPreviewTimestamp}
+                        setMarkerMaster={setMarkerMaster}
+                      />
+                    </div>
                   ))}
                 </div>
               </SortableContext>
@@ -206,7 +213,7 @@ export default function Timeline({
 
         {/* <div className="h-[1px] bg-black" /> */}
 
-        <div className="min-h-16 py-2">
+        <div className="min-h-16 py-4">
           <div className="flex items-center space-x-4">
             <p className="pt-2 mr-2">Audio</p>
             <DndContext collisionDetection={closestCenter} onDragEnd={() => {}}>

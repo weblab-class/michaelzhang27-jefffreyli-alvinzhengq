@@ -21,6 +21,8 @@ export default function MediaLibrary({
   setVideoSrc,
   setAudioSrc,
   addClip,
+  selectedClip,
+  setSelectedClip,
 }: {
   previewMediaType: string;
   setPreviewMediaType: Dispatch<SetStateAction<string>>;
@@ -32,64 +34,71 @@ export default function MediaLibrary({
   setVideoSrc: Dispatch<SetStateAction<string>>;
   setAudioSrc: Dispatch<SetStateAction<string>>;
   addClip: (clip: MediaFile) => Promise<void>;
+  selectedClip: MediaFile;
+  setSelectedClip: Dispatch<SetStateAction<MediaFile>>;
 }) {
   return (
     <div className="w-1/2">
-      <div className="flex justify-start ml-12 mb-4 space-x-4">
-        
-        <button
-          className="bg-orange text-white p-3 rounded-md"
-          onClick={() => setPreviewMediaType("video")}
-        >
-          Videos
-        </button>
-        <button
-          className="bg-orange text-white p-3 rounded-md"
-          onClick={() => setPreviewMediaType("audio")}
-        >
-          Audio
+      <div className="flex justify-between">
+        <div className="flex justify-start mb-4 space-x-4">
+          <button
+            className="bg-grey text-white p-2 rounded-sm text-xs lg:text-sm"
+            onClick={() => setPreviewMediaType("video")}
+          >
+            Videos
+          </button>
+          <button
+            className="bg-grey text-white p-2 rounded-sm text-xs lg:text-sm"
+            onClick={() => setPreviewMediaType("audio")}
+          >
+            Audio
+          </button>
+        </div>
+
+        <button className="flex justify-end">
+          <input
+            type="file"
+            accept={previewMediaType === "video" ? "video/*" : "audio/mpeg"}
+            className="hidden"
+            id="media-upload"
+            onChange={handleFileUpload}
+          />
+          <label
+            htmlFor="media-upload"
+            className="text-white p-2 bg-grey cursor-pointer rounded-sm text-xs lg:text-sm"
+          >
+            Add files
+          </label>
         </button>
       </div>
 
-      <div className="h-96 overflow-y-auto mx-12 border-2 border-gray-400 pt-2">
+      <div className="overflow-y-auto pt-2 grid grid-cols-5 gap-x-1 gap-y-6">
         {previewMediaType == "video"
           ? uploadedVideoFiles.map((file) => (
-              <VideoCard
-                key={file.id}
-                file={file}
-                uploadedVideoFiles={uploadedVideoFiles}
-                setUploadedVideoFiles={setUploadedVideoFiles}
-                setVideoSrc={setVideoSrc}
-                addClip={addClip}
-              />
+              <div>
+                <VideoCard
+                  key={file.id}
+                  file={file}
+                  uploadedVideoFiles={uploadedVideoFiles}
+                  setUploadedVideoFiles={setUploadedVideoFiles}
+                  setVideoSrc={setVideoSrc}
+                  addClip={addClip}
+                />
+              </div>
             ))
           : uploadedAudioFiles.map((file) => (
-              <AudioCard
-                key={file.id}
-                file={file}
-                uploadedAudioFiles={uploadedAudioFiles}
-                setUploadedAudioFiles={setUploadedAudioFiles}
-                setAudioSrc={setAudioSrc}
-                addClip={addClip}
-              />
+              <div>
+                <AudioCard
+                  key={file.id}
+                  file={file}
+                  uploadedAudioFiles={uploadedAudioFiles}
+                  setUploadedAudioFiles={setUploadedAudioFiles}
+                  setAudioSrc={setAudioSrc}
+                  addClip={addClip}
+                />
+              </div>
             ))}
       </div>
-
-      <button className="my-6 w-full flex justify-end pr-16">
-        <input
-          type="file"
-          accept={previewMediaType === "video" ? "video/*" : "audio/mpeg"}
-          className="hidden"
-          id="media-upload"
-          onChange={handleFileUpload}
-        />
-        <label
-          htmlFor="media-upload"
-          className="text-white p-3 bg-orange underline underline-offset-4 cursor-pointer rounded-md"
-        >
-          Add files
-        </label>
-      </button>
     </div>
   );
 }

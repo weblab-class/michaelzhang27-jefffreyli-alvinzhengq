@@ -1,6 +1,13 @@
 import { useEffect, useRef } from "react";
+import Details from "./Details";
 
-export default function VideoDisplay({ videoSrc, timestamp }: { videoSrc: string, timestamp: number }) {
+export default function VideoDisplay({
+  videoSrc,
+  timestamp,
+}: {
+  videoSrc: string;
+  timestamp: number;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -14,10 +21,10 @@ export default function VideoDisplay({ videoSrc, timestamp }: { videoSrc: string
       videoRef.current.pause();
       videoRef.current.currentTime = timestamp;
     }
-  }, [timestamp])
+  }, [timestamp]);
 
   return (
-    <div className="w-full h-full flex justify-center mt-4 rounded-lg">
+    <div className="w-full h-full flex justify-center rounded-lg">
       {videoSrc ? (
         <video
           ref={videoRef}
@@ -28,8 +35,15 @@ export default function VideoDisplay({ videoSrc, timestamp }: { videoSrc: string
           Your browser does not support the video tag.
         </video>
       ) : (
-        <div className="rounded-md bg-black h-[30rem] w-full mx-12 rounded-lg shadow-xl"></div>
+        <div className="rounded-md bg-black h-[30rem] w-full ml-12 mr-8 rounded-lg shadow-xl"></div>
       )}
+      <Details
+        name={undefined}
+        duration={undefined}
+        size={undefined}
+        type={undefined}
+        isFlexible={undefined}
+      />
     </div>
   );
 }

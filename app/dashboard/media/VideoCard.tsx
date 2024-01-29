@@ -40,13 +40,15 @@ export default function VideoCard({
 
   const addIcon = (
     <button
-      onClick={() => { addClip(file) }}
+      onClick={() => {
+        addClip(file);
+      }}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
-        className="w-5 h-5 cursor-pointer"
+        className="w-3 h-3 cursor-pointer"
       >
         <path
           fillRule="evenodd"
@@ -63,7 +65,7 @@ export default function VideoCard({
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
-        className="w-5 h-5 cursor-pointer"
+        className="w-3 h-3 cursor-pointer"
       >
         <path
           fillRule="evenodd"
@@ -80,23 +82,35 @@ export default function VideoCard({
         handleDisplayVideo();
       }}
       key={file.id}
-      className="mx-2 p-3 border-b-[1px] border-gray-300 h-20 flex items-center justify-between"
+      className="h-20 flex items-center justify-between"
     >
-      <div className="flex items-center space-x-4">
+      <div className="">
         <Image
-          className="rounded-md h-16 w-auto"
+          className="rounded-md w-auto"
           src={"/placeholder-image.jpeg"}
           alt="placeholder"
-          width={50}
-          height={50}
+          width={100}
+          height={100}
         ></Image>
-        <p className="text-gray-700 text-xs text-start">{file.display_name}</p>
-      </div>
 
-      <div className="flex space-x-4">
-        {addIcon}
-        {trashIcon}
+        <div className="flex justify-between items-center space-x-3">
+          <p className="text-white text-xs text-start">
+            {truncateText(file.display_name, 10)}
+          </p>
+          <div className="">
+            {addIcon}
+            {trashIcon}
+          </div>
+        </div>
       </div>
     </div>
   );
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength - 3) + "...";
+  } else {
+    return text;
+  }
 }

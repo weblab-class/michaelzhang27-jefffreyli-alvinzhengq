@@ -4,7 +4,7 @@ import DashboardNavbar from "./DashboardNavbar";
 
 export default function Page() {
   return (
-    <div className="mx-12">
+    <div className="">
       <DashboardNavbar />
       <Dashboard />
     </div>
