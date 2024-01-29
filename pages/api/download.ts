@@ -3,7 +3,7 @@ import { join } from "path";
 import { NextApiRequest, NextApiResponse } from "next";
 import { mkdir, stat } from "fs/promises"
 import axios from "axios";
-import { createWriteStream } from "fs";
+import { createWriteStream, existsSync } from "fs";
 import { pipeline } from "stream/promises";
 import admin from 'firebase-admin';
 
@@ -76,7 +76,10 @@ export default async function NextApiHandler(req: NextApiRequest, res: NextApiRe
 
     let fileObj: MediaFile = req.body.file_obj;
 
-    await downloadFile(fileObj, join(uploadDir, `${fileObj.type ? fileObj.id : "song"}.${fileObj.type ? "mp4" : "mpga"}`));
+    if (!existsSync(join(uploadDir, `${fileObj.type ? fileObj.id : "song"}.${fileObj.type ? "mp4" : "mpga"}`))) {
+        await downloadFile(fileObj, join(uploadDir, `${fileObj.type ? fileObj.id : "song"}.${fileObj.type ? "mp4" : "mpga"}`));
+    }
+
 
     res.status(200).end();
 }

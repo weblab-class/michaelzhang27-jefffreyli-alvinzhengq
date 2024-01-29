@@ -25,9 +25,6 @@ export default function trim_handler(
   audio_clip: MediaFile
 ): MediaList {
 
-  console.log(mlist)
-  console.log(audio_clip)
-
   let media_list = new MediaListWrapper(mlist);
   let duration = 0;
 

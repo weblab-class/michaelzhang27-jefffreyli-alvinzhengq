@@ -33,7 +33,7 @@ export default function Timeline({
       tmp_dur += parseFloat(clipList[i].duration) - clipList[i].startDelta - clipList[i].endDelta;
     }
     
-    setTotalDuration(Math.ceil(tmp_dur));
+    setTotalDuration(Math.max(Math.ceil(tmp_dur), 300));
 
   }, [clipList]);
 
@@ -160,11 +160,11 @@ export default function Timeline({
           }}
         >
           {[...Array(totalDuration + 1)].map((timestamp, index) => (
-            <div className="">
-              <span key={index} className="text-sm">
+            <div className={(sliderValue <= 60 && index%4 != 0 ? "invisible" : "") + " w-4"}>
+              <div key={index} className="text-xs mx-auto text-center">
                 {index}
-              </span>
-              <div className="h-[5px] w-[1px] bg-white ml-1" />
+              </div>
+              <div className="h-[5px] w-[1px] bg-white mx-auto" />
             </div>
           ))}
         </div>
