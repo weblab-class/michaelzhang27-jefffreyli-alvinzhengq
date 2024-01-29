@@ -38,9 +38,9 @@ export default function Hero() {
             </div>
           </div>
           <p className="mt-3 max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-            Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-            lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-            fugiat aliqua.
+            Import your favorite video and audio clips then demark the
+            “highlight” in each clip. Then watch our algorithm automatically
+            align the two together!
           </p>
           <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8 ">
             <div className="rounded-md shadow ">

@@ -18,7 +18,7 @@ const transferFeatures = [
     id: 2,
     name: "Automatically saved to your account",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.",
+      "Have the freedom to upload and save your media, picking up work whenever convenient.",
     icon: ScaleIcon,
   },
 ];
@@ -26,15 +26,14 @@ const communicationFeatures = [
   {
     id: 1,
     name: "Place down markers",
-    description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.",
+    description: "Simple as . . .",
     icon: MailIcon,
   },
   {
     id: 2,
     name: "Keybinds for your convenience",
     description:
-      "Use m to mark specific moments and f to label a video as 'flexible'.",
+      "Use the 'm' key to mark specific moments and the 'f' key to label a video as 'flexible'.",
     icon: AnnotationIcon,
   },
 ];
@@ -48,8 +47,8 @@ export default function Features() {
             A better way to edit videos
           </h2>
           <p className="mt-4 max-w-3xl mx-auto text-center text-xl text-gray-500">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
-            magnam voluptatum cupiditate veritatis in, accusamus quisquam.
+            Long gone are the days of tediously lining up video and audio clips.
+            Videomatic's software does that for you, saving hours of time.
           </p>
         </div>
 
@@ -59,10 +58,9 @@ export default function Features() {
               All your creative assets, perfectly organized
             </h3>
             <p className="mt-3 text-lg text-gray-500">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
-              minima sequi recusandae, porro maiores officia assumenda aliquam
-              laborum ab aliquid veritatis impedit odit adipisci optio iste
-              blanditiis facere. Totam, velit.
+              No need to learn complicated software commands and functions.
+              Videomatic's organized layout and drag and drop features allows
+              for an easy and intuitive user experience.
             </p>
 
             <dl className="mt-10 space-y-10">
@@ -133,9 +131,9 @@ export default function Features() {
                 Clip your moments with custom markers
               </h3>
               <p className="mt-3 text-lg text-gray-500">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-                ex obcaecati natus eligendi delectus, cum deleniti sunt in
-                labore nihil quod quibusdam expedita nemo.
+                Use our innovative and intuitive marking system to demark where
+                highlights occur in video and audio clips. This lets our
+                algorithm know where to align the clips.
               </p>
 
               <dl className="mt-10 space-y-10">
