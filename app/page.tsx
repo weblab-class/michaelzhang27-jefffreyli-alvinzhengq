@@ -6,7 +6,7 @@ import CTA from "@/components/Home/CTA";
 
 export default function landingPage() {
   return (
-    <div>
+    <div className="bg-dawn">
       <Navbar />
       <Hero />
       <Features />

@@ -12,11 +12,14 @@ import Image from "next/image";
 
 export default function Navbar() {
   return (
-    <header>
+    <header className="bg-dawn">
       <Popover className="relative">
         <div className="flex justify-between items-center mx-8 lg:mx-12 px-4 py-6 sm:px-6 md:justify-start md:space-x-10 lg:px-8">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <Link href="/" className="flex justify-center items-center space-x-3">
+            <Link
+              href="/"
+              className="flex justify-center items-center space-x-3"
+            >
               <Image
                 className=""
                 width={70}
@@ -24,7 +27,9 @@ export default function Navbar() {
                 src="/videomatic-logo-transparent.png"
                 alt=""
               />
-              <span className="font-semibold text-orange text-3xl font-serif">Videomatic</span>
+              <span className="font-semibold text-orange text-3xl font-serif">
+                Videomatic
+              </span>
             </Link>
           </div>
           <div className="-mr-2 -my-2 md:hidden">
@@ -68,18 +73,20 @@ export default function Navbar() {
               Company
             </a>
           </Popover.Group> */}
-          <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+          <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0 space-x-4">
+
             <Link
               href="/signin"
-              className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+              className="whitespace-nowrap font-medium text-white hover:text-gray-200"
             >
-              Sign in
+              <button className="btn btn-primary text-white">Sign in</button>
             </Link>
+
             <Link
               href="/signup"
-              className="ml-8 whitespace-nowrap inline-flex items-center justify-center bg-orange bg-origin-border px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white hover:from-purple-700 hover:to-indigo-700"
+              className="whitespace-nowrap text-white font-medium hover:text-gray-200"
             >
-              Sign up
+              <button className="btn btn-primary text-white">Sign up</button>
             </Link>
           </div>
         </div>

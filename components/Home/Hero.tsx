@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <div className="relative bg-background overflow-hidden -z-10">
+    <div className="relative bg-dawn overflow-hidden">
       <div
         className="hidden sm:block sm:absolute sm:inset-y-0 sm:h-full sm:w-full"
         aria-hidden="true"
@@ -22,7 +22,7 @@ export default function Hero() {
                 transition={{ duration: 1, delay: 0.5 }}
                 className="text-7xl font-semibold mb-2"
               >
-                <span className="bg-gradient-to-r from-orange via-red-400 to-blush inline-block text-transparent bg-clip-text">
+                <span className="bg-gradient-to-r from-primary via-red-400 to-accent inline-block text-transparent bg-clip-text">
                   Sync and craft
                 </span>
               </motion.p>
@@ -31,13 +31,13 @@ export default function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 1 }}
-                className="text-black text-6xl font-semibold"
+                className="text-white text-6xl font-semibold"
               >
                 your best moments
               </motion.p>
             </div>
           </div>
-          <p className="mt-3 max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+          <p className="mt-3 max-w-md mx-auto text-base text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl text-center">
             Import your favorite video and audio clips then demark the
             “highlight” in each clip. Then watch our algorithm automatically
             align the two together!
@@ -46,9 +46,9 @@ export default function Hero() {
             <div className="rounded-md shadow ">
               <Link
                 href="/signin"
-                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-orange md:py-4 md:text-lg md:px-10"
+                className="whitespace-nowrap font-medium text-white hover:text-gray-200"
               >
-                Get started
+                <button className="btn btn-primary text-white">Get started</button>
               </Link>
             </div>
           </div>
