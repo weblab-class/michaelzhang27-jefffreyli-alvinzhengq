@@ -82,11 +82,10 @@ export default function VideoCard({
         handleDisplayVideo();
       }}
       key={file.id}
-      className="h-20 flex items-center justify-between"
+      className="flex flex-col items-center max-w-28 mx-auto"
     >
-      <div className="">
-        <Image
-          className="rounded-md w-auto"
+      <Image
+          className="rounded-md h-full w-auto"
           src={"/placeholder-image.jpeg"}
           alt="placeholder"
           width={100}
@@ -102,7 +101,6 @@ export default function VideoCard({
             {trashIcon}
           </div>
         </div>
-      </div>
     </div>
   );
 }

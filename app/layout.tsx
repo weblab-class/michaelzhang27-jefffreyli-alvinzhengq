@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -19,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="bg-darkGrey text-white h-screen overflow-x-hidden">
-      <body className={poppins.className}>
+    <html lang="en" className="overflow-x-hidden no-scrollbar">
+      <body className="text-white">
         {children}
       </body>
     </html>

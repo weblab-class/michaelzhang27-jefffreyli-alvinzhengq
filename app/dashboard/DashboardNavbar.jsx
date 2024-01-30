@@ -21,8 +21,8 @@ export default function DashboardNavbar() {
           src="/videomatic-logo-transparent.png"
           alt=""
         />
-        <span className="font-semibold text-black text-xl font-serif bg-gradient-to-r from-orange via-red-400 to-blush inline-block text-transparent bg-clip-text">
-          Videomatic
+        <span className="font-[Slagless] font-semibold text-black text-xl bg-gradient-to-r from-orange via-red-400 to-blush inline-block text-transparent bg-clip-text">
+          VISAGE
         </span>
       </Link>
       <button

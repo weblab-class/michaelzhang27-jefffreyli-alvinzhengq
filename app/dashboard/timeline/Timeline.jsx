@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 
@@ -21,6 +21,7 @@ export default function Timeline({
   const [linePosition, setLinePosition] = useState(100);
   const [totalDuration, setTotalDuration] = useState(0);
   const [selectedClip, setSelectedClip] = useState();
+  const timeLineRef = useRef(null);
 
   const handleMouseMove = (e) => {
     setLinePosition(e.clientX);
@@ -47,14 +48,6 @@ export default function Timeline({
       const newIndex = clipList.findIndex((clip) => clip.id === over.id);
       return arrayMove(clipList, oldIndex, newIndex);
     });
-  };
-
-  const formatTime = (time) => {
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = Math.floor(time % 60);
-    return [minutes, seconds]
-      .map((val) => (val < 10 ? `0${val}` : val))
-      .join(":");
   };
 
   const setMarkerMaster = (id, marker, type) => {
@@ -152,7 +145,7 @@ export default function Timeline({
 
       {/* <div className="h-[1px] bg-black" /> */}
 
-      <div className="overflow-x-auto overflow-y-hidden h-40 p-2 my-4">
+      <div ref={timeLineRef} className="overflow-x-auto overflow-y-hidden p-4 pb-8 my-2 border-2 border-dawn rounded-lg w-[97%] mx-auto">
         <div
           className={`flex justify-between whitespace-nowrap ml-20 -translate-x-3`}
           style={{
@@ -228,8 +221,6 @@ export default function Timeline({
             </DndContext>
           </div>
         </div>
-
-        <div className="h-[1px] bg-black" />
       </div>
     </div>
   );

@@ -9,15 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#FAFBF7",
-        darkerBackground: "#eaede6",
-        orange: "#FDA78F",
-        honeydew: "#d0e1d4",
-        blush: "#d34f73",
-        red: "#EB2328",
-        accent: "#94432a",
-        darkGrey: "#202020",
-        grey: "#373737",
+        midnight: "#141414",
+        dawn: "#1F1F1F",
+        white: "#FFFFFF",
+        primary: "#FF6699",
+        accent: "#70AE6E"
       },
       backgroundImage: {},
     },

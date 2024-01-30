@@ -27,32 +27,19 @@ export default function VideoDisplay({
   }, [timestamp]);
 
   return (
-    <div className="w-full h-full flex justify-center rounded-lg">
+    <div className="w-[45%] h-[50vh] bg-black flex flex-row justify-start rounded-lg mx-auto">
       {videoSrc ? (
         <video
           ref={videoRef}
-          className="rounded-md h-[30rem] mx-4"
+          className="rounded-md bg-black w-full h-[50vh]"
           controls
           src={videoSrc}
         >
           Your browser does not support the video tag.
         </video>
       ) : (
-        <div className="rounded-md bg-black h-[30rem] w-full ml-12 mr-8 rounded-lg shadow-xl"></div>
+        <div className="rounded-md bg-black w-full h-[50vh]"></div>
       )}
-      {
-        clipList.filter((c) => c.url === videoSrc).map((v, i) => {
-          return (
-            <Details
-              name={v.display_name}
-              duration={v.duration}
-              id={v.id}
-              type={v.type ? "Video" : "Audio"}
-              isFlexible={v.flex}
-            />
-          )
-        })
-      }
     </div>
   );
 }

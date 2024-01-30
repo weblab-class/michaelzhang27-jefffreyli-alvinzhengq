@@ -38,24 +38,60 @@ export default function MediaLibrary({
   setSelectedClip: Dispatch<SetStateAction<MediaFile>>;
 }) {
   return (
-    <div className="w-1/2">
-      <div className="flex justify-between">
-        <div className="flex justify-start mb-4 space-x-4">
+    <div className="w-[45%]">
+      <div className="h-[42vh] bg-dawn p-3 rounded-lg overflow-scroll grid grid-cols-5 gap-y-4 no-scrollbar">
+        {previewMediaType == "video"
+          ? uploadedVideoFiles.map((file) => (
+            <VideoCard
+              key={file.id}
+              file={file}
+              uploadedVideoFiles={uploadedVideoFiles}
+              setUploadedVideoFiles={setUploadedVideoFiles}
+              setVideoSrc={setVideoSrc}
+              addClip={addClip}
+            />
+          ))
+          : uploadedAudioFiles.map((file) => (
+            <AudioCard
+              key={file.id}
+              file={file}
+              uploadedAudioFiles={uploadedAudioFiles}
+              setUploadedAudioFiles={setUploadedAudioFiles}
+              setAudioSrc={setAudioSrc}
+              addClip={addClip}
+            />
+          ))}
+      </div>
+
+      <div className="flex justify-between mt-4">
+        <div className="flex justify-start space-x-4 my-auto">
           <button
-            className="bg-grey text-white p-2 rounded-sm text-xs lg:text-sm"
+            className="cursor-pointer relative my-auto
+            text-white bg-gradient-to-r from-pink-500 via-pink-500 to-pink-600 
+            before:bg-gradient-to-br before:from-pink-500 before:via-pink-600 before:to-pink-700 before:opacity-0
+            before:top-0 before:left-0 before:bottom-0 before:right-0 before:content-[''] before:absolute before:transition before:duration-500
+            hover:before:opacity-100 before:rounded-lg before:z-0 z-10
+            shadow-lg shadow-pink-500/50 dark:shadow-lg dark:shadow-pink-800/80 
+            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             onClick={() => setPreviewMediaType("video")}
           >
-            Videos
+            <span className="relative">Video</span>
           </button>
           <button
-            className="bg-grey text-white p-2 rounded-sm text-xs lg:text-sm"
+            className="cursor-pointer relative my-auto
+            text-white bg-gradient-to-r from-pink-500 via-pink-500 to-pink-600 
+            before:bg-gradient-to-br before:from-pink-500 before:via-pink-600 before:to-pink-700 before:opacity-0
+            before:top-0 before:left-0 before:bottom-0 before:right-0 before:content-[''] before:absolute before:transition before:duration-500
+            hover:before:opacity-100 before:rounded-lg before:z-0 z-10
+            shadow-lg shadow-pink-500/50 dark:shadow-lg dark:shadow-pink-800/80 
+            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             onClick={() => setPreviewMediaType("audio")}
           >
-            Audio
+            <span className="relative">Audio</span>
           </button>
         </div>
 
-        <button className="flex justify-end">
+        <button className="flex self-end my-auto">
           <input
             type="file"
             accept={previewMediaType === "video" ? "video/*" : "audio/mpeg"}
@@ -65,39 +101,17 @@ export default function MediaLibrary({
           />
           <label
             htmlFor="media-upload"
-            className="text-white p-2 bg-grey cursor-pointer rounded-sm text-xs lg:text-sm"
+            className="cursor-pointer relative
+            text-white bg-gradient-to-r from-pink-500 via-pink-500 to-pink-600 
+            before:bg-gradient-to-br before:from-pink-500 before:via-pink-600 before:to-pink-700 before:opacity-0
+            before:top-0 before:left-0 before:bottom-0 before:right-0 before:content-[''] before:absolute before:transition before:duration-500
+            hover:before:opacity-100 before:rounded-lg before:z-0 z-10
+            shadow-lg shadow-pink-500/50 dark:shadow-lg dark:shadow-pink-800/80 
+            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
           >
-            Add files
+            <p className="relative">Add Files</p>
           </label>
         </button>
-      </div>
-
-      <div className="overflow-y-auto pt-2 grid grid-cols-5 gap-x-1 gap-y-6">
-        {previewMediaType == "video"
-          ? uploadedVideoFiles.map((file) => (
-              <div>
-                <VideoCard
-                  key={file.id}
-                  file={file}
-                  uploadedVideoFiles={uploadedVideoFiles}
-                  setUploadedVideoFiles={setUploadedVideoFiles}
-                  setVideoSrc={setVideoSrc}
-                  addClip={addClip}
-                />
-              </div>
-            ))
-          : uploadedAudioFiles.map((file) => (
-              <div>
-                <AudioCard
-                  key={file.id}
-                  file={file}
-                  uploadedAudioFiles={uploadedAudioFiles}
-                  setUploadedAudioFiles={setUploadedAudioFiles}
-                  setAudioSrc={setAudioSrc}
-                  addClip={addClip}
-                />
-              </div>
-            ))}
       </div>
     </div>
   );

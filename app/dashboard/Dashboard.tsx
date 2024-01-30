@@ -126,8 +126,8 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="h-80">
-      <div className="py-4 rounded-lg text-center flex space-x-2 mx-4">
+    <div className="h-screen bg-midnight overflow-hidden">
+      <div className="py-4 text-center flex flex-row align-middle justify-around space-x-2 mt-2">
         <MediaLibrary
           previewMediaType={previewMediaType}
           setPreviewMediaType={setPreviewMediaType}
@@ -142,26 +142,29 @@ export default function Dashboard() {
           selectedClip={selectedClip}
           setSelectedClip={setSelectedClip}
         />
-        {/* <div className="border-[0.9px] border-gray-300"> </div> */}
+
+        <div className="h-[50vh] m-auto w-[1px] rounded-lg border-dawn border-[1px]" />
+
         {previewMediaType == "video" ? (
           <VideoDisplay clipList={uploadedVideoFiles} videoSrc={videoSrc} timestamp={previewTimestamp} />
         ) : (
           <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
         )}
       </div>
-      <div className="h-full bg-grey mt-8">
-        <Timeline
-          clipList={clipList}
-          audioClip={audioClip}
-          setClipList={setClipList}
-          setAudioClip={setAudioClip}
-          processClips={processClips}
-          setPreviewTimestamp={setPreviewTimestamp}
-          setPreviewMediaType={setPreviewMediaType}
-          setVideoSrc={setVideoSrc}
-          setAudioSrc={setAudioSrc}
-        />
-      </div>
+
+      <div className="h-[1px] m-auto mt-4 w-[97vw] rounded-lg border-dawn border-[1px]" />
+
+      <Timeline
+        clipList={clipList}
+        audioClip={audioClip}
+        setClipList={setClipList}
+        setAudioClip={setAudioClip}
+        processClips={processClips}
+        setPreviewTimestamp={setPreviewTimestamp}
+        setPreviewMediaType={setPreviewMediaType}
+        setVideoSrc={setVideoSrc}
+        setAudioSrc={setAudioSrc}
+      />
     </div>
   );
 }

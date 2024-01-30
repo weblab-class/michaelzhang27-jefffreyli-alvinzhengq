@@ -24,10 +24,11 @@
   :root {}
 }
 
-body {
-  background-color: "#FDA78F";
-}
-
-.orange-glow {
-  box-shadow: 0 0 10px #fda78f, 0 0 20px #fda78f;
+@font-face {
+  font-family: 'Slagless';
+  src: url('/fonts/Slagless.woff2') format('woff2'),
+      url('/fonts/Slagless.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
