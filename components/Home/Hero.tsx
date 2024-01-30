@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <div className="relative bg-dawn overflow-hidden -z-10">
+    <div className="relative bg-dawn overflow-hidden">
       <div
         className="hidden sm:block sm:absolute sm:inset-y-0 sm:h-full sm:w-full"
         aria-hidden="true"

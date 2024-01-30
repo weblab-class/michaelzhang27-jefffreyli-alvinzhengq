@@ -68,7 +68,7 @@ export default function Features() {
               {transferFeatures.map((item) => (
                 <div key={item.id} className="relative">
                   <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-orange text-white">
+                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md text-white">
                       <item.icon className="h-6 w-6" aria-hidden="true" />
                     </div>
                     <p className="ml-16 text-lg leading-6 font-medium text-gray-900 bg-gradient-to-r from-primary via-red-400 to-accent inline-block text-transparent bg-clip-text">
