@@ -42,25 +42,25 @@ export default function MediaLibrary({
       <div className="h-[42vh] bg-dawn p-3 rounded-lg overflow-scroll grid grid-cols-5 gap-y-4 no-scrollbar">
         {previewMediaType == "video"
           ? uploadedVideoFiles.map((file) => (
-            <VideoCard
-              key={file.id}
-              file={file}
-              uploadedVideoFiles={uploadedVideoFiles}
-              setUploadedVideoFiles={setUploadedVideoFiles}
-              setVideoSrc={setVideoSrc}
-              addClip={addClip}
-            />
-          ))
+              <VideoCard
+                key={file.id}
+                file={file}
+                uploadedVideoFiles={uploadedVideoFiles}
+                setUploadedVideoFiles={setUploadedVideoFiles}
+                setVideoSrc={setVideoSrc}
+                addClip={addClip}
+              />
+            ))
           : uploadedAudioFiles.map((file) => (
-            <AudioCard
-              key={file.id}
-              file={file}
-              uploadedAudioFiles={uploadedAudioFiles}
-              setUploadedAudioFiles={setUploadedAudioFiles}
-              setAudioSrc={setAudioSrc}
-              addClip={addClip}
-            />
-          ))}
+              <AudioCard
+                key={file.id}
+                file={file}
+                uploadedAudioFiles={uploadedAudioFiles}
+                setUploadedAudioFiles={setUploadedAudioFiles}
+                setAudioSrc={setAudioSrc}
+                addClip={addClip}
+              />
+            ))}
       </div>
 
       <div className="flex justify-between mt-4">

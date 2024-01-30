@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingScreen from "./LoadingScreen";
 // pages/index.js
 
 import MovingLine from "./MovingLine";
@@ -7,7 +8,7 @@ import MovingLine from "./MovingLine";
 const HomePage = () => {
   return (
     <div className="">
-      <MovingLine />
+      <LoadingScreen subtitle={"Loading some stuff"} />
     </div>
   );
 };
