@@ -9,7 +9,7 @@ import { spawn } from "child_process";
 
 export const config = {
     api: {
-        bodyParser: false,
+        bodyParser: true,
     },
 };
 
