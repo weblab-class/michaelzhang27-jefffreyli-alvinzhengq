@@ -5,25 +5,46 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingScreen from "../testroute/LoadingScreen";
 
 export default function signUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-    const { result, error } = signUp(email, password);
+    setLoading(true);
+    const { result, error } = await signUp(email, password);
+    setLoading(false);
+
     if (error) {
-      return console.log("error");
+      return toast.error("Something went wrong. Please try again.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
-    return router.push("/");
+    return router.push("/dashboard");
   };
+
+  if (loading) {
+    return <LoadingScreen subtitle="Signing up ..." />; // Render LoadingScreen when loading
+  }
 
   return (
     <>
       <div className="flex">
+        <ToastContainer />
         <div className="h-screen flex flex-col justify-center pb-20 px-6 lg:px-8 w-1/2 order-2">
           <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
             {/* <img
@@ -40,7 +61,7 @@ export default function signUpPage() {
           </div>
 
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            <div className=" py-8 px-4">
+            <div className="py-8 px-4">
               <form
                 onSubmit={handleSignUp}
                 className="space-y-6"
@@ -62,7 +83,7 @@ export default function signUpPage() {
                       type="text"
                       autoComplete="name"
                       required
-                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 sm:text-sm"
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 sm:text-sm focus:outline-none"
                       onChange={(e) => setName(e.target.value)}
                     />
                   </div>
@@ -83,7 +104,7 @@ export default function signUpPage() {
                       type="email"
                       autoComplete="email"
                       required
-                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 sm:text-sm"
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 sm:text-sm focus:outline-none"
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
@@ -135,8 +156,11 @@ export default function signUpPage() {
 
                 <div>
                   <button
+                    onClick={(e) => {
+                      handleSignUp(e);
+                    }}
                     type="submit"
-                    className=" w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-700"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-700 cursor-pointer"
                   >
                     Sign up
                   </button>

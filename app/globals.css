@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer utilities {
-
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -18,16 +17,22 @@
   }
 }
 
-:root {}
+:root {
+}
 
 @media (prefers-color-scheme: dark) {
-  :root {}
+  :root {
+  }
+}
+
+input {
+  color: black;
 }
 
 @font-face {
-  font-family: 'Slagless';
-  src: url('/fonts/Slagless.woff2') format('woff2'),
-      url('/fonts/Slagless.woff') format('woff');
+  font-family: "Slagless";
+  src: url("/fonts/Slagless.woff2") format("woff2"),
+    url("/fonts/Slagless.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;

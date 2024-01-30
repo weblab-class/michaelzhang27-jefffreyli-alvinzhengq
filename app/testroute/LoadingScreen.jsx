@@ -3,7 +3,7 @@ import { ColorRing } from "react-loader-spinner";
 
 const LoadingScreen = ({ subtitle }) => {
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center bg-dawn">
       <div>
         <ColorRing
           visible={true}

@@ -12,19 +12,18 @@ import AudioDisplay from "./media/AudioDisplay";
 import { MediaFile, MediaList, MediaType } from "./types";
 import { fetchMedia, uploadToFirebase } from "./lib";
 import axios from "axios";
-
 import trim_handler from "@/components/formula/trim_algorithm";
+import LoadingScreen from "../testroute/LoadingScreen";
 
 export default function Dashboard() {
+  const [loading, setLoading] = useState(false);
+
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [audioSrc, setAudioSrc] = useState<string>("");
-
   const [uploadedVideoFiles, setUploadedVideoFiles] = useState<MediaList>([]);
   const [uploadedAudioFiles, setUploadedAudioFiles] = useState<MediaList>([]);
-
   const [clipList, setClipList] = useState<MediaList>([]);
   const [audioClip, setAudioClip] = useState<MediaFile>();
-
   const [previewMediaType, setPreviewMediaType] = useState<string>("video");
   const [previewTimestamp, setPreviewTimestamp] = useState<number>(0);
 
@@ -68,6 +67,7 @@ export default function Dashboard() {
         setUploadedAudioFiles
       );
     }
+
   };
 
   const processClips = async () => {
@@ -125,6 +125,10 @@ export default function Dashboard() {
     fetchMedia(setUploadedVideoFiles, setUploadedAudioFiles);
   }, []);
 
+  if (loading) {
+    return <LoadingScreen subtitle="Importing media ..." />;
+  }
+
   return (
     <div className="h-screen bg-midnight overflow-hidden">
       <div className="py-4 text-center flex flex-row align-middle justify-around space-x-2 mt-2">
@@ -146,7 +150,11 @@ export default function Dashboard() {
         <div className="h-[50vh] m-auto w-[1px] rounded-lg border-dawn border-[1px]" />
 
         {previewMediaType == "video" ? (
-          <VideoDisplay clipList={uploadedVideoFiles} videoSrc={videoSrc} timestamp={previewTimestamp} />
+          <VideoDisplay
+            clipList={uploadedVideoFiles}
+            videoSrc={videoSrc}
+            timestamp={previewTimestamp}
+          />
         ) : (
           <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
         )}

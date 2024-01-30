@@ -42,7 +42,7 @@ export default function Hero() {
             “highlight” in each clip. Then watch our algorithm automatically
             align the two together!
           </p>
-          <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8 ">
+          <div className="mt-5 max-w-md mx-auto flex justify-center md:mt-8 ">
             <div className="rounded-md shadow ">
               <Link
                 href="/signin"
@@ -55,8 +55,8 @@ export default function Hero() {
         </main>
       </div>
 
-      <div className="bg-white w-3/4 h-[35rem] flex justify-center rounded-lg mx-auto border-[1px] border-gray-100 shadow-lg mb-24 flex justify-center items-center">
-        <div className="-z-10 w-[200rem] h-[40rem] bg-orange rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
+      <div className="  w-3/4 h-[50vh] flex justify-center rounded-lg mx-auto border-[1px] border-gray-100 shadow-lg mb-24 flex justify-center items-center">
+        <div className="-z-10 w-[160vh] h-[60vh] bg-primary rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
         {/* <div className="-z-10 w-[175rem] h-[40rem] bg-orange rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div> */}
       </div>
     </div>
