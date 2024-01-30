@@ -67,10 +67,10 @@ export default function Features() {
               {transferFeatures.map((item) => (
                 <div key={item.id} className="relative">
                   <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-orange text-white">
+                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md text-white">
                       <item.icon className="h-6 w-6" aria-hidden="true" />
                     </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                    <p className="ml-16 text-lg leading-6 font-medium text-white">
                       {item.name}
                     </p>
                   </dt>
@@ -127,7 +127,7 @@ export default function Features() {
         <div className="relative mt-12 sm:mt-16 lg:mt-24">
           <div className="lg:grid lg:grid-flow-row-dense lg:grid-cols-2 lg:gap-8 lg:items-center">
             <div className="lg:col-start-2">
-              <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight sm:text-3xl">
+              <h3 className="text-2xl font-extrabold text-white tracking-tight sm:text-3xl">
                 Clip your moments with custom markers
               </h3>
               <p className="mt-3 text-lg text-gray-500">
@@ -143,7 +143,7 @@ export default function Features() {
                       <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-orange text-white">
                         <item.icon className="h-6 w-6" aria-hidden="true" />
                       </div>
-                      <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                      <p className="ml-16 text-lg leading-6 font-medium text-white">
                         {item.name}
                       </p>
                     </dt>
