@@ -25,11 +25,11 @@ export default function MediaBlock({
   };
 
   const handleAddMarker = (event) => {
-    if (event.key.toLowerCase() === "m" && marker_mode) {
-      console.log("m key is pressed");
+    if (event.key.toLowerCase() === "m") {
       const rect = event.target.getBoundingClientRect();
       const x = mousePosition.x - rect.left;
       const relativeX = (x / rect.width) * 100;
+      console.log(relativeX);
       addMarker(relativeX);
     }
   };
@@ -91,8 +91,6 @@ export default function MediaBlock({
     }
   };
 
-  
-
   const [blockStyle, setBlockStyle] = useState({
     transition,
     transform: CSS.Transform.toString(transform),
@@ -127,8 +125,8 @@ export default function MediaBlock({
       {...(marker_mode ? {} : listeners)}
       // onClick={marker_mode ? handleAddMarker : undefined}
       onContextMenu={marker_mode ? handleDeleteMarker : undefined}
-      onMouseMove={(e) => {
-        handleMouseMove(e);
+      onMouseMove={async (e) => {
+        await handleMouseMove(e);
         setPreviewMediaType(media.type ? "video" : "audio");
         setSrc(media.url);
 
