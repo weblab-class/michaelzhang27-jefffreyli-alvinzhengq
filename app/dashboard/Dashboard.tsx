@@ -16,7 +16,7 @@ import trim_handler from "@/components/formula/trim_algorithm";
 import LoadingScreen from "../testroute/LoadingScreen";
 
 export default function Dashboard() {
-  const [loading, setLoading] = useState(false);
+  const [addingToTimelineLoading, setAddingToTimelineLoading] = useState(false);
 
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [audioSrc, setAudioSrc] = useState<string>("");
@@ -67,7 +67,6 @@ export default function Dashboard() {
         setUploadedAudioFiles
       );
     }
-
   };
 
   const processClips = async () => {
@@ -93,6 +92,8 @@ export default function Dashboard() {
   };
 
   const addClip = async (clip: MediaFile) => {
+    setAddingToTimelineLoading(true);
+
     let jwt = (await auth.currentUser?.getIdToken()) || "";
 
     await axios.post(
@@ -110,6 +111,8 @@ export default function Dashboard() {
     } else {
       setAudioClip(clip);
     }
+
+    setAddingToTimelineLoading(false);
   };
 
   useEffect(() => {
@@ -125,8 +128,8 @@ export default function Dashboard() {
     fetchMedia(setUploadedVideoFiles, setUploadedAudioFiles);
   }, []);
 
-  if (loading) {
-    return <LoadingScreen subtitle="Importing media ..." />;
+  if (addingToTimelineLoading) {
+    return <LoadingScreen subtitle="Adding to timeline ..." />;
   }
 
   return (
