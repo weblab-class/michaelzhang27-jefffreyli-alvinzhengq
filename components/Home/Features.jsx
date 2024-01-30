@@ -1,10 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
 import {
   AnnotationIcon,
-  GlobeAltIcon,
-  LightningBoltIcon,
   MailIcon,
-  ScaleIcon,
+  FilmIcon,
+  BookmarkIcon,
+  KeyIcon,
+  PencilIcon,
 } from "@heroicons/react/outline";
 
 const transferFeatures = [
@@ -12,14 +13,14 @@ const transferFeatures = [
     id: 1,
     name: "Import media from your device",
     description: "Whether it's audio or video, we'll handle all of it.",
-    icon: GlobeAltIcon,
+    icon: FilmIcon,
   },
   {
     id: 2,
     name: "Automatically saved to your account",
     description:
       "Have the freedom to upload and save your media, picking up work whenever convenient.",
-    icon: ScaleIcon,
+    icon: BookmarkIcon,
   },
 ];
 const communicationFeatures = [
@@ -27,14 +28,14 @@ const communicationFeatures = [
     id: 1,
     name: "Place down markers",
     description: "Simple as . . .",
-    icon: MailIcon,
+    icon: PencilIcon,
   },
   {
     id: 2,
     name: "Keybinds for your convenience",
     description:
       "Use the 'm' key to mark specific moments and the 'f' key to label a video as 'flexible'.",
-    icon: AnnotationIcon,
+    icon: KeyIcon,
   },
 ];
 
@@ -70,7 +71,7 @@ export default function Features() {
                     <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-orange text-white">
                       <item.icon className="h-6 w-6" aria-hidden="true" />
                     </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900 bg-gradient-to-r from-primary via-red-400 to-accent inline-block text-transparent bg-clip-text">
                       {item.name}
                     </p>
                   </dt>
@@ -127,7 +128,7 @@ export default function Features() {
         <div className="relative mt-12 sm:mt-16 lg:mt-24">
           <div className="lg:grid lg:grid-flow-row-dense lg:grid-cols-2 lg:gap-8 lg:items-center">
             <div className="lg:col-start-2">
-              <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight sm:text-3xl">
+              <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight sm:text-3xl text-white">
                 Clip your moments with custom markers
               </h3>
               <p className="mt-3 text-lg text-gray-500">
@@ -143,7 +144,7 @@ export default function Features() {
                       <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-orange text-white">
                         <item.icon className="h-6 w-6" aria-hidden="true" />
                       </div>
-                      <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                      <p className="ml-16 text-lg leading-6 font-medium text-gray-900 bg-gradient-to-r from-primary via-red-400 to-accent inline-block text-transparent bg-clip-text">
                         {item.name}
                       </p>
                     </dt>

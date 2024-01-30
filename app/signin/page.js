@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function signInPage() {
   const [email, setEmail] = useState("");
@@ -15,7 +17,16 @@ export default function signInPage() {
     event.preventDefault();
     const { result, error } = await signIn(email, password);
     if (error) {
-      return console.log("error");
+      return toast("Invalid Login Credentials. Please Try Again.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
     router.push("/dashboard");
   };
@@ -23,6 +34,7 @@ export default function signInPage() {
   return (
     <>
       <div className="flex">
+        <ToastContainer />
         <div className="h-screen flex flex-col justify-center pb-20 px-6 lg:px-8 w-1/2">
           <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
             {/* <img
