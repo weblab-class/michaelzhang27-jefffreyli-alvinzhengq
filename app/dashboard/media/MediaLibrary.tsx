@@ -39,7 +39,7 @@ export default function MediaLibrary({
 }) {
   return (
     <div className="w-[45%]">
-      <div className="h-[42vh] bg-dawn p-3 rounded-lg overflow-scroll grid grid-cols-5 gap-y-4 no-scrollbar">
+      <div className="h-[46vh] bg-dawn p-3 rounded-lg overflow-scroll grid grid-cols-5 gap-y-4 no-scrollbar">
         {previewMediaType == "video"
           ? uploadedVideoFiles.map((file) => (
             <VideoCard

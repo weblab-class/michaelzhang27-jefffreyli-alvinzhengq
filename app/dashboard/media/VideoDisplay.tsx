@@ -27,11 +27,11 @@ export default function VideoDisplay({
   }, [timestamp]);
 
   return (
-    <div className="w-[45%] h-[50vh] bg-black flex flex-row justify-start rounded-lg mx-auto">
+    <div className="w-[45%] bg-black flex flex-row justify-start rounded-lg mx-auto">
       {videoSrc ? (
         <video
           ref={videoRef}
-          className="rounded-md bg-black w-full h-[50vh]"
+          className="rounded-md bg-black w-full h-[54vh]"
           controls
           src={videoSrc}
         >

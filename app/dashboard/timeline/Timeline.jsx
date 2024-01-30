@@ -24,16 +24,16 @@ export default function Timeline({
   const timeLineRef = useRef(null);
 
   const handleMouseMove = (e) => {
-    setLinePosition(e.clientX);
+    setLinePosition(Math.min(Math.max(e.clientX, timeLineRef.current.getBoundingClientRect().left), timeLineRef.current.getBoundingClientRect().right));
   };
 
   useEffect(() => {
     let tmp_dur = 0;
-    
+
     for (let i = 0; i < clipList.length; i++) {
       tmp_dur += parseFloat(clipList[i].duration) - clipList[i].startDelta - clipList[i].endDelta;
     }
-    
+
     setTotalDuration(Math.max(Math.ceil(tmp_dur), 300));
 
   }, [clipList]);
@@ -88,7 +88,7 @@ export default function Timeline({
       className="mx-auto relative bg-grey pt-6 px-2 shadow-md h-full"
       onMouseMove={handleMouseMove}
     >
-      <div className="flex justify-between h-14 ml-5 mr-5">
+      <div className="flex justify-between h-14 w-[96vw] m-auto ml-2">
         {/* Buttons */}
         <div className="flex justify-between items-center w-76 space-x-2">
           <button
@@ -120,9 +120,9 @@ export default function Timeline({
 
         {/* Spacer */}
         {/* Timestamp Tracker */}
-        <div className="flex justify-center items-center">
+        {/* <div className="flex justify-center items-center">
           <span>00:03.84 / 00:13.60</span>
-        </div>
+        </div> */}
         {/* Timestamp Tracker */}
         {/* Spacer */}
         <div style={{ width: "145px" }}></div>
@@ -145,7 +145,7 @@ export default function Timeline({
 
       {/* <div className="h-[1px] bg-black" /> */}
 
-      <div ref={timeLineRef} className="overflow-x-auto overflow-y-hidden p-4 pb-8 my-2 border-2 border-dawn rounded-lg w-[97%] mx-auto">
+      <div ref={timeLineRef} className="overflow-x-auto overflow-y-hidden p-4 pb-2 my-2 border-2 border-dawn rounded-lg w-[97%] mx-auto no-scrollbar">
         <div
           className={`flex justify-between whitespace-nowrap ml-20 -translate-x-3`}
           style={{
@@ -153,8 +153,8 @@ export default function Timeline({
           }}
         >
           {[...Array(totalDuration + 1)].map((timestamp, index) => (
-            <div className={(sliderValue <= 60 && index%4 != 0 ? "invisible" : "") + " w-4"}>
-              <div key={index} className="text-xs mx-auto text-center">
+            <div className="w-4">
+              <div key={index} className={(sliderValue <= 120 && index % 4 != 0 ? "invisible" : "") + " text-xs mx-auto text-center"}>
                 {index}
               </div>
               <div className="h-[5px] w-[1px] bg-white mx-auto" />
@@ -162,8 +162,12 @@ export default function Timeline({
           ))}
         </div>
 
-        <div className="flex items-center space-x-4">
-          <p>Video</p>
+        <div className="h-[1px] m-auto mt-2 w-[97vw] rounded-lg border-dawn border-[1px]" />
+        <div className="h-[16.5vh] m-auto mt-2 w-[1px] rounded-lg border-dawn border-[1px] absolute left-[6.7rem] -translate-y-1" />
+
+
+        <div className="flex items-center space-x-4 text-center">
+          <p className="font-bold text-sm ml-2">Video</p>
           <div className="min-h-16 p-2">
             <DndContext
               collisionDetection={closestCenter}
@@ -196,12 +200,12 @@ export default function Timeline({
           </div>
         </div>
 
-        {/* <div className="h-[1px] bg-black" /> */}
+        <div className="h-[1px] m-auto w-[97vw] rounded-lg border-dawn border-[1px]" />
 
-        <div className="min-h-16 py-4">
-          <div className="flex items-center space-x-4">
-            <p className="pt-2 mr-2">Audio</p>
-            <DndContext collisionDetection={closestCenter} onDragEnd={() => {}}>
+        <div className="flex items-center space-x-4">
+          <p className="font-bold text-sm ml-2">Audio</p>
+          <div className="min-h-16 p-2">
+            <DndContext collisionDetection={closestCenter} onDragEnd={() => { }}>
               <SortableContext items={clipList}>
                 <div className="flex">
                   {audioClip && (

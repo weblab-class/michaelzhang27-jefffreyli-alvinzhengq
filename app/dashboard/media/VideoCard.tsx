@@ -85,8 +85,8 @@ export default function VideoCard({
       className="flex flex-col items-center max-w-28 mx-auto"
     >
       <Image
-          className="rounded-md h-full w-auto"
-          src={"/placeholder-image.jpeg"}
+          className="rounded-md h-20 w-auto"
+          src={file.url.replace("mp4", "png")}
           alt="placeholder"
           width={100}
           height={100}

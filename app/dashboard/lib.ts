@@ -49,6 +49,10 @@ const loadAudio = (url: string): Promise<HTMLAudioElement> =>
         }
     });
 
+function timeout(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export const fetchMedia = async (
     setUploadedVideoFiles: Dispatch<SetStateAction<MediaList>>,
     setUploadedAudioFiles: Dispatch<SetStateAction<MediaList>>
@@ -66,7 +70,7 @@ export const fetchMedia = async (
     try {
         const vResult = await listAll(videosRef);
         const videoObjects = await Promise.all(
-            vResult.items.map(async (itemRef) => {
+            vResult.items.filter(itemRef => !itemRef.name.includes(".png")).map(async (itemRef) => {
                 const url = await getDownloadURL(itemRef);
                 const uniqueID = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
                 const video = await loadVideo(url);
