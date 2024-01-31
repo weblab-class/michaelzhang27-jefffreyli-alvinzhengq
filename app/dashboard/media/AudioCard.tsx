@@ -1,10 +1,12 @@
 import { deleteObject, getStorage } from "@firebase/storage";
 import { ref } from "firebase/storage";
 import Image from "next/image";
-import { MediaFile, MediaList } from "../types";
 import { Dispatch, SetStateAction } from "react";
+import { MediaFile, MediaList } from "../types";
 
-export default function AudioCard({
+import { CiTrash, CiImport } from "react-icons/ci";
+
+export default function VideoCard({
   file,
   uploadedAudioFiles,
   setUploadedAudioFiles,
@@ -31,48 +33,12 @@ export default function AudioCard({
       console.log(error);
     }
 
-    const updatedAudioFiles = uploadedAudioFiles.filter(
+    const updatedVideoFiles = uploadedAudioFiles.filter(
       (file) => file.url !== audioPath
     );
 
-    setUploadedAudioFiles(updatedAudioFiles);
+    setUploadedAudioFiles(updatedVideoFiles);
   };
-
-  const addIcon = (
-    <button
-      onClick={() => { addClip(file) }}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="w-3 h-3 cursor-pointer"
-      >
-        <path
-          fillRule="evenodd"
-          d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z"
-          clipRule="evenodd"
-        />
-      </svg>
-    </button>
-  );
-
-  const trashIcon = (
-    <button onClick={() => deleteAudio(file.url)}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="w-3 h-3 cursor-pointer"
-      >
-        <path
-          fillRule="evenodd"
-          d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
-          clipRule="evenodd"
-        />
-      </svg>
-    </button>
-  );
 
   return (
     <div
@@ -80,25 +46,27 @@ export default function AudioCard({
         handleDisplayAudio();
       }}
       key={file.id}
-      className="flex flex-col items-center max-w-28 mx-auto"
+      className="relative flex flex-col items-center hover:scale-[1.02] transition duration-300 w-[11.5rem] max-h-[15vh] group cursor-pointer mx-auto"
     >
       <Image
-          className="rounded-md w-auto"
-          src={"/placeholder-image.jpeg"}
-          alt="placeholder"
-          width={100}
-          height={100}
-        ></Image>
+        className="rounded-md h-auto w-full transition duration-300 group-hover:grayscale brightness-50"
+        src={"/placeholder-image.jpeg"}
+        alt="placeholder"
+        width={100}
+        height={100}
+      ></Image>
 
-        <div className="flex justify-between items-center space-x-3">
-          <p className="text-white text-xs text-start">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 transition duration-300 group-hover:opacity-100">
+        <div className="flex flex-col align-middle justify-center">
+          <p className="text-white font-thin text-lg text-start">
             {truncateText(file.display_name, 10)}
           </p>
-          <div className="">
-            {addIcon}
-            {trashIcon}
+          <div className="flex flex-row justify-evenly align-middle text-lg">
+            <CiImport onClick={() => addClip(file)} className="hover:fill-primary transition duration-300" />
+            <CiTrash onClick={() => deleteAudio(file.url)} className="hover:fill-accent transition duration-300" />
           </div>
         </div>
+      </div>
     </div>
   );
 }

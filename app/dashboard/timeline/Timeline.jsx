@@ -5,6 +5,8 @@ import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import Block from "./Block";
 import HoverLine from "./HoverLine";
 
+import { CiBookmarkPlus, CiAlignLeft, CiRead } from "react-icons/ci";
+
 export default function Timeline({
   clipList,
   audioClip,
@@ -37,6 +39,21 @@ export default function Timeline({
     setTotalDuration(Math.max(Math.ceil(tmp_dur), 300));
 
   }, [clipList]);
+
+  useEffect(() => {
+    const el = timeLineRef.current;
+    if (el) {
+      const onWheel = e => {
+        if (e.deltaY == 0) return;
+        e.preventDefault();
+        el.scrollTo({
+          left: (el.scrollLeft + e.deltaY) * 10
+        });
+      };
+      el.addEventListener("wheel", onWheel);
+      return () => el.removeEventListener("wheel", onWheel);
+    }
+  }, []);
 
   const onDragEnd = (event) => {
     const { active, over } = event;
@@ -85,11 +102,11 @@ export default function Timeline({
 
   return (
     <div
-      className="mx-auto relative bg-grey pt-6 px-2 shadow-md h-full"
+      className="w-auto h-[25vh] overflow-hidden shadow-xl shadow-black/20 rounded-2xl
+      flex flex-row justify-start align-middle relative"
       onMouseMove={handleMouseMove}
     >
-      <div className="flex justify-between h-14 w-[96vw] m-auto ml-2">
-        {/* Buttons */}
+      {/* <div className="flex justify-between">
         <div className="flex justify-between items-center w-76 space-x-2">
           <button
             className="bg-darkGrey rounded-sm text-white px-4 py-1 cursor-pointer text-xs lg:text-sm "
@@ -118,15 +135,6 @@ export default function Timeline({
           </button>
         </div>
 
-        {/* Spacer */}
-        {/* Timestamp Tracker */}
-        {/* <div className="flex justify-center items-center">
-          <span>00:03.84 / 00:13.60</span>
-        </div> */}
-        {/* Timestamp Tracker */}
-        {/* Spacer */}
-        <div style={{ width: "145px" }}></div>
-        {/* Min/Max Timeline Control */}
         <div className="flex justify-center items-center">
           <input
             type="range"
@@ -138,91 +146,113 @@ export default function Timeline({
             max="200"
           />
         </div>
-      </div>
+      </div> */}
 
-      {/* Video and Audio Main Timeline */}
       <HoverLine linePosition={linePosition} />
 
-      {/* <div className="h-[1px] bg-black" /> */}
+      <div className="h-[25vh] w-[30vw] bg-twilight flex flex-col align-middle justify-around shadow-2xl shadow-black z-50">
+        <div className="tooltip tooltip-right tooltip-accent z-[100]" data-tip="Marker Mode">
+          <CiBookmarkPlus className="w-12 scale-[1.56] cursor-pointer hover:!fill-primary transition duration-300" onClick={() => {
+            setMarkerMode(true);
+          }} style={{
+            fill: markerMode ? "#74dafe" : "#5a5b60"
+          }} />
+        </div>
 
-      <div ref={timeLineRef} className="overflow-x-auto overflow-y-hidden p-4 pb-2 my-2 border-2 border-dawn rounded-lg w-[97%] mx-auto no-scrollbar">
+        <div className="tooltip tooltip-right tooltip-accent z-[100]" data-tip="Timeline Mode">
+          <CiAlignLeft className="w-12 scale-[1.56] cursor-pointer hover:!fill-primary transition duration-300" onClick={() => {
+            setMarkerMode(false);
+          }} style={{
+            fill: markerMode ? "#5a5b60" : "#74dafe"
+          }} />
+        </div>
+
+        <div className="tooltip tooltip-right tooltip-accent z-[100]" data-tip="Compile Video Preview">
+          <CiRead className="fill-grey_accent w-12 scale-[1.56] cursor-pointer hover:fill-primary transition duration-300" onClick={() => {
+            processClips();
+          }} />
+        </div>
+      </div>
+
+      <div ref={timeLineRef} className="relative flex flex-col align-middle overflow-x-scroll no-scrollbar bg-dawn">
         <div
-          className={`flex justify-between whitespace-nowrap ml-20 -translate-x-3`}
+          className="flex justify-between whitespace-nowrap bg-twilight h-[4.8vh]"
           style={{
             width: `${totalDuration * 30 * (sliderValue / 50) + 2}px`
           }}
         >
           {[...Array(totalDuration + 1)].map((timestamp, index) => (
-            <div className="w-4">
-              <div key={index} className={(sliderValue <= 120 && index % 4 != 0 ? "invisible" : "") + " text-xs mx-auto text-center"}>
-                {index}
+            <div className="relative w-4 mt-auto pl-4">
+              <div key={index} className={(sliderValue <= 120 && index % 4 != 0 ? "invisible" : "") + " absolute left-1 bottom-3 text-xs font-semibold mx-auto text-center text-grey_accent"}>
+                {`0${Math.floor(index / 60)}:${(index % 60 < 10) ? "0" + (index % 60) : (index % 60)}`}
               </div>
-              <div className="h-[5px] w-[1px] bg-white mx-auto" />
+              <div className="h-[8px] w-[3px] rounded-xl bg-grey_accent mx-auto" />
             </div>
           ))}
         </div>
 
-        <div className="h-[1px] m-auto mt-2 w-[97vw] rounded-lg border-dawn border-[1px]" />
-        <div className="h-[16.5vh] m-auto mt-2 w-[1px] rounded-lg border-dawn border-[1px] absolute left-[6.7rem] -translate-y-1" />
+        <div className="my-auto ml-1">
+          <div className="flex items-center space-x-4 text-center">
+            <div className="min-h-16 p-2">
+              <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={onDragEnd}
+              >
+                <SortableContext items={clipList}>
+                  <div className="flex">
+                    {/* Why PROPS Passed as undefined ?? */}
+                    {clipList.map((clip) => (
+                      <div
+                        onClick={() => {
+                          setSelectedClip(clip);
+                        }}
+                      >
+                        <Block
+                          key={clip.id}
+                          media={clip}
+                          scalar={sliderValue}
+                          marker_mode={markerMode}
+                          setPreviewMediaType={setPreviewMediaType}
+                          setSrc={setVideoSrc}
+                          setPreviewTimestamp={setPreviewTimestamp}
+                          setMarkerMaster={setMarkerMaster}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            </div>
+          </div>
 
+          <div className="absolute top-20">
+            <div className="fixed h-[1px] w-[63.2vw] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0" />
+          </div>
+          <div className="absolute top-36">
+            <div className="fixed h-[1px] w-[63.2vw] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0" />
+          </div>
 
-        <div className="flex items-center space-x-4 text-center">
-          <p className="font-bold text-sm ml-2">Video</p>
-          <div className="min-h-16 p-2">
-            <DndContext
-              collisionDetection={closestCenter}
-              onDragEnd={onDragEnd}
-            >
-              <SortableContext items={clipList}>
-                <div className="flex">
-                  {/* Why PROPS Passed as undefined ?? */}
-                  {clipList.map((clip) => (
-                    <div
-                      onClick={() => {
-                        setSelectedClip(clip);
-                      }}
-                    >
+          <div className="flex items-center space-x-4">
+            <div className="relative min-h-16 p-2">
+              <DndContext collisionDetection={closestCenter} onDragEnd={() => { }}>
+                <SortableContext items={clipList}>
+                  <div className="flex">
+                    {audioClip && (
                       <Block
-                        key={clip.id}
-                        media={clip}
+                        key={audioClip.id}
+                        media={audioClip}
                         scalar={sliderValue}
                         marker_mode={markerMode}
                         setPreviewMediaType={setPreviewMediaType}
-                        setSrc={setVideoSrc}
+                        setSrc={setAudioSrc}
                         setPreviewTimestamp={setPreviewTimestamp}
                         setMarkerMaster={setMarkerMaster}
                       />
-                    </div>
-                  ))}
-                </div>
-              </SortableContext>
-            </DndContext>
-          </div>
-        </div>
-
-        <div className="h-[1px] m-auto w-[97vw] rounded-lg border-dawn border-[1px]" />
-
-        <div className="flex items-center space-x-4">
-          <p className="font-bold text-sm ml-2">Audio</p>
-          <div className="min-h-16 p-2">
-            <DndContext collisionDetection={closestCenter} onDragEnd={() => { }}>
-              <SortableContext items={clipList}>
-                <div className="flex">
-                  {audioClip && (
-                    <Block
-                      key={audioClip.id}
-                      media={audioClip}
-                      scalar={sliderValue}
-                      marker_mode={markerMode}
-                      setPreviewMediaType={setPreviewMediaType}
-                      setSrc={setAudioSrc}
-                      setPreviewTimestamp={setPreviewTimestamp}
-                      setMarkerMaster={setMarkerMaster}
-                    />
-                  )}
-                </div>
-              </SortableContext>
-            </DndContext>
+                    )}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            </div>
           </div>
         </div>
       </div>

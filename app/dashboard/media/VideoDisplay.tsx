@@ -27,18 +27,23 @@ export default function VideoDisplay({
   }, [timestamp]);
 
   return (
-    <div className="w-[45%] bg-black flex flex-row justify-start rounded-lg mx-auto">
+    <div className="bg-black flex flex-row justify-start rounded-2xl shadow-black/30 shadow-xl" onClick={() => {
+      // if (videoRef.current != null) {
+      //   if (videoRef.current.paused) videoRef.current.play();
+      //   else videoRef.current.pause();
+      // }
+    }}>
       {videoSrc ? (
         <video
           ref={videoRef}
-          className="rounded-md bg-black w-full h-[54vh]"
-          controls
+          className="rounded-2xl bg-black w-full h-[62.8vh]"
           src={videoSrc}
+          controls
         >
           Your browser does not support the video tag.
         </video>
       ) : (
-        <div className="rounded-md bg-black w-full h-[50vh]"></div>
+        <div className="rounded-2xl bg-black w-full h-[62.8vh]"></div>
       )}
     </div>
   );

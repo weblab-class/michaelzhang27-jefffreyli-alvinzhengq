@@ -133,8 +133,33 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="h-screen bg-midnight overflow-hidden">
-      <div className="py-4 text-center flex flex-row align-middle justify-around space-x-2 mt-2">
+    <div className="h-screen w-screen bg-midnight overflow-hidden font-['Proxima Nova']
+    flex flex-row justify-evenly align-middle">
+      <div className="w-[67%] h-[92vh] flex flex-col align-middle justify-between my-auto">
+        {previewMediaType == "video" ? (
+          <VideoDisplay
+            clipList={uploadedVideoFiles}
+            videoSrc={videoSrc}
+            timestamp={previewTimestamp}
+          />
+        ) : (
+          <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
+        )}
+
+        <Timeline
+          clipList={clipList}
+          audioClip={audioClip}
+          setClipList={setClipList}
+          setAudioClip={setAudioClip}
+          processClips={processClips}
+          setPreviewTimestamp={setPreviewTimestamp}
+          setPreviewMediaType={setPreviewMediaType}
+          setVideoSrc={setVideoSrc}
+          setAudioSrc={setAudioSrc}
+        />
+      </div>
+
+      <div className="w-[26%] h-[92vh] flex flex-col align-middle justify-between my-auto">
         <MediaLibrary
           previewMediaType={previewMediaType}
           setPreviewMediaType={setPreviewMediaType}
@@ -150,32 +175,10 @@ export default function Dashboard() {
           setSelectedClip={setSelectedClip}
         />
 
-        <div className="h-[50vh] m-auto w-[1px] rounded-lg border-dawn border-[1px]" />
+        <div className="h-[40vh] bg-dawn p-3 rounded-2xl overflow-scroll grid grid-cols-5 gap-y-4 no-scrollbar shadow-xl shadow-slate-black">
 
-        {previewMediaType == "video" ? (
-          <VideoDisplay
-            clipList={uploadedVideoFiles}
-            videoSrc={videoSrc}
-            timestamp={previewTimestamp}
-          />
-        ) : (
-          <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
-        )}
+        </div>
       </div>
-
-      <div className="h-[1px] m-auto mt-4 w-[97vw] rounded-lg border-dawn border-[1px]" />
-
-      <Timeline
-        clipList={clipList}
-        audioClip={audioClip}
-        setClipList={setClipList}
-        setAudioClip={setAudioClip}
-        processClips={processClips}
-        setPreviewTimestamp={setPreviewTimestamp}
-        setPreviewMediaType={setPreviewMediaType}
-        setVideoSrc={setVideoSrc}
-        setAudioSrc={setAudioSrc}
-      />
     </div>
   );
 }

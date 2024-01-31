@@ -9,11 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        midnight: "#141414",
-        dawn: "#1F1F1F",
+        midnight: "#1a1a22",
+        dawn: "#22222a",
+        twilight: "#26262e",
         white: "#FFFFFF",
-        primary: "#FF6699",
-        accent: "#70AE6E",
+        primary: "#74dafe",
+        accent: "#FE8587",
+        accent_hover: "#FE7274",
+        grey_accent: "#5a5b60"
       },
       backgroundImage: {},
     },
@@ -24,7 +27,7 @@ const config: Config = {
         mytheme: {
           primary: "#FF6699",
           secondary: "#ffffff",
-          accent: "#70AE6E",
+          accent: "#5a5b60",
           neutral: "#ffffff",
         },
       },

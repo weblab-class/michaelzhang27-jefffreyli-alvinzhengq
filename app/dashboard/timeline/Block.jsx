@@ -95,12 +95,10 @@ export default function MediaBlock({
     transition,
     transform: CSS.Transform.toString(transform),
     width: 100,
-    height: 50,
+    height: 40,
     minWidth: media.duration * 30 * (scalar / 50),
-    backgroundColor: "#8390FA",
-    marginRight: 0,
-    borderRadius: 0,
-    borderLeft: "1px solid black",
+    marginRight: 2,
+    borderRadius: 8,
     display: "flex",
     position: "relative",
   });
@@ -120,20 +118,25 @@ export default function MediaBlock({
     <div
       ref={setNodeRef}
       style={blockStyle}
+      className="shadow-accent/30 shadow-lg bg-accent hover:bg-accent_hover transition duration-500 z-40"
       {...attributes}
       {...(marker_mode ? {} : listeners)}
       // onClick={marker_mode ? handleAddMarker : undefined}
       onContextMenu={marker_mode ? handleDeleteMarker : undefined}
-      onMouseMove={async (e) => {
-        await handleMouseMove(e);
+      onMouseDown={() => {
         setPreviewMediaType(media.type ? "video" : "audio");
         setSrc(media.url);
-
+      }}
+      onMouseMove={async (e) => {
+        await handleMouseMove(e);
         if (marker_mode) {
+          setPreviewMediaType(media.type ? "video" : "audio");
+          setSrc(media.url);
+
           let rect = e.target.getBoundingClientRect();
           setPreviewTimestamp(
             ((e.clientX - rect.left) / rect.width) *
-              parseFloat(media.duration - media.startDelta - media.endDelta)
+            parseFloat(media.duration - media.startDelta - media.endDelta)
           );
         }
       }}
@@ -153,10 +156,10 @@ export default function MediaBlock({
       {media.type === 0 ? (
         <img
           src={`/api/waveform?token=${token}`}
-          className="absolute w-full h-[80%] object-fill top-0 left-0 bottom-0 right-0 m-auto z-5"
+          className="absolute w-full h-[80%] object-fill top-0 left-0 bottom-0 right-0 m-auto z-5 pointer-events-none"
         ></img>
       ) : (
-        <p className="m-4 text-xs text-white">
+        <p className="m-4 text-xs text-[#280001] font-thin my-auto pointer-events-none">
           {truncateText(
             `${media.duration}s - ${media.display_name}`,
             blockWidth / 8

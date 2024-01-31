@@ -1,8 +1,12 @@
+import { TbTriangleInvertedFilled } from "react-icons/tb";
+
 export default function HoverLine({ linePosition }) {
   return (
     <div
-      className="absolute h-[23vh] top-[5.6rem] w-[2px] bg-black z-50 pointer-events-none"
-      style={{ left: `${linePosition}px` }}
-    />
+      className="absolute h-[25vh] top-0 rounded-lg border-2 border-primary shadow-2xl shadow-primary/80 z-50 pointer-events-none"
+      style={{ left: `${linePosition-36}px` }}
+    >
+      <TbTriangleInvertedFilled className="absolute -top-[4px] -left-[8px] fill-primary text-primary" />
+    </div>
   );
 }

@@ -15,7 +15,7 @@ const execute = async (command: Array<string>) => {
         const ffmpeg = spawn("ffmpeg", command);
 
         ffmpeg.stderr.on("data", (data) => {
-            // console.log(data.toString());
+            console.log(data.toString());
         });
 
         ffmpeg.once("error", reject);
