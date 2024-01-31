@@ -31,7 +31,7 @@ const Details = ({
   }, [JSON.stringify(selectedClip)])
 
   return (
-    <div className="bg-dawn p-4 rounded-sm font-thin">
+    <div className="bg-dawn px-4 rounded-sm font-thin">
       {/* Start div */}
 
       <h1 className="font-black text-lg mb-1">DETAILS</h1>

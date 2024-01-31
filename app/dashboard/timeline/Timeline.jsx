@@ -25,8 +25,8 @@ export default function Timeline({
 
   const handleMouseMove = (e) => {
     setLinePosition(Math.min(Math.max(
-      e.clientX - timeLineRef.current.getBoundingClientRect().left / 2 + 2,
-      timeLineRef.current.getBoundingClientRect().left), timeLineRef.current.getBoundingClientRect().right));
+      e.clientX - timeLineRef.current.getBoundingClientRect().left/2 + 8,
+      timeLineRef.current.getBoundingClientRect().left - 30), timeLineRef.current.getBoundingClientRect().right - 30));
   };
 
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function Timeline({
     >
       <HoverLine linePosition={linePosition} />
 
-      <div className="h-[25vh] w-[30vw] bg-twilight flex items-center flex-col align-middle justify-around shadow-2xl shadow-black z-50">
+      <div className="h-[25vh] max-w-[30vw] bg-twilight flex items-center flex-col align-middle justify-around shadow-2xl shadow-black z-50">
         <div className="tooltip tooltip-right tooltip-accent z-[100]" data-tip="Marker Mode">
           <CiBookmarkPlus className="w-12 scale-[1.56] cursor-pointer hover:!fill-primary transition duration-300" onClick={() => {
             setMarkerMode(true);
@@ -151,7 +151,7 @@ export default function Timeline({
         <div
           className="flex justify-between whitespace-nowrap bg-twilight h-[4.8vh]"
           style={{
-            width: `${totalDuration * 30 * (sliderValue / 50) + 2}px`
+            width: `${totalDuration * 30 * (sliderValue * 0.02)}px`
           }}
         >
           {[...Array(totalDuration + 1)].map((timestamp, index) => (
@@ -187,7 +187,7 @@ export default function Timeline({
             </div>
             <div className="absolute -left-4 top-1/2 -translate-y-[16px] h-[1px] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0"
               style={{
-                width: `${totalDuration * 30 * (sliderValue / 50) + 2}px`
+                width: `${totalDuration * 30 * (sliderValue * 0.02) + 10}px`
               }} />
           </div>
 
@@ -210,11 +210,17 @@ export default function Timeline({
             </div>
             <div className="absolute -left-4 bot-1/2 -translate-y-[4px] h-[1px] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0"
               style={{
-                width: `${totalDuration * 30 * (sliderValue / 50) + 2}px`
+                width: `${totalDuration * 30 * (sliderValue * 0.02) + 10}px`
               }} />
           </div>
 
         </div>
+      </div>
+
+      <div className="h-[25vh] w-[3vw] bg-twilight flex items-center flex-col align-middle justify-around shadow-2xl shadow-black z-50">
+        <input type="range" min="30" max="180" onChange={(e) => {
+          setSliderValue(e.target.value)
+        }} className="border-0 accent-primary rounded-lg appearance-none cursor-pointer vertical-input h-[20vh]" />
       </div>
     </div>
   );

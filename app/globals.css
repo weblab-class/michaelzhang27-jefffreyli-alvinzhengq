@@ -26,6 +26,19 @@
   :root {}
 }
 
+.vertical-input {
+  appearance: slider-vertical;
+}
+.vertical-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  background-color: #74dafe;
+  overflow: visible;
+  cursor: pointer;
+}
+
 input {
   color: black;
 }
