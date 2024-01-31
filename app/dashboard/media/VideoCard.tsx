@@ -72,7 +72,7 @@ export default function VideoCard({
       className="relative flex flex-col items-center hover:scale-[1.02] transition duration-300 w-[11.8vw] h-full max-h-[15vh] group cursor-pointer mx-auto"
     >
       <Image
-        className="rounded-md h-auto w-full transition duration-300 group-hover:grayscale"
+        className="rounded-md h-auto w-full transition duration-300 group-hover:grayscale group-hover:brightness-50"
         src={imageURL}
         alt="Thumbnail Loading..."
         width={100}

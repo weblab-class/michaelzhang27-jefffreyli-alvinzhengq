@@ -271,7 +271,7 @@ export default function Dashboard() {
       </AnimatePresence>
 
       <dialog id="info_modal" className="modal">
-        <div className="modal-box bg-midnight min-w-[38vw]">
+        <div className="modal-box bg-midnight min-w-[39vw]">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
           </form>

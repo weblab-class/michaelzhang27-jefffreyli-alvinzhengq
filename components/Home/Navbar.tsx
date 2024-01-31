@@ -22,13 +22,13 @@ export default function Navbar() {
             >
               <Image
                 className=""
-                width={60}
-                height={60}
+                width={40}
+                height={40}
                 src="/three-circles-white.png"
                 alt=""
               />
-              <span className="font-semibold text-orange text-2xl lg:text-3xl font-serif">
-                Videomatic
+              <span className="font-black text-2xl lg:text-3xl font-['Proxima Nova']">
+                VISAGE
               </span>
             </Link>
           </div>

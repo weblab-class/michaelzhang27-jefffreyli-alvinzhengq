@@ -44,6 +44,24 @@ input {
 }
 
 @font-face {
+  font-family: 'Slagless';
+  src: url('/fonts/Slagless.woff2') format('woff2'),
+      url('/fonts/Slagless.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Apercu';
+  src: url('/fonts/ApercuPro.woff2') format('woff2'),
+      url('/fonts/ApercuPro.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Proxima Nova';
   src: url('/fonts/ProximaNova-Black.woff2') format('woff2'),
       url('/fonts/ProximaNova-Black.woff') format('woff');
