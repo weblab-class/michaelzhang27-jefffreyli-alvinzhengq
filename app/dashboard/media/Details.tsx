@@ -34,6 +34,8 @@ const Details = ({
     { label: "Type", value: type },
   ];
 
+  const fileIndex = clipList.findIndex((file) => file.id === id);
+
   return (
     <div className="bg-dawn p-4 rounded-sm">
       {/* Start div */}
@@ -47,25 +49,18 @@ const Details = ({
       ))}
 
       <div className="flex justify-between mt-4 w-full">
-        <h2 className="text-sm text-gray-400">
-          Flexible: {flexible ? "Yes" : "No"}
-        </h2>
+        <h2 className="text-sm text-gray-400">Flexible</h2>
         <label className="swap text-sm">
           <input
             type="checkbox"
+            checked={(fileIndex >= 0 && clipList[fileIndex]?.flex) ?? false}
             onChange={(e) => {
               setFlexible(e.target.checked);
-
-              const fileIndex = clipList.findIndex(
-                (file) => file.id === id
-              );
 
               if (fileIndex !== -1) {
                 clipList[fileIndex].flex = e.target.checked;
               } else {
-                console.error(
-                  "Media file with id " + id + " not found."
-                );
+                console.error("Media file with id " + id + " not found.");
               }
             }}
           />
@@ -102,6 +97,11 @@ const Details = ({
             setEndTrim(formatTimeInput(e.target.value));
           }}
         />
+      </div>
+
+      <div className="flex justify-between mt-3 w-full">
+        <h2 className="text-sm text-gray-400">Id</h2>
+        <p className="text-xs">{id}</p>
       </div>
 
       {/* End div */}
