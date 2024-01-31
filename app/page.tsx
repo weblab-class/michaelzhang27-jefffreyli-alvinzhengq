@@ -108,7 +108,7 @@ export default function landingPage() {
         </div>
 
         <div className="w-28 self-end text-right">
-          <h1 className="cursor-pointer mb-2 text-lg my-auto hover:underline" onClick={() => router.push('/signout')}>Sign Up</h1>
+          <h1 className="cursor-pointer mb-2 text-lg my-auto hover:underline" onClick={() => router.push('/signup')}>Sign Up</h1>
         </div>
       </div>
 
