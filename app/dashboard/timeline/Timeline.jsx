@@ -26,7 +26,10 @@ export default function Timeline({
   const timeLineRef = useRef(null);
 
   const handleMouseMove = (e) => {
-    setLinePosition(Math.min(Math.max(e.clientX, timeLineRef.current.getBoundingClientRect().left), timeLineRef.current.getBoundingClientRect().right));
+    console.log(timeLineRef.current.getBoundingClientRect())
+    setLinePosition(Math.min(Math.max(
+      e.clientX - timeLineRef.current.getBoundingClientRect().left / 2 + 2,
+      timeLineRef.current.getBoundingClientRect().left), timeLineRef.current.getBoundingClientRect().right));
   };
 
   useEffect(() => {
@@ -208,17 +211,14 @@ export default function Timeline({
                 </SortableContext>
               </DndContext>
             </div>
-          </div>
-
-          <div className="absolute top-20">
-            <div className="fixed h-[1px] w-[63.2vw] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0" />
-          </div>
-          <div className="absolute top-36">
-            <div className="fixed h-[1px] w-[63.2vw] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0" />
+            <div className="absolute -left-4 top-1/2 -translate-y-[20px] h-[1px] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0"
+              style={{
+                width: `${totalDuration * 30 * (sliderValue / 50) + 2}px`
+              }} />
           </div>
 
           <div className="flex items-center space-x-4">
-            <div className="relative min-h-16 p-2">
+            <div className="min-h-16 p-2">
               <DndContext collisionDetection={closestCenter} onDragEnd={() => { }}>
                 <SortableContext items={clipList}>
                   <div className="flex">
@@ -238,7 +238,12 @@ export default function Timeline({
                 </SortableContext>
               </DndContext>
             </div>
+            <div className="absolute -left-4 bot-1/2 -translate-y-[4px] h-[1px] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0"
+              style={{
+                width: `${totalDuration * 30 * (sliderValue / 50) + 2}px`
+              }} />
           </div>
+
         </div>
       </div>
     </div>

@@ -46,7 +46,7 @@ export default function VideoCard({
         handleDisplayAudio();
       }}
       key={file.id}
-      className="relative flex flex-col items-center hover:scale-[1.02] transition duration-300 w-[11.5rem] max-h-[15vh] group cursor-pointer mx-auto"
+      className="relative flex flex-col items-center hover:scale-[1.02] transition duration-300 w-[11.8vw] max-h-[15vh] group cursor-pointer mx-auto"
     >
       <Image
         className="rounded-md h-auto w-full transition duration-300 group-hover:grayscale brightness-50"

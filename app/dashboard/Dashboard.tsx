@@ -176,60 +176,63 @@ export default function Dashboard() {
   }
 
   return (
-    <div
-      className="h-screen w-screen bg-midnight overflow-hidden font-['Proxima Nova']
+    <>
+      <div
+        className="h-screen w-screen bg-midnight overflow-hidden font-['Proxima Nova']
     flex flex-row justify-evenly align-middle"
-    >
-      <ToastContainer />
-      <div className="w-[67%] h-[92vh] flex flex-col align-middle justify-between my-auto">
-        {previewMediaType == "video" ? (
-          <VideoDisplay
-            clipList={uploadedVideoFiles}
-            videoSrc={videoSrc}
-            timestamp={previewTimestamp}
+      >
+        <div className="w-[67%] h-[92vh] flex flex-col align-middle justify-between my-auto">
+          {previewMediaType == "video" ? (
+            <VideoDisplay
+              clipList={uploadedVideoFiles}
+              videoSrc={videoSrc}
+              timestamp={previewTimestamp}
+            />
+          ) : (
+            <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
+          )}
+
+          <Timeline
+            clipList={clipList}
+            audioClip={audioClip}
+            setClipList={setClipList}
+            setAudioClip={setAudioClip}
+            processClips={processClips}
+            setPreviewTimestamp={setPreviewTimestamp}
+            setPreviewMediaType={setPreviewMediaType}
+            setVideoSrc={setVideoSrc}
+            setAudioSrc={setAudioSrc}
           />
-        ) : (
-          <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
-        )}
+        </div>
 
-        <Timeline
-          clipList={clipList}
-          audioClip={audioClip}
-          setClipList={setClipList}
-          setAudioClip={setAudioClip}
-          processClips={processClips}
-          setPreviewTimestamp={setPreviewTimestamp}
-          setPreviewMediaType={setPreviewMediaType}
-          setVideoSrc={setVideoSrc}
-          setAudioSrc={setAudioSrc}
-        />
-      </div>
+        <div className="w-[26%] h-[92vh] flex flex-col align-middle justify-between my-auto">
+          <MediaLibrary
+            previewMediaType={previewMediaType}
+            setPreviewMediaType={setPreviewMediaType}
+            uploadedVideoFiles={uploadedVideoFiles}
+            uploadedAudioFiles={uploadedAudioFiles}
+            handleFileUpload={handleFileUpload}
+            setUploadedVideoFiles={setUploadedVideoFiles}
+            setUploadedAudioFiles={setUploadedAudioFiles}
+            setVideoSrc={setVideoSrc}
+            setAudioSrc={setAudioSrc}
+            addClip={addClip}
+            selectedClip={selectedClip}
+            setSelectedClip={setSelectedClip}
+          />
 
-      <div className="w-[26%] h-[92vh] flex flex-col align-middle justify-between my-auto">
-        <MediaLibrary
-          previewMediaType={previewMediaType}
-          setPreviewMediaType={setPreviewMediaType}
-          uploadedVideoFiles={uploadedVideoFiles}
-          uploadedAudioFiles={uploadedAudioFiles}
-          handleFileUpload={handleFileUpload}
-          setUploadedVideoFiles={setUploadedVideoFiles}
-          setUploadedAudioFiles={setUploadedAudioFiles}
-          setVideoSrc={setVideoSrc}
-          setAudioSrc={setAudioSrc}
-          addClip={addClip}
-          selectedClip={selectedClip}
-          setSelectedClip={setSelectedClip}
-        />
-
-        <div className="h-[40vh] bg-dawn p-3 rounded-2xl overflow-scroll gap-y-4 no-scrollbar shadow-xl shadow-slate-black">
-          {/* <Details
+          <div className="h-[40vh] bg-dawn p-3 rounded-2xl overflow-scroll gap-y-4 no-scrollbar shadow-xl shadow-slate-black">
+            {/* <Details
             id={selectedClip.id}
             name={selectedClip.display_name}
             duration={selectedClip.duration}
             type={selectedClip.type == 0 ? "Audio" : "Video"}
           /> */}
+          </div>
         </div>
       </div>
-    </div>
+
+      <ToastContainer />
+    </>
   );
 }
