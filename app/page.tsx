@@ -41,7 +41,7 @@ export default function landingPage() {
 
   return (
     <div className="flex flex-col w-screen min-h-screen bg-dawn font-['Apercu']">
-      {/* <motion.div
+      <motion.div
         initial={{ y: 0 }}
         animate={{ y: '-50vh' }}
         onAnimationComplete={(e) => setUnload(true)}
@@ -61,7 +61,7 @@ export default function landingPage() {
           duration: 0.8,
           delay: 0.5
         }}
-        className="absolute w-screen h-[50vh] top-1/2 bg-black z-30" /> */}
+        className="absolute w-screen h-[50vh] top-1/2 bg-black z-30" />
 
       <div className="absolute w-screen h-screen overflow-hidden brightness-[0.3] z-0 pointer-events-none">
         <img src="/hero_gif.gif" className="w-full"></img>
@@ -157,7 +157,7 @@ export default function landingPage() {
         <div className=" flex flex-row justify-start items-start text-midnight pt-[14vh] px-6">
           <div className="w-[50%]">
             <h1 className="text-3xl w-[82%] leading-[1.2] relative overflow-y-hidden">
-              Visage is reimagining the worflow of video editing. Removing the hassle of a desktop program, and integrating the intelligence
+              Visage is reimagining the workflow of video editing. Removing the hassle of a desktop program, and integrating the intelligence
               of algorithmic editing.
             </h1>
           </div>
@@ -165,11 +165,11 @@ export default function landingPage() {
           <div className="w-[50%]">
             <h1 className="text-3xl w-[100%] leading-[1.2] relative overflow-y-hidden">
               An its core, Visage provides a simplified workflow for syncing video clips with audio—the core of editing—whether
-              for montages, higlight reels, or edits.
+              for montages, highlight reels, or edits.
             </h1>
 
             <h1 className="text-3xl w-[100%] leading-[1.2] relative overflow-y-hidden mt-10">
-              Simply import your video and audio files into Visage, add them to the timeline, mark the key points you wish to higlight in your
+              Simply import your video and audio files into Visage, add them to the timeline, mark the key points you wish to highlight in your
               video clips and audio clip, and watch as Visage magically trims and syncs your clips to produce a polished edited video.
             </h1>
           </div>
