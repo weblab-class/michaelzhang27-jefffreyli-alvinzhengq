@@ -22,9 +22,9 @@ export default function Navbar() {
             >
               <Image
                 className=""
-                width={70}
-                height={70}
-                src="/videomatic-logo-transparent.png"
+                width={60}
+                height={60}
+                src="/three-circles-white.png"
                 alt=""
               />
               <span className="font-semibold text-orange text-2xl lg:text-3xl font-serif">

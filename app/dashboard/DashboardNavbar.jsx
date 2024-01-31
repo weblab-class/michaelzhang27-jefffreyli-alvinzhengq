@@ -18,7 +18,7 @@ export default function DashboardNavbar() {
           className=""
           width={40}
           height={40}
-          src="/videomatic-logo-transparent.png"
+          src="/three-circles-white.png"
           alt=""
         />
         <span className="font-[Slagless] font-semibold text-black text-xl bg-gradient-to-r from-orange via-red-400 to-blush inline-block text-transparent bg-clip-text">
