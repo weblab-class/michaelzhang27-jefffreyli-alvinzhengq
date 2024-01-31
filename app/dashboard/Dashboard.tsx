@@ -14,9 +14,14 @@ import { fetchMedia, uploadToFirebase } from "./lib";
 import axios from "axios";
 import trim_handler from "@/components/formula/trim_algorithm";
 import LoadingScreen from "../testroute/LoadingScreen";
+import Details from "./media/Details";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Dashboard() {
   const [addingToTimelineLoading, setAddingToTimelineLoading] = useState(false);
+  const [compileLoading, setCompileLoading] = useState(false);
 
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [audioSrc, setAudioSrc] = useState<string>("");
@@ -70,25 +75,44 @@ export default function Dashboard() {
   };
 
   const processClips = async () => {
+    setCompileLoading(true);
+
     let timeStamp = Date.now();
     let jwt = (await auth.currentUser?.getIdToken()) || "";
 
     if (!audioClip) return;
     let newList = trim_handler(clipList, audioClip);
 
-    await axios.post(
-      "/api/merge",
-      { list: newList, time: timeStamp },
-      {
-        headers: {
-          Authorization: jwt,
-        },
-      }
-    );
+    try {
+      await axios.post(
+        "/api/merge",
+        { list: newList, time: timeStamp },
+        {
+          headers: {
+            Authorization: jwt,
+          },
+        }
+      );
+      // Handle response here if needed
+    } catch (error) {
+      toast.error("An error occured while compiling. Please try again.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
 
     setClipList(newList);
     setPreviewMediaType("video");
+    ``;
     setVideoSrc(`/api/video/output-${timeStamp}.mp4?token=${jwt}`);
+
+    setCompileLoading(false);
   };
 
   const addClip = async (clip: MediaFile) => {
@@ -96,15 +120,31 @@ export default function Dashboard() {
 
     let jwt = (await auth.currentUser?.getIdToken()) || "";
 
-    await axios.post(
-      "/api/download",
-      { file_obj: clip },
-      {
-        headers: {
-          Authorization: jwt,
-        },
-      }
-    );
+    try {
+      await axios.post(
+        "/api/download",
+        { file_obj: clip },
+        {
+          headers: {
+            Authorization: jwt,
+          },
+        }
+      );
+    } catch (error) {
+      toast.error(
+        "An error occured while adding the clips. Please try again.",
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      );
+    }
 
     if (clip.type == MediaType.Video) {
       setClipList([...clipList, clip]);
@@ -132,9 +172,16 @@ export default function Dashboard() {
     return <LoadingScreen subtitle="Adding to timeline ..." />;
   }
 
+  if (compileLoading) {
+    return <LoadingScreen subtitle="Compiling audio and video ..." />;
+  }
+
   return (
-    <div className="h-screen w-screen bg-midnight overflow-hidden font-['Proxima Nova']
-    flex flex-row justify-evenly align-middle">
+    <div
+      className="h-screen w-screen bg-midnight overflow-hidden font-['Proxima Nova']
+    flex flex-row justify-evenly align-middle"
+    >
+      <ToastContainer />
       <div className="w-[67%] h-[92vh] flex flex-col align-middle justify-between my-auto">
         {previewMediaType == "video" ? (
           <VideoDisplay
@@ -175,8 +222,13 @@ export default function Dashboard() {
           setSelectedClip={setSelectedClip}
         />
 
-        <div className="h-[40vh] bg-dawn p-3 rounded-2xl overflow-scroll grid grid-cols-5 gap-y-4 no-scrollbar shadow-xl shadow-slate-black">
-
+        <div className="h-[40vh] bg-dawn p-3 rounded-2xl overflow-scroll gap-y-4 no-scrollbar shadow-xl shadow-slate-black">
+          <Details
+            id={selectedClip.id}
+            name={selectedClip.display_name}
+            duration={selectedClip.duration}
+            type={selectedClip.type == 0 ? "Audio" : "Video"}
+          />
         </div>
       </div>
     </div>

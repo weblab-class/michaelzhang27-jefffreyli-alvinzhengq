@@ -12,12 +12,16 @@ export default function VideoCard({
   setUploadedVideoFiles,
   setVideoSrc,
   addClip,
+  selectedClip,
+  setSelectedClip,
 }: {
   file: MediaFile;
   uploadedVideoFiles: MediaList;
   setUploadedVideoFiles: Dispatch<SetStateAction<MediaList>>;
   setVideoSrc: Dispatch<SetStateAction<string>>;
   addClip: (clip: MediaFile) => Promise<void>;
+  selectedClip: MediaFile;
+  setSelectedClip: Dispatch<SetStateAction<MediaFile>>;
 }) {
   const handleDisplayVideo = () => {
     setVideoSrc(file.url);
@@ -44,6 +48,17 @@ export default function VideoCard({
     <div
       onClick={() => {
         handleDisplayVideo();
+        setSelectedClip({
+          display_name: file.display_name,
+          id: file.id,
+          url: file.url,
+          type: file.type,
+          duration: file.duration,
+          startDelta: file.startDelta,
+          endDelta: file.endDelta,
+          flex: file.flex,
+          markers: file.markers,
+        });
       }}
       key={file.id}
       className="relative flex flex-col items-center hover:scale-[1.02] transition duration-300 w-[11.5rem] h-full max-h-[15vh] group cursor-pointer mx-auto"
@@ -62,8 +77,14 @@ export default function VideoCard({
             {truncateText(file.display_name, 10)}
           </p>
           <div className="flex flex-row justify-evenly align-middle text-lg">
-            <CiImport onClick={() => addClip(file)} className="hover:fill-primary transition duration-300" />
-            <CiTrash onClick={() => deleteVideo(file.url)} className="hover:fill-accent transition duration-300" />
+            <CiImport
+              onClick={() => addClip(file)}
+              className="hover:fill-primary transition duration-300"
+            />
+            <CiTrash
+              onClick={() => deleteVideo(file.url)}
+              className="hover:fill-accent transition duration-300"
+            />
           </div>
         </div>
       </div>

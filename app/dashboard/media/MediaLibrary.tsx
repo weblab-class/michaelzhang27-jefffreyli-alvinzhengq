@@ -66,6 +66,8 @@ export default function MediaLibrary({
               setUploadedVideoFiles={setUploadedVideoFiles}
               setVideoSrc={setVideoSrc}
               addClip={addClip}
+              selectedClip={selectedClip}
+              setSelectedClip={setSelectedClip}
             />
           ))
           : uploadedAudioFiles.map((file) => (
