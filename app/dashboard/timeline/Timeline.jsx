@@ -40,21 +40,6 @@ export default function Timeline({
 
   }, [clipList]);
 
-  useEffect(() => {
-    const el = timeLineRef.current;
-    if (el) {
-      const onWheel = e => {
-        if (e.deltaY == 0) return;
-        e.preventDefault();
-        el.scrollTo({
-          left: (el.scrollLeft + e.deltaY) * 10
-        });
-      };
-      el.addEventListener("wheel", onWheel);
-      return () => el.removeEventListener("wheel", onWheel);
-    }
-  }, []);
-
   const onDragEnd = (event) => {
     const { active, over } = event;
     if (active.id === over.id) {
