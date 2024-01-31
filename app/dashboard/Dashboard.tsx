@@ -31,9 +31,6 @@ export default function Dashboard() {
   const [audioClip, setAudioClip] = useState<MediaFile>();
   const [previewMediaType, setPreviewMediaType] = useState<string>("video");
   const [previewTimestamp, setPreviewTimestamp] = useState<number>(0);
-  const [flexible, setFlexible] = useState<boolean>(false);
-  const [startTrim, setStartTrim] = useState<string>("");
-  const [endTrim, setEndTrim] = useState<string>("");
 
   const [selectedClip, setSelectedClip] = useState<MediaFile>({
     display_name: "Sample Video",
@@ -231,14 +228,6 @@ export default function Dashboard() {
             name={selectedClip.display_name}
             duration={selectedClip.duration}
             type={selectedClip.type == 0 ? "Audio" : "Video"}
-            flexible={selectedClip.flex}
-            setFlexible={setFlexible}
-            startTrim={startTrim}
-            setStartTrim={setStartTrim}
-            endTrim={endTrim}
-            setEndTrim={setEndTrim}
-            clipList={clipList}
-            setClipList={setClipList}
           />
         </div>
       </div>
