@@ -13,7 +13,7 @@ import { MediaFile, MediaList, MediaType } from "./types";
 import { fetchMedia, uploadToFirebase } from "./lib";
 import axios from "axios";
 import trim_handler from "@/components/formula/trim_algorithm";
-import LoadingScreen from "../testroute/LoadingScreen";
+import LoadingScreen from "../../components/LoadingScreen";
 import Details from "./media/Details";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -109,7 +109,6 @@ export default function Dashboard() {
 
     setClipList(newList);
     setPreviewMediaType("video");
-    ``;
     setVideoSrc(`/api/video/output-${timeStamp}.mp4?token=${jwt}`);
 
     setCompileLoading(false);
@@ -223,12 +222,12 @@ export default function Dashboard() {
         />
 
         <div className="h-[40vh] bg-dawn p-3 rounded-2xl overflow-scroll gap-y-4 no-scrollbar shadow-xl shadow-slate-black">
-          <Details
+          {/* <Details
             id={selectedClip.id}
             name={selectedClip.display_name}
             duration={selectedClip.duration}
             type={selectedClip.type == 0 ? "Audio" : "Video"}
-          />
+          /> */}
         </div>
       </div>
     </div>
