@@ -218,7 +218,7 @@ export default function Timeline({
       </div>
 
       <div className="h-[25vh] w-[3vw] bg-twilight flex items-center flex-col align-middle justify-around shadow-2xl shadow-black z-50">
-        <input type="range" min="30" max="180" onChange={(e) => {
+        <input type="range" min="30" max="180" orient="vertical" onChange={(e) => {
           setSliderValue(e.target.value)
         }} className="border-0 accent-primary rounded-lg appearance-none cursor-pointer vertical-input h-[20vh]" />
       </div>
