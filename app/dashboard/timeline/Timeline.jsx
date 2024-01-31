@@ -138,7 +138,7 @@ export default function Timeline({
 
       <HoverLine linePosition={linePosition} />
 
-      <div className="h-[25vh] w-[30vw] bg-twilight flex justify-center items-center flex-col align-middle justify-around shadow-2xl shadow-black z-50">
+      <div className="h-[25vh] w-[30vw] bg-twilight flex items-center flex-col align-middle justify-around shadow-2xl shadow-black z-50">
         <div className="tooltip tooltip-right tooltip-accent z-[100]" data-tip="Marker Mode">
           <CiBookmarkPlus className="w-12 scale-[1.56] cursor-pointer hover:!fill-primary transition duration-300" onClick={() => {
             setMarkerMode(true);
