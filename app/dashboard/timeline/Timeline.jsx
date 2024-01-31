@@ -162,7 +162,7 @@ export default function Timeline({
         </div>
       </div>
 
-      <div ref={timeLineRef} className="relative flex flex-col align-middle overflow-x-scroll no-scrollbar bg-dawn">
+      <div ref={timeLineRef} className="relative flex flex-col align-middle overflow-x-scroll scrollbar-thin scrollbar-thumb-grey_accent scrollbar-track-grey_accent/30 bg-dawn">
         <div
           className="flex justify-between whitespace-nowrap bg-twilight h-[4.8vh]"
           style={{
@@ -179,7 +179,7 @@ export default function Timeline({
           ))}
         </div>
 
-        <div className="my-auto ml-1">
+        <div className="my-auto ml-1 mt-4">
           <div className="flex items-center space-x-4 text-center">
             <div className="min-h-16 p-2">
               <DndContext
@@ -211,7 +211,7 @@ export default function Timeline({
                 </SortableContext>
               </DndContext>
             </div>
-            <div className="absolute -left-4 top-1/2 -translate-y-[20px] h-[1px] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0"
+            <div className="absolute -left-4 top-1/2 -translate-y-[16px] h-[1px] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0"
               style={{
                 width: `${totalDuration * 30 * (sliderValue / 50) + 2}px`
               }} />
