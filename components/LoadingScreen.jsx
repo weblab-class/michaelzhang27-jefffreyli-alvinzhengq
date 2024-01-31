@@ -1,22 +1,22 @@
 import React from "react";
-import { ColorRing } from "react-loader-spinner";
+import { Triangle } from "react-loader-spinner";
 
 const LoadingScreen = ({ subtitle }) => {
   return (
-    <div className="h-screen flex justify-center items-center bg-dawn">
+    <div className="flex justify-center items-center">
       <div>
         <div className="flex justify-center items-center">
-          <ColorRing
+          <Triangle
             visible={true}
-            height="120"
-            width="120"
-            ariaLabel="color-ring-loading"
+            height="100"
+            width="100"
+            color="#74dafe"
+            ariaLabel="triangle-loading"
             wrapperStyle={{}}
-            wrapperClass="color-ring-wrapper"
-            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+            wrapperClass=""
           />
         </div>
-        <p className="translate-x-2">{subtitle}</p>
+        <p className="translate-x-2 mt-8 w-[30vw] text-center">{subtitle}</p>
       </div>
     </div>
   );

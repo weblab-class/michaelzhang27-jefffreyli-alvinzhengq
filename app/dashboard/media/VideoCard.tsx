@@ -1,10 +1,11 @@
 import { deleteObject, getStorage } from "@firebase/storage";
 import { ref } from "firebase/storage";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { MediaFile, MediaList } from "../types";
 
 import { CiTrash, CiImport } from "react-icons/ci";
+import axios from "axios";
 
 export default function VideoCard({
   file,
@@ -23,6 +24,7 @@ export default function VideoCard({
   selectedClip: MediaFile;
   setSelectedClip: Dispatch<SetStateAction<MediaFile>>;
 }) {
+  const [imageURL, setImageURL] = useState<string>(file.url.replace("mp4", "png"));
   const handleDisplayVideo = () => {
     setVideoSrc(file.url);
   };
@@ -43,6 +45,12 @@ export default function VideoCard({
 
     setUploadedVideoFiles(updatedVideoFiles);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setImageURL(file.url.replace("mp4", "png") + "&rand=" + Math.floor(Math.random() * 1000000000));
+    }, 20000);
+  }, [])
 
   return (
     <div
@@ -65,8 +73,8 @@ export default function VideoCard({
     >
       <Image
         className="rounded-md h-auto w-full transition duration-300 group-hover:grayscale"
-        src={file.url.replace("mp4", "png")}
-        alt="placeholder"
+        src={imageURL}
+        alt="Thumbnail Loading..."
         width={100}
         height={100}
       ></Image>

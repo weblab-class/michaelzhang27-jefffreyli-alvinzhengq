@@ -7,10 +7,10 @@ function closest_marker(
 ): number {
   let markers = audio_clip.markers.sort((a, b) => { return a-b; });
 
-  console.log(markers)
-  
   for (let i = 0; i < markers.length; i++) {
-    if (i + 1 == markers.length) break;
+    if (i + 1 == markers.length) {
+      return markers[i];
+    }
 
     if (markers[i] < timestamp && markers[i + 1] > timestamp) {
       return markers[i];
@@ -64,8 +64,6 @@ export default function trim_handler(
 
     duration += cur_video_dur;
   }
-
-  console.log(media_list.get())
 
   return media_list.get();
 

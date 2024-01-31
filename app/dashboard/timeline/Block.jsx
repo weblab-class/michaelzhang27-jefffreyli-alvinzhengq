@@ -17,33 +17,33 @@ export default function MediaBlock({
 
   const blockWidth = media.duration * 30 * (scalar / 50);
   const [markers, setMarkers] = useState([]);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [token, setToken] = useState("");
 
-  const handleMouseMove = (e) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
+  const handleAddMarker = (e) => {
+    e.preventDefault();
+
+    let rect = e.target.getBoundingClientRect();
+
+    addMarker(
+      ((e.clientX - rect.left) / rect.width) * parseFloat(media.duration)
+    );
   };
 
-  const handleAddMarker = (event) => {
-    if (event.key.toLowerCase() === "m") {
-      const rect = event.target.getBoundingClientRect();
-      const x = mousePosition.x - rect.left;
-      const relativeX = (x / rect.width) * 100;
-      console.log(relativeX);
-      addMarker(relativeX);
-    }
+  const handleDeleteMarker = (e) => {
+    e.preventDefault();
+
+    let rect = e.target.getBoundingClientRect();
+
+    let relativeX = ((e.clientX - rect.left) / rect.width) * parseFloat(media.duration);
+    console.log(relativeX)
+    console.log(markers)
+    let filtered_markers = markers.filter(
+      (value) => Math.abs(value - relativeX) > 0.25
+    );
+
+    setMarkers(filtered_markers);
+    setMarkerMaster(media.id, filtered_markers, media.type);
   };
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleAddMarker);
-    window.addEventListener("keydown", handleDeleteMarker);
-
-    // Remove the event listener when the component unmounts
-    return () => {
-      window.removeEventListener("keydown", handleAddMarker);
-      window.removeEventListener("keydown", handleDeleteMarker);
-    };
-  }, [mousePosition]);
 
   useEffect(() => {
     const getToken = async () => {
@@ -55,48 +55,17 @@ export default function MediaBlock({
 
   const addMarker = (markerTimestamp) => {
     setMarkers([...markers, markerTimestamp]);
-
     setMarkerMaster(media.id, [...markers, markerTimestamp], media.type);
-  };
-
-  // const handleAddMarker = (e) => {
-  //   e.preventDefault();
-
-  // let rect = e.target.getBoundingClientRect();
-
-  // addMarker(
-  //   ((e.clientX - rect.left) / rect.width) * parseFloat(media.duration)
-  // );
-
-  //   const rect = e.target.getBoundingClientRect();
-  //   const x = e.clientX - rect.left;
-  //   const relativeX = (x / rect.width) * 100;
-
-  //   addMarker(relativeX);
-  // };
-
-  const handleDeleteMarker = (e) => {
-    e.preventDefault();
-    if (e.key === "d" && marker_mode) {
-      const rect = e.target.getBoundingClientRect();
-      const x = mousePosition.x - rect.left;
-      const relativeX = (x / rect.width) * 100;
-
-      // Filter markers within 1px range
-      let filtered_markers = markers.filter(
-        (value) => Math.abs(value - relativeX) > 1.0
-      );
-      setMarkers(filtered_markers);
-      setMarkerMaster(media.id, filtered_markers, media.type);
-    }
   };
 
   const [blockStyle, setBlockStyle] = useState({
     transition,
     transform: CSS.Transform.toString(transform),
-    width: 100,
+    width: (parseFloat(media.duration) - media.endDelta - media.startDelta) *
+      30 *
+      (scalar / 50),
     height: 40,
-    minWidth: media.duration * 30 * (scalar / 50),
+    minWidth: 0,
     marginRight: 2,
     borderRadius: 8,
     display: "flex",
@@ -104,10 +73,8 @@ export default function MediaBlock({
   });
 
   useEffect(() => {
-    console.log(media);
-
     let newStyle = JSON.parse(JSON.stringify(blockStyle));
-    newStyle.minWidth =
+    newStyle.width =
       (parseFloat(media.duration) - media.endDelta - media.startDelta) *
       30 *
       (scalar / 50);
@@ -118,17 +85,16 @@ export default function MediaBlock({
     <div
       ref={setNodeRef}
       style={blockStyle}
-      className="shadow-accent/30 shadow-lg bg-accent hover:bg-accent_hover transition duration-500 z-40"
+      className="shadow-accent/30 shadow-lg bg-accent hover:bg-accent_hover transition duration-500 z-40 overflow-hidden"
       {...attributes}
       {...(marker_mode ? {} : listeners)}
-      // onClick={marker_mode ? handleAddMarker : undefined}
+      onClick={marker_mode ? handleAddMarker : undefined}
       onContextMenu={marker_mode ? handleDeleteMarker : undefined}
       onMouseDown={() => {
         setPreviewMediaType(media.type ? "video" : "audio");
         setSrc(media.url);
       }}
       onMouseMove={async (e) => {
-        await handleMouseMove(e);
         if (marker_mode) {
           setPreviewMediaType(media.type ? "video" : "audio");
           setSrc(media.url);
@@ -161,7 +127,7 @@ export default function MediaBlock({
       ) : (
         <p className="m-4 text-xs text-[#280001] font-thin my-auto pointer-events-none">
           {truncateText(
-            `${media.duration}s - ${media.display_name}`,
+            `${media.display_name}`,
             blockWidth / 8
           )}
         </p>

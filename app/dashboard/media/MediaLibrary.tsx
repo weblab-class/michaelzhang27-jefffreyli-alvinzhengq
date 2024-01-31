@@ -41,7 +41,7 @@ export default function MediaLibrary({
 }) {
   return (
     <div className="h-[48vh] bg-dawn flex flex-col align-middle justify-evenly shadow-xl shadow-slate-black rounded-2xl ">
-      <div className="flex flex-row justify-between align-middle px-6 mt-2">
+      <div className="flex flex-row justify-between align-middle px-6 pr-4 mt-2">
         <p className="font-black text-lg mt-[3px]">SOURCE MEDIA</p>
 
         <div role="group">
@@ -54,7 +54,7 @@ export default function MediaLibrary({
         </div>
       </div>
 
-      <div className="h-[1px] rounded-xl w-[94%] bg-grey_accent/20 mt-1 mx-auto" />
+      <div className="h-[1px] rounded-xl w-[92%] bg-grey_accent/20 mt-1 mx-auto" />
 
       <div className="p-2 overflow-scroll grid grid-cols-2 gap-y-2 no-scrollbar h-[30vh]">
         {previewMediaType == "video"
@@ -82,7 +82,7 @@ export default function MediaLibrary({
           ))}
       </div>
 
-      <div className="h-[1px] rounded-xl w-[94%] bg-grey_accent/20 mx-auto" />
+      <div className="h-[1px] rounded-xl w-[92%] bg-grey_accent/20 mx-auto" />
 
       <div className="relative  text-grey_accent flex flex-row justify-end align-middle group cursor-pointer px-4">
         <input
@@ -98,57 +98,6 @@ export default function MediaLibrary({
           <CiSaveUp1 className="h-full w-6 ml-2 group-hover:fill-white/60 transition duration-300" />
         </label>
       </div>
-
-      {/* <div className="flex justify-between mt-4">
-        <div className="flex justify-start space-x-4 my-auto">
-          <button
-            className="cursor-pointer relative my-auto
-            text-white bg-gradient-to-r from-pink-500 via-pink-500 to-pink-600 
-            before:bg-gradient-to-br before:from-pink-500 before:via-pink-600 before:to-pink-700 before:opacity-0
-            before:top-0 before:left-0 before:bottom-0 before:right-0 before:content-[''] before:absolute before:transition before:duration-500
-            hover:before:opacity-100 before:rounded-lg before:z-0 z-10
-            shadow-lg shadow-pink-500/50 dark:shadow-lg dark:shadow-pink-800/80 
-            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-            onClick={() => setPreviewMediaType("video")}
-          >
-            <span className="relative">Video</span>
-          </button>
-          <button
-            className="cursor-pointer relative my-auto
-            text-white bg-gradient-to-r from-pink-500 via-pink-500 to-pink-600 
-            before:bg-gradient-to-br before:from-pink-500 before:via-pink-600 before:to-pink-700 before:opacity-0
-            before:top-0 before:left-0 before:bottom-0 before:right-0 before:content-[''] before:absolute before:transition before:duration-500
-            hover:before:opacity-100 before:rounded-lg before:z-0 z-10
-            shadow-lg shadow-pink-500/50 dark:shadow-lg dark:shadow-pink-800/80 
-            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-            onClick={() => setPreviewMediaType("audio")}
-          >
-            <span className="relative">Audio</span>
-          </button>
-        </div>
-
-        <button className="flex self-end my-auto">
-          <input
-            type="file"
-            accept={previewMediaType === "video" ? "video/*" : "audio/mpeg"}
-            className="hidden"
-            id="media-upload"
-            onChange={handleFileUpload}
-          />
-          <label
-            htmlFor="media-upload"
-            className="cursor-pointer relative
-            text-white bg-gradient-to-r from-pink-500 via-pink-500 to-pink-600 
-            before:bg-gradient-to-br before:from-pink-500 before:via-pink-600 before:to-pink-700 before:opacity-0
-            before:top-0 before:left-0 before:bottom-0 before:right-0 before:content-[''] before:absolute before:transition before:duration-500
-            hover:before:opacity-100 before:rounded-lg before:z-0 z-10
-            shadow-lg shadow-pink-500/50 dark:shadow-lg dark:shadow-pink-800/80 
-            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          >
-            <p className="relative">Add Files</p>
-          </label>
-        </button>
-      </div> */}
     </div>
   );
 }

@@ -76,7 +76,7 @@ export default async function NextApiHandler(req: NextApiRequest, res: NextApiRe
 
     let fileObj: MediaFile = req.body.file_obj;
 
-    if (!existsSync(join(uploadDir, `${fileObj.type ? fileObj.id : "song"}.${fileObj.type ? "mp4" : "mpga"}`))) {
+    if (fileObj.type === 0 || !existsSync(join(uploadDir, `${fileObj.type ? fileObj.id : "song"}.${fileObj.type ? "mp4" : "mpga"}`))) {
         await downloadFile(fileObj, join(uploadDir, `${fileObj.type ? fileObj.id : "song"}.${fileObj.type ? "mp4" : "mpga"}`));
     }
 

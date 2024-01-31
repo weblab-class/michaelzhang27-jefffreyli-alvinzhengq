@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LoadingScreen from "../testroute/LoadingScreen";
+import LoadingScreen from "../../components/LoadingScreen";
 
 export default function signInPage() {
   const [email, setEmail] = useState("");
@@ -17,9 +17,7 @@ export default function signInPage() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
-    setLoading(true);
     const { result, error } = await signIn(email, password);
-    setLoading(false);
 
     if (error) {
       return toast.error("Invalid login credentials. Please try again.", {
@@ -33,12 +31,9 @@ export default function signInPage() {
         theme: "colored",
       });
     }
+
     router.push("/dashboard");
   };
-
-  if (loading) {
-    return <LoadingScreen subtitle="Signing in ..." />; // Render LoadingScreen when loading
-  }
 
   return (
     <>

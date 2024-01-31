@@ -19,22 +19,29 @@ import Details from "./media/Details";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { CiExport, CiHome, CiRead } from "react-icons/ci";
+import { IoExitOutline } from "react-icons/io5";
+import { motion, AnimatePresence } from "framer-motion"
+import { signOut } from "firebase/auth";
+
 export default function Dashboard() {
-  const [addingToTimelineLoading, setAddingToTimelineLoading] = useState(false);
-  const [compileLoading, setCompileLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingMessage, setLoadingMessage] = useState<string>("Loading Dashboard...");
 
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [audioSrc, setAudioSrc] = useState<string>("");
   const [uploadedVideoFiles, setUploadedVideoFiles] = useState<MediaList>([]);
   const [uploadedAudioFiles, setUploadedAudioFiles] = useState<MediaList>([]);
+
   const [clipList, setClipList] = useState<MediaList>([]);
   const [audioClip, setAudioClip] = useState<MediaFile>();
+  const [compiledURL, setCompiledURL] = useState<string>("");
   const [previewMediaType, setPreviewMediaType] = useState<string>("video");
   const [previewTimestamp, setPreviewTimestamp] = useState<number>(0);
 
   const [selectedClip, setSelectedClip] = useState<MediaFile>({
     display_name: "Sample Video",
-    id: "video123",
+    id: "sample",
     url: "https://example.com/sample-video.mp4",
     type: 0,
     duration: "00:03:30",
@@ -74,18 +81,57 @@ export default function Dashboard() {
     }
   };
 
-  const processClips = async () => {
-    setCompileLoading(true);
+  const processClips = async (preview: boolean) => {
+    if(preview) {
+      setLoadingMessage("Compiling Video Project...")
+    } else {
+      setLoadingMessage(`Compiling and Exporting Video Project. Can take up to 10 minutes depending on length of video...`)
+    }
+    setLoading(true);
 
     let timeStamp = Date.now();
     let jwt = (await auth.currentUser?.getIdToken()) || "";
 
-    if (!audioClip) return;
+    if (!audioClip) {
+      toast.error("Cannot compile video without an audio track.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setLoading(false);
+      return;
+    }
+
+    let totalDuration = 0;
+    for (let i = 0; i < clipList.length; i++) {
+      totalDuration += parseFloat(clipList[i].duration) - clipList[i].startDelta - clipList[i].endDelta;
+    }
+
+    if (totalDuration <= 0) {
+      toast.error("Cannot compile a video of zero total length.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setLoading(false);
+      return;
+    }
+
     let newList = trim_handler(clipList, audioClip);
 
     try {
       await axios.post(
-        "/api/merge",
+        "/api/" + (preview ? "merge" : "export"),
         { list: newList, time: timeStamp },
         {
           headers: {
@@ -98,7 +144,7 @@ export default function Dashboard() {
       toast.error("An error occured while compiling. Please try again.", {
         position: "bottom-right",
         autoClose: 5000,
-        hideProgressBar: true,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
@@ -110,12 +156,44 @@ export default function Dashboard() {
     setClipList(newList);
     setPreviewMediaType("video");
     setVideoSrc(`/api/video/output-${timeStamp}.mp4?token=${jwt}`);
+    setCompiledURL(`/api/video/output-${timeStamp}.mp4?token=${jwt}`);
 
-    setCompileLoading(false);
+    setLoading(false);
+
+    if (!preview) window.open(`/${auth.currentUser?.uid}/output-${timeStamp}.mp4`);
   };
 
   const addClip = async (clip: MediaFile) => {
-    setAddingToTimelineLoading(true);
+    if (clipList.filter((item) => item.id === clip.id).length > 0) {
+      toast.error("Clip already exists on timeline, cannot have duplicate video clips on timeline.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+
+    if (clip.type === 0 && audioClip) {
+      toast.error("Audio already exists on timeline, only one audio file can be used at a time.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+
+    setLoadingMessage("Downloading Asset onto Backend Service")
+    setLoading(true);
 
     let jwt = (await auth.currentUser?.getIdToken()) || "";
 
@@ -135,7 +213,7 @@ export default function Dashboard() {
         {
           position: "bottom-right",
           autoClose: 5000,
-          hideProgressBar: true,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -151,8 +229,14 @@ export default function Dashboard() {
       setAudioClip(clip);
     }
 
-    setAddingToTimelineLoading(false);
+    setLoading(false);
   };
+
+  useEffect(() => {
+    if (clipList.filter((item) => item.url === videoSrc).length <= 0) return;
+
+    setSelectedClip(clipList.filter((item) => item.url === videoSrc)[0]);
+  }, [videoSrc])
 
   useEffect(() => {
     const authorizationLogic = async () => {
@@ -167,30 +251,83 @@ export default function Dashboard() {
     fetchMedia(setUploadedVideoFiles, setUploadedAudioFiles);
   }, []);
 
-  if (addingToTimelineLoading) {
-    return <LoadingScreen subtitle="Adding to timeline ..." />;
-  }
-
-  if (compileLoading) {
-    return <LoadingScreen subtitle="Compiling audio and video ..." />;
-  }
-
   return (
     <>
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            className="fixed mx-auto top-0 left-0 z-[51] h-full w-full bg-midnight flex justify-center items-center"
+            style={{ backdropFilter: 'blur(11px)' }}
+            initial={{ filter: 'opacity(0)' }}
+            animate={{ filter: 'opacity(0.95)' }}
+            exit={{ filter: 'opacity(0)' }}
+            transition={{ duration: 0.6 }}
+          >
+            <LoadingScreen subtitle={loadingMessage} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div
         className="h-screen w-screen bg-midnight overflow-hidden font-['Proxima Nova']
     flex flex-row justify-evenly align-middle"
       >
         <div className="w-[67%] h-[92vh] flex flex-col align-middle justify-between my-auto">
-          {previewMediaType == "video" ? (
-            <VideoDisplay
-              clipList={uploadedVideoFiles}
-              videoSrc={videoSrc}
-              timestamp={previewTimestamp}
-            />
-          ) : (
-            <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
-          )}
+          <div className="flex flex-row align-middle justify-between">
+            <div className="w-[8%] h-[62.8vh] rounded-2xl bg-dawn flex flex-col justify-around align-middle shadow-2xl shadow-slate-black">
+              <div onClick={() => router.push("/")} data-tip="Return to Home" className="tooltip tooltip-right tooltip-accent rounded-xl w-16 h-16 mx-auto flex flex-col justify-center group hover:bg-twilight transition duration-300 cursor-pointer">
+                <CiHome className="mx-auto w-6 h-6 fill-gray-400 group-hover:fill-primary transition duration-300" />
+              </div>
+
+              <div onClick={() => {
+                if (compiledURL.length <= 0) {
+                  toast.error(
+                    "No preview found, please compile a preview first.",
+                    {
+                      position: "bottom-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "colored",
+                    }
+                  );
+
+                  return;
+                }
+
+                setPreviewMediaType("video");
+                setVideoSrc(compiledURL);
+              }} data-tip="Show Current Compiled Preview" className="tooltip tooltip-right tooltip-accent rounded-xl w-16 h-16 mx-auto flex flex-col justify-center group hover:bg-twilight transition duration-300 cursor-pointer">
+                <CiRead className="mx-auto w-6 h-6 fill-gray-400 group-hover:fill-primary transition duration-300" />
+              </div>
+
+              <div onClick={() => processClips(false)} data-tip="Export Video" className="tooltip tooltip-right tooltip-accent rounded-xl w-16 h-16 mx-auto flex flex-col justify-center group hover:bg-twilight transition duration-300 cursor-pointer">
+                <CiExport className="mx-auto w-6 h-6 fill-gray-400 group-hover:fill-primary transition duration-300" />
+              </div>
+
+              <div onClick={() => {
+                signOut(auth);
+                router.push("/signin");
+              }} data-tip="Sign Out" className="tooltip tooltip-right tooltip-accent rounded-xl w-16 h-16 mx-auto flex flex-col justify-center group hover:bg-twilight transition duration-300 cursor-pointer">
+                <IoExitOutline className="mx-auto w-6 h-6 text-gray-400 group-hover:text-primary transition duration-300" />
+              </div>
+            </div>
+
+            <div className="w-[88.5%]">
+              {previewMediaType == "video" ? (
+                <VideoDisplay
+                  clipList={uploadedVideoFiles}
+                  videoSrc={videoSrc}
+                  timestamp={previewTimestamp}
+                />
+              ) : (
+                <AudioDisplay audioSrc={audioSrc} timestamp={previewTimestamp} />
+              )}
+            </div>
+          </div>
 
           <Timeline
             clipList={clipList}
@@ -202,6 +339,7 @@ export default function Dashboard() {
             setPreviewMediaType={setPreviewMediaType}
             setVideoSrc={setVideoSrc}
             setAudioSrc={setAudioSrc}
+            selectedClip={selectedClip}
           />
         </div>
 
@@ -222,17 +360,19 @@ export default function Dashboard() {
           />
 
           <div className="h-[40vh] bg-dawn p-3 rounded-2xl overflow-scroll gap-y-4 no-scrollbar shadow-xl shadow-slate-black">
-            {/* <Details
-            id={selectedClip.id}
-            name={selectedClip.display_name}
-            duration={selectedClip.duration}
-            type={selectedClip.type == 0 ? "Audio" : "Video"}
-          /> */}
+            {
+              clipList.filter((item) => item.url === videoSrc).length <= 0 ?
+                <div className="flex flex-col justify-center align-middle w-full h-full mx-auto">
+                  <h1 className="mx-auto text-grey_accent/50 font-semibold">Select a Video Clip From the Timeline</h1>
+                </div>
+                :
+                <Details clipList={clipList} selectedClip={selectedClip} setClipList={setClipList} setSelectedClip={setSelectedClip} />
+            }
           </div>
         </div>
       </div>
 
-      <ToastContainer />
+      <ToastContainer className="font-['Proxima Nova'] font-thin" />
     </>
   );
 }

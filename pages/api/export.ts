@@ -86,7 +86,7 @@ export default async function NextApiHandler(
 
     let filterComplex = "";
     fileList.map((file, i) => {
-        filterComplex += `[${i}:v:0]scale=640:360:force_original_aspect_ratio=decrease,pad=640:360:-1:-1:color=black,setsar=sar=1[Scaled_${i}];`;
+        filterComplex += `[${i}:v:0]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:-1:-1:color=black,setsar=sar=1[Scaled_${i}];`;
     });
 
     fileList.map((file, i) => {
@@ -104,9 +104,9 @@ export default async function NextApiHandler(
         "1",
         "-y",
         "-preset",
-        "ultrafast",
+        "faster",
         "-crf",
-        "36",
+        "22",
         `${process.env.PWD}/public/${uid}/output-tmp.mp4`
     );
 
@@ -146,9 +146,9 @@ export default async function NextApiHandler(
         "2",
         "-y",
         "-crf",
-        "36",
+        "22",
         "-preset",
-        "ultrafast",
+        "faster",
         `${process.env.PWD}/public/${uid}/output-tmp-2.mp4`
     ];
 
@@ -185,15 +185,3 @@ export default async function NextApiHandler(
 
     res.status(200).end();
 }
-
-/**
- * ffmpeg -i snow.mp4 -i fruit.mp4 -filter_complex "[0:v:0]scale=1920:1080,setsar=sar=1[Scaled];[1:v:0][Scaled] \
-    concat=n=2:v=1:a=0 [v]" -map "[v]" output.mp4
- */
-
-/**
- * ffmpeg -i main.mp4 -i newaudio
-  -filter_complex "[0:a][1:a]amix=duration=shortest[a]" -map 0:v -map "[a]"
-  -c:v copy out.mp4
-  `${process.env.PWD}/public/${uid}/output-${timeStamp}.mp4`,
- */

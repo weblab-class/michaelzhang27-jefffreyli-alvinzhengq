@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LoadingScreen from "../testroute/LoadingScreen";
+import LoadingScreen from "../../components/LoadingScreen";
 
 export default function signUpPage() {
   const [name, setName] = useState("");

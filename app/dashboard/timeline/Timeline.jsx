@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { closestCenter, DndContext } from "@dnd-kit/core";
-import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 
 import Block from "./Block";
 import HoverLine from "./HoverLine";
@@ -17,16 +15,15 @@ export default function Timeline({
   setPreviewTimestamp,
   setVideoSrc,
   setAudioSrc,
+  selectedClip
 }) {
   const [sliderValue, setSliderValue] = useState(50);
   const [markerMode, setMarkerMode] = useState(false);
   const [linePosition, setLinePosition] = useState(100);
   const [totalDuration, setTotalDuration] = useState(0);
-  const [selectedClip, setSelectedClip] = useState();
   const timeLineRef = useRef(null);
 
   const handleMouseMove = (e) => {
-    console.log(timeLineRef.current.getBoundingClientRect())
     setLinePosition(Math.min(Math.max(
       e.clientX - timeLineRef.current.getBoundingClientRect().left / 2 + 2,
       timeLineRef.current.getBoundingClientRect().left), timeLineRef.current.getBoundingClientRect().right));
@@ -43,18 +40,6 @@ export default function Timeline({
 
   }, [clipList]);
 
-  const onDragEnd = (event) => {
-    const { active, over } = event;
-    if (active.id === over.id) {
-      return;
-    }
-    setClipList((clipList) => {
-      const oldIndex = clipList.findIndex((clip) => clip.id === active.id);
-      const newIndex = clipList.findIndex((clip) => clip.id === over.id);
-      return arrayMove(clipList, oldIndex, newIndex);
-    });
-  };
-
   const setMarkerMaster = (id, marker, type) => {
     if (type == 0) {
       audioClip.markers = marker;
@@ -63,28 +48,70 @@ export default function Timeline({
       for (let i = 0; i < clipList.length; i++) {
         if (clipList[i].id == id) {
           clipList[i].markers = marker;
+          console.log(clipList[i].markers)
         }
       }
       setClipList(clipList);
     }
   };
 
-  const handleDeleteBlock = (e) => {
+  const handleBlockCommand = (e) => {
     if ((e.key === "Backspace" || e.key === "Delete") && selectedClip) {
-      const filtered_clips = clipList.filter(
-        (clip) => clip.id !== selectedClip.id
-      );
-      setClipList(filtered_clips);
-      setSelectedClip(null);
+      if (selectedClip.type) {
+        const filtered_clips = clipList.filter(
+          (clip) => clip.id !== selectedClip.id
+        );
+        setClipList(filtered_clips);
+      } else {
+        setAudioClip(undefined);
+      }
+    }
+
+    if ((e.key === "ArrowLeft") && selectedClip && selectedClip.type) {
+      e.preventDefault();
+
+      const index = clipList.findIndex(x => x.id === selectedClip.id)
+
+      setClipList(clipList => {
+        if (index > 0) {
+          return [
+            ...clipList.slice(0, index - 1),
+            selectedClip,
+            clipList[index - 1],
+            ...clipList.slice(index + 1)
+          ];
+        }
+
+        return clipList;
+      })
+    }
+
+    if ((e.key === "ArrowRight") && selectedClip && selectedClip.type) {
+      e.preventDefault();
+
+      const index = clipList.findIndex(x => x.id === selectedClip.id)
+
+      setClipList(clipList => {
+        if (index >= 0 && index < clipList.length - 1) {
+          return [
+            ...clipList.slice(0, index),
+            clipList[index + 1],
+            selectedClip,
+            ...clipList.slice(index + 2)
+          ];
+        }
+
+        return clipList;
+      })
     }
   };
 
   useEffect(() => {
-    window.addEventListener("keydown", handleDeleteBlock);
+    window.addEventListener("keydown", handleBlockCommand);
 
     // Cleanup function
     return () => {
-      window.removeEventListener("keydown", handleDeleteBlock);
+      window.removeEventListener("keydown", handleBlockCommand);
     };
   }, [selectedClip, clipList]);
 
@@ -94,48 +121,6 @@ export default function Timeline({
       flex flex-row justify-start align-middle relative"
       onMouseMove={handleMouseMove}
     >
-      {/* <div className="flex justify-between">
-        <div className="flex justify-between items-center w-76 space-x-2">
-          <button
-            className="bg-darkGrey rounded-sm text-white px-4 py-1 cursor-pointer text-xs lg:text-sm "
-            onClick={() => {
-              processClips();
-            }}
-          >
-            <span>Algorithm</span>
-          </button>
-
-          <button
-            className="bg-darkGrey rounded-sm text-white px-4 py-1 cursor-pointer text-xs lg:text-sm"
-            onClick={() => {
-              setMarkerMode(!markerMode);
-            }}
-          >
-            <span>Marker Mode</span>
-          </button>
-          <button
-            className="bg-darkGrey rounded-sm text-white px-4 py-1 cursor-pointer text-xs lg:text-sm"
-            onClick={() => {
-              setMarkerMode(false);
-            }}
-          >
-            <span>Timeline Mode</span>
-          </button>
-        </div>
-
-        <div className="flex justify-center items-center">
-          <input
-            type="range"
-            value={sliderValue}
-            onChange={(e) => {
-              setSliderValue(parseFloat(e.target.value));
-            }}
-            min="30"
-            max="200"
-          />
-        </div>
-      </div> */}
-
       <HoverLine linePosition={linePosition} />
 
       <div className="h-[25vh] w-[30vw] bg-twilight flex items-center flex-col align-middle justify-around shadow-2xl shadow-black z-50">
@@ -157,7 +142,7 @@ export default function Timeline({
 
         <div className="tooltip tooltip-right tooltip-accent z-[100]" data-tip="Compile Video Preview">
           <CiRead className="fill-grey_accent w-12 scale-[1.56] cursor-pointer hover:fill-primary transition duration-300" onClick={() => {
-            processClips();
+            processClips(true);
           }} />
         </div>
       </div>
@@ -179,37 +164,26 @@ export default function Timeline({
           ))}
         </div>
 
-        <div className="my-auto ml-1 mt-4">
+        <div className="my-auto ml-1 mt-3">
           <div className="flex items-center space-x-4 text-center">
             <div className="min-h-16 p-2">
-              <DndContext
-                collisionDetection={closestCenter}
-                onDragEnd={onDragEnd}
-              >
-                <SortableContext items={clipList}>
-                  <div className="flex">
-                    {/* Why PROPS Passed as undefined ?? */}
-                    {clipList.map((clip) => (
-                      <div
-                        onClick={() => {
-                          setSelectedClip(clip);
-                        }}
-                      >
-                        <Block
-                          key={clip.id}
-                          media={clip}
-                          scalar={sliderValue}
-                          marker_mode={markerMode}
-                          setPreviewMediaType={setPreviewMediaType}
-                          setSrc={setVideoSrc}
-                          setPreviewTimestamp={setPreviewTimestamp}
-                          setMarkerMaster={setMarkerMaster}
-                        />
-                      </div>
-                    ))}
+              <div className="flex">
+                {/* Why PROPS Passed as undefined ?? */}
+                {clipList.map((clip) => (
+                  <div>
+                    <Block
+                      key={clip.id}
+                      media={clip}
+                      scalar={sliderValue}
+                      marker_mode={markerMode}
+                      setPreviewMediaType={setPreviewMediaType}
+                      setSrc={setVideoSrc}
+                      setPreviewTimestamp={setPreviewTimestamp}
+                      setMarkerMaster={setMarkerMaster}
+                    />
                   </div>
-                </SortableContext>
-              </DndContext>
+                ))}
+              </div>
             </div>
             <div className="absolute -left-4 top-1/2 -translate-y-[16px] h-[1px] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0"
               style={{
@@ -219,24 +193,20 @@ export default function Timeline({
 
           <div className="flex items-center space-x-4">
             <div className="min-h-16 p-2">
-              <DndContext collisionDetection={closestCenter} onDragEnd={() => { }}>
-                <SortableContext items={clipList}>
-                  <div className="flex">
-                    {audioClip && (
-                      <Block
-                        key={audioClip.id}
-                        media={audioClip}
-                        scalar={sliderValue}
-                        marker_mode={markerMode}
-                        setPreviewMediaType={setPreviewMediaType}
-                        setSrc={setAudioSrc}
-                        setPreviewTimestamp={setPreviewTimestamp}
-                        setMarkerMaster={setMarkerMaster}
-                      />
-                    )}
-                  </div>
-                </SortableContext>
-              </DndContext>
+              <div className="flex">
+                {audioClip && (
+                  <Block
+                    key={audioClip.id}
+                    media={audioClip}
+                    scalar={sliderValue}
+                    marker_mode={markerMode}
+                    setPreviewMediaType={setPreviewMediaType}
+                    setSrc={setAudioSrc}
+                    setPreviewTimestamp={setPreviewTimestamp}
+                    setMarkerMaster={setMarkerMaster}
+                  />
+                )}
+              </div>
             </div>
             <div className="absolute -left-4 bot-1/2 -translate-y-[4px] h-[1px] m-auto rounded-lg border-grey_accent/30 border-[1px] z-0"
               style={{
