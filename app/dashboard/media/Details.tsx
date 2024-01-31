@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction } from "react";
+import { MediaFile, MediaList } from "../types";
 
 const Details = ({
+  id,
   name,
   duration,
   type,
@@ -10,7 +12,10 @@ const Details = ({
   setStartTrim,
   endTrim,
   setEndTrim,
+  clipList,
+  setClipList,
 }: {
+  id: string;
   name: string;
   duration: string;
   type: string;
@@ -20,6 +25,8 @@ const Details = ({
   setStartTrim: Dispatch<SetStateAction<string>>;
   endTrim: string;
   setEndTrim: Dispatch<SetStateAction<string>>;
+  clipList: MediaList;
+  setClipList: Dispatch<SetStateAction<MediaList>>;
 }) => {
   const details = [
     { label: "Name", value: truncateText(name, 45) },
@@ -48,7 +55,18 @@ const Details = ({
             type="checkbox"
             onChange={(e) => {
               setFlexible(e.target.checked);
-              console.log(e.target.checked);
+
+              const fileIndex = clipList.findIndex(
+                (file) => file.id === id
+              );
+
+              if (fileIndex !== -1) {
+                clipList[fileIndex].flex = e.target.checked;
+              } else {
+                console.error(
+                  "Media file with id " + id + " not found."
+                );
+              }
             }}
           />
           <div className="swap-on bg-primary rounded-lg px-[8px] py-[0.22rem]">

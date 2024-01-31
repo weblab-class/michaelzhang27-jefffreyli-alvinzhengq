@@ -227,6 +227,7 @@ export default function Dashboard() {
 
         <div className="h-[40vh] bg-dawn p-3 rounded-2xl overflow-scroll gap-y-4 no-scrollbar shadow-xl shadow-slate-black">
           <Details
+            id={selectedClip.id}
             name={selectedClip.display_name}
             duration={selectedClip.duration}
             type={selectedClip.type == 0 ? "Audio" : "Video"}
@@ -236,6 +237,8 @@ export default function Dashboard() {
             setStartTrim={setStartTrim}
             endTrim={endTrim}
             setEndTrim={setEndTrim}
+            clipList={clipList}
+            setClipList={setClipList}
           />
         </div>
       </div>
