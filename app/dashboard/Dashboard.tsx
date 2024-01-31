@@ -19,7 +19,7 @@ import Details from "./media/Details";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { CiExport, CiHome, CiRead } from "react-icons/ci";
+import { CiExport, CiHome, CiRead, CiCircleInfo } from "react-icons/ci";
 import { IoExitOutline } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion"
 import { signOut } from "firebase/auth";
@@ -82,7 +82,7 @@ export default function Dashboard() {
   };
 
   const processClips = async (preview: boolean) => {
-    if(preview) {
+    if (preview) {
       setLoadingMessage("Compiling Video Project...")
     } else {
       setLoadingMessage(`Compiling and Exporting Video Project. Can take up to 10 minutes depending on length of video...`)
@@ -249,6 +249,8 @@ export default function Dashboard() {
 
     authorizationLogic();
     fetchMedia(setUploadedVideoFiles, setUploadedAudioFiles);
+
+    (document.getElementById("info_modal") as HTMLDialogElement)?.showModal();
   }, []);
 
   return (
@@ -267,6 +269,29 @@ export default function Dashboard() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <dialog id="info_modal" className="modal">
+        <div className="modal-box bg-midnight">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          </form>
+          <h3 className="font-bold text-lg">Welcome to Visage, the AI Powered Editor!</h3>
+          <p className="py-4 text-sm">Visage is a simplified web editor, meant to streamline the process of assembling, editing and syncing of a collage of clips with music.</p>
+          <p className="py-3 text-sm">Get started by importing <code>.mp4</code> and <code>.mp3</code> files in the <b>Source Media</b> section. Once a file has been fully uploaded
+          it will appear within the Source Media browser, where you can then add it onto the current project timeline.</p>
+          <p className="py-3 text-sm">The Timeline has two toggleable modes, <i>Marker Mode</i> and <i>Timeline Mode</i>. Timeline Mode is the traditional
+          editor experience, where you can reorder clips with the arrow keys,
+          inspect each clip with a click, and delete clips by hitting <code>Backspace</code>.</p>
+          <p className="py-3 text-sm">While you can choose to manually trim each clip within the <b>Details</b> section by adjusting the start and end trim,
+          with the power of <i>Marker Mode</i>, this can be automated.</p>
+          <p className="py-3 text-sm">Toggle into <i>Marker Mode</i>, and place down markers onto your video and song with
+          a click, and right click to delete. Place video markers onto moments you wish to higlight, and audio markers onto memorable points in the music
+          you wish to sync your video to.</p>
+          <p className="py-3 text-sm">Lastly, simply click the <i>Compile Video Preview</i> icon below the two modes, to automatically trim and generate
+          your edited video! It's that simple.</p>
+          <p className="py-4 text-sm font-thin text-white/40">Find these instructions again with the Info icon on the right of the video panel.</p>
+        </div>
+      </dialog>
 
       <div
         className="h-screen w-screen bg-midnight overflow-hidden font-['Proxima Nova']
@@ -313,6 +338,12 @@ export default function Dashboard() {
                 router.push("/signin");
               }} data-tip="Sign Out" className="tooltip tooltip-right tooltip-accent rounded-xl w-16 h-16 mx-auto flex flex-col justify-center group hover:bg-twilight transition duration-300 cursor-pointer">
                 <IoExitOutline className="mx-auto w-6 h-6 text-gray-400 group-hover:text-primary transition duration-300" />
+              </div>
+
+              <div onClick={() => {
+                (document.getElementById("info_modal") as HTMLDialogElement)?.showModal();
+              }} data-tip="Instruction Message" className="tooltip tooltip-right tooltip-accent rounded-xl w-16 h-16 mx-auto flex flex-col justify-center group hover:bg-twilight transition duration-300 cursor-pointer">
+                <CiCircleInfo className="mx-auto w-6 h-6 text-gray-400 group-hover:text-primary transition duration-300" />
               </div>
             </div>
 
